@@ -2,8 +2,14 @@
 This technical test requires you to design and implement a **Logs Ingestion and Viewing** system using **Next.js**, **Tailwind CSS**, and **Flowbite**. The solution will help MicroboxLabs manage and visualize incoming log entries efficiently.
 
 #### **Before You Begin**
-Create a private GitHub repository and invite the provided collaborators: `@korutx`, `@odtorres`. Should you have any questions, contact `devtest@microboxlabs.com`.  
-**Title of the project**: Fullstack-Test-(Last Name)
+Fork this repository and invite the provided collaborators: `@korutx`, `@odtorres`. Should you have any questions, contact `devtest@microboxlabs.com`. 
+
+#### **Guidelines**
+- We provide a basic Flowbite + Next.js template to get you started.
+- You can use any additional libraries you see fit, but make sure to justify your choices.
+- Flowbite documentation is available [here](https://flowbite-react.com/docs/getting-started/introduction).
+- Tailwind CSS documentation is available [here](https://tailwindcss.com/docs/utility-first).
+- Next.js documentation is available [here](https://nextjs.org/docs).
 
 #### **Problem Description**
 MicroboxLabs requires a system that helps engineers manage incoming system logs for different microservices. Nora, a team member, currently collects and reviews logs manually, which is inefficient and prone to errors.
