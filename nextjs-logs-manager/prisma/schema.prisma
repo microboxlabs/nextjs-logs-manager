@@ -1,5 +1,6 @@
 generator client {
   provider = "prisma-client-js"
+  previewFeatures = ["driverAdapters"]
 }
 
 datasource db {
@@ -11,6 +12,7 @@ model Role {
   id        Int     @id @default(autoincrement())
   name      String  @unique
   user      User[] // remember this for one to many relations
+  route     Route[]
 }
 
 model User {
@@ -34,4 +36,12 @@ model Log {
   typeId    Int
   service   String
   message   String
+}
+
+// i use this to save all the "protected routes" and for role accesibility on the middleware
+model Route {
+  id        Int       @id @default(autoincrement())
+  path      String    @unique
+  role      Role      @relation(fields: [roleId], references: [id])
+  roleId    Int
 }

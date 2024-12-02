@@ -1,22 +1,41 @@
-import { PrismaClient } from "@prisma/client";
+"use client";
+
 import { Button, Label, Select, TextInput } from "flowbite-react";
 import Link from "next/link";
+import { Register } from "./actions";
+import { GetRoles } from "../_data/role";
+import { useFormState } from "react-dom";
+import { useEffect, useState } from "react";
 
-const Main = async () => {
-  const prisma = new PrismaClient();
-  const roles = await prisma.role.findMany();
+const initialState = {
+  message: "",
+};
 
-  const register = async (formData: FormData) => {
-    "use server";
+interface Role {
+  id: number;
+  name: string;
+}
 
-    console.log(formData.get("username"));
-    console.log(formData.get("password"));
-    console.log(formData.get("role"));
-  };
+const Main = () => {
+  const [state, formAction] = useFormState(Register, initialState);
+  const [roles, setRoles] = useState<Role[]>([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const fetchedRoles = await GetRoles();
+        setRoles(fetchedRoles);
+      } catch (error) {
+        console.error("The roles where not correctly loaded: " + error);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   return (
     <main className="flex min-h-screen items-center justify-center gap-2 dark:bg-gray-800">
-      <form className="flex max-w-md flex-col gap-4" action={register}>
+      <form className="flex max-w-md flex-col gap-4" action={formAction}>
         <h2 className="flex-col place-content-center text-center text-2xl dark:text-white">
           Register
         </h2>
@@ -53,7 +72,16 @@ const Main = async () => {
             })}
           </Select>
         </div>
-        <Button className="mb-2 text-center" type="submit">
+        {state?.message && (
+          <p className="max-w-xs overflow-hidden text-red-500">
+            {state.message}
+          </p>
+        )}
+        <Button
+          className="mb-2 text-center"
+          type="submit"
+          disabled={roles.length === 0}
+        >
           Register
         </Button>
         <h3 className="text-center dark:text-gray-400">
