@@ -1,7 +1,5 @@
 ## Utilización
 
-## Utilización
-
 Para utilizar el código se requiere seguir los siguientes pasos:
 
 - Inicia el proyecto con el comando `npm i`
@@ -10,6 +8,16 @@ Para utilizar el código se requiere seguir los siguientes pasos:
   SECRET="Palabra secreta para el hasheado de elementos”
   ```
 - En la terminal escribir el comando “`npx prisma db push`”
+- Agregar roles y tipo de logs a la base de datos con los comandos:
+  ```tsx
+  sqlite3 dev.db "INSERT INTO Role (name) VALUES ('Admin')"
+  sqlite3 dev.db "INSERT INTO Role (name) VALUES ('Regular')"
+  sqlite3 dev.db "Select * from role"
+
+  sqlite3 dev.db "INSERT INTO Type (name) VALUES ('ERROR')"
+  sqlite3 dev.db "INSERT INTO Type (name) VALUES ('INFO')"
+  sqlite3 dev.db "INSERT INTO Type (name) VALUES ('WARNING')"
+  ```
 - Ejecutar el código con `npm run dev`.
 
 ## Aprendizaje
