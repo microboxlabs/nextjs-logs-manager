@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 import { Button, Dropdown, Navbar } from "flowbite-react";
-import Image from "next/image";
 
 export function CustomNavbar() {
   return (
