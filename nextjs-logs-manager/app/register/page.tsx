@@ -1,6 +1,12 @@
 "use client";
 
-import { Button, Label, Select, TextInput } from "flowbite-react";
+import {
+  Button,
+  DarkThemeToggle,
+  Label,
+  Select,
+  TextInput,
+} from "flowbite-react";
 import Link from "next/link";
 import { Register } from "./actions";
 import { GetRoles } from "../_data/role";
@@ -39,6 +45,9 @@ const Main = () => {
         <h2 className="flex-col place-content-center text-center text-2xl dark:text-white">
           Register
         </h2>
+        <div className="m-auto">
+          <DarkThemeToggle />
+        </div>
         <div>
           <div className="mb-2 block">
             <Label htmlFor="username" value="Username" />

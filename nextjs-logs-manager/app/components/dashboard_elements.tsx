@@ -1,21 +1,19 @@
 import { TableRow, TableCell } from "flowbite-react";
 
 interface DashboardElementProps {
-  date: String;
-  hour: String;
-  type: String;
+  datetime: Date;
+  type: string;
   service_name: String;
   message: String;
 }
 
 const DashboardElement: React.FC<DashboardElementProps> = ({
-  date,
-  hour,
+  datetime,
   type,
   service_name,
   message,
 }) => {
-  const getTypeColor = (type: String) => {
+  const getTypeColor = (type: string) => {
     switch (type) {
       case "ERROR":
         return "text-red-500";
@@ -28,10 +26,24 @@ const DashboardElement: React.FC<DashboardElementProps> = ({
     }
   };
 
+  const day = String(datetime.getUTCDate()).padStart(2, "0");
+  const month = String(datetime.getUTCMonth() + 1).padStart(2, "0");
+  const year = datetime.getUTCFullYear();
+  const formattedDate = `${day}-${month}-${year}`;
+
+  const hours = String(datetime.getUTCHours()).padStart(2, "0");
+  const minutes = String(datetime.getUTCMinutes()).padStart(2, "0");
+  const seconds = String(datetime.getUTCSeconds()).padStart(2, "0");
+  const formattedTime = `${hours}:${minutes}:${seconds}`;
+
   return (
     <TableRow className="bg-white dark:border-gray-700 dark:bg-gray-800">
-      <TableCell className="text-gray-800 dark:text-gray-300">{date}</TableCell>
-      <TableCell className="text-gray-800 dark:text-gray-300">{hour}</TableCell>
+      <TableCell className="text-gray-800 dark:text-gray-300">
+        {formattedDate}
+      </TableCell>
+      <TableCell className="text-gray-800 dark:text-gray-300">
+        {formattedTime}
+      </TableCell>
       <TableCell className={getTypeColor(type)}>{type}</TableCell>
       <TableCell className="text-gray-800 dark:text-gray-300">
         {service_name}

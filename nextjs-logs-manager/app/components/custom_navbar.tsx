@@ -17,19 +17,21 @@ const CustomNavbar = async () => {
   const session = await verifySession(false);
 
   return (
-    <nav className="fixed left-0 top-0 z-10 w-full bg-gray-100 shadow-md dark:bg-gray-900">
-      <div className="container mx-auto flex items-center justify-between p-4">
-        <DarkThemeToggle />
+    <nav className="sticky left-0 top-0 z-10 w-full bg-gray-100 shadow-md dark:bg-gray-900">
+      <div className="items-right container mx-auto flex justify-end p-4">
         {session && (
           // i do a form here so i can activate the "session deletion" as a server function
-          <form className="flex flex-row gap-5" action={deleteSession}>
+          <form
+            className="flex flex-row justify-items-end  gap-5"
+            action={deleteSession}
+          >
             {/* Back button */}
             <BackButton />
             {/* Add button */}
             <AddButton roleId={session.roleId} />
             {/* Exit button */}
-            <Button color="red" type="submit">
-              <CiLogout className="h-6 w-6" />
+            <Button color="red" type="submit" className="flex ">
+              <CiLogout className="size-6" />
             </Button>
           </form>
         )}

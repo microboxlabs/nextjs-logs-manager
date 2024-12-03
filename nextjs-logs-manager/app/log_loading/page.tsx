@@ -1,65 +1,47 @@
-import { PrismaClient } from "@prisma/client";
-import { Button, FileInput, Label, Toast, ToastToggle } from "flowbite-react";
-import Link from "next/link";
-import { verifySession } from "../_lib/session";
-import CustomNavbar from "../components/custom_navbar";
+"use client";
 
-const Main = async () => {
-  /* 
-  const session = await verifySession();
-  if (session?.roleId != 1) {
-    return (
-      <main className="flex min-h-screen items-center justify-center gap-2 dark:bg-gray-800">
-        <h1>You dont have authorization to access this data</h1>
-      </main>
-    );
-  }
-    */
-  const prisma = new PrismaClient();
+import { useState } from "react";
+import { Button, FileInput, Label } from "flowbite-react";
+import { DataUpload } from "./actions";
+import toast, { Toaster } from "react-hot-toast";
 
-  const DataUpload = async (formData: FormData) => {
-    "use server";
-    const file = formData.get("file") as File;
+interface Notification {
+  type: string;
+  message: string;
+}
 
-    if (!file) {
-      console.error("The file was not setted");
-      return;
-    }
+const Main = () => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault(); // Prevent default form submission
 
-    const logEntries = (await file.text()).split("\n");
-    console.log(logEntries);
-    logEntries.map((log) => {
-      // extract date time
-      // extract type
-      // extract service name
-      // extract message
-      console.log(log);
-      // revalidate path to reload???
-    });
+    const formData = new FormData(event.currentTarget); // Create FormData from the form
+    const response = DataUpload(formData);
 
-    /* 
-    await prisma.log.create({
-        data: {
-            datetime: new Date(), // Set current datetime
-            type: {
-                connect: { id: typeId }, // Connect to the Type model
-            },
-            service,
-            message,
+    toast.promise(
+      response,
+      {
+        loading: "Saving...",
+        success: (data) => <b>{data.message}</b>,
+        error: (error) => <b>{error.message}</b>,
+      },
+      {
+        style: {
+          minWidth: "250px",
         },
-    });
-    */
+      },
+    );
   };
 
   return (
     <main className="flex min-h-screen items-center justify-center gap-2 dark:bg-gray-800">
-      <form className="flex max-w-md flex-col gap-4" action={DataUpload}>
+      <form className="flex max-w-md flex-col gap-4" onSubmit={handleSubmit}>
         <div className="mb-2 block">
           <Label htmlFor="file-upload" value="Upload log file" />
         </div>
         <FileInput id="file-upload" name="file" />
         <Button type="submit">Upload</Button>
       </form>
+      <Toaster position="bottom-center" reverseOrder={false} />
     </main>
   );
 };
