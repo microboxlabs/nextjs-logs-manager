@@ -1,7 +1,8 @@
-import { CustomNavbar } from "@/components/ui/CustomNavbar";
 
 export default function Home() {
   return (
-    <CustomNavbar />
+    <div>
+      <h1>Home Screen</h1>
+    </div>
   );
 }
