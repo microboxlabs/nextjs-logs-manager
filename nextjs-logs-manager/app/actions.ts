@@ -5,11 +5,10 @@ import { Filter } from "./page";
 
 export const GetLogs = async (
   props: { filters: Filter | undefined } | undefined,
+  page: number,
+  pageSize: number,
 ) => {
   const prisma = new PrismaClient();
-
-  // Build dynamic where clause based on filters
-
   let from = undefined;
   let to = undefined;
 
@@ -40,11 +39,15 @@ export const GetLogs = async (
         },
       },
     },
+    skip: (page - 1) * pageSize,
+    take: pageSize,
     orderBy: {
       datetime: "desc",
     },
     where: whereClause,
   });
+
+  const logs_count = await prisma.log.count();
 
   const service_names = await prisma.log.findMany({
     distinct: ["service"], // Group by the `service` field
@@ -55,5 +58,5 @@ export const GetLogs = async (
 
   const types = await prisma.type.findMany();
 
-  return { logs, service_names, types };
+  return { logs, logs_count, service_names, types };
 };
