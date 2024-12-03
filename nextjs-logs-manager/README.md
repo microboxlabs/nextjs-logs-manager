@@ -7,7 +7,7 @@ Para utilizar el código se requiere seguir los siguientes pasos:
   ```tsx
   SECRET="Palabra secreta para el hasheado de elementos”
   ```
-- En la terminal escribir el comando “`npx prisma db push`”
+- En la terminal escribir el comando “`npx prisma generate`”
 - Agregar roles y tipo de logs a la base de datos con los comandos:
   ```tsx
   sqlite3 dev.db "INSERT INTO Role (name) VALUES ('Admin')"
