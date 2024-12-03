@@ -33,7 +33,7 @@ const Main = () => {
   };
 
   return (
-    <main className="flex min-h-screen items-center justify-center gap-2 dark:bg-gray-800">
+    <main className="flex grow items-center justify-center gap-2 dark:bg-gray-800">
       <form className="flex max-w-md flex-col gap-4" onSubmit={handleSubmit}>
         <div className="mb-2 block">
           <Label htmlFor="file-upload" value="Upload log file" />

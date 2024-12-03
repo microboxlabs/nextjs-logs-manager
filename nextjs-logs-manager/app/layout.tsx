@@ -22,7 +22,7 @@ export default async function RootLayout({
       <head>
         <ThemeModeScript />
       </head>
-      <body className={inter.className}>
+      <body className={inter.className + " flex min-h-screen flex-col"}>
         <CustomNavbar />
         {children}
       </body>

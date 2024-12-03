@@ -40,7 +40,7 @@ const Main = () => {
   }, []);
 
   return (
-    <main className="flex min-h-screen items-center justify-center gap-2 dark:bg-gray-800">
+    <main className="flex grow items-center justify-center gap-2 dark:bg-gray-800">
       <form className="flex max-w-md flex-col gap-4" action={formAction}>
         <h2 className="flex-col place-content-center text-center text-2xl dark:text-white">
           Register

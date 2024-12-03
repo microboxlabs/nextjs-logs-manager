@@ -50,7 +50,7 @@ export default function Home() {
   }, [filter]);
 
   return (
-    <main className="flex min-h-screen items-center justify-center gap-2 dark:bg-gray-800">
+    <main className="flex grow justify-center gap-2 overflow-auto dark:bg-gray-800">
       <Toaster />
       <div className="mx-2 my-10 overflow-x-auto">
         <form className="w-full">

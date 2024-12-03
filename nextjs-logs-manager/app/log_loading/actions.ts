@@ -28,7 +28,8 @@ export const DataUpload = async (formData: FormData) => {
     const match = log.match(regex);
 
     if (match) {
-      let datetime = new Date(match[1].replace("", "T"));
+      // the reason of the z is because the date by default dont set the timezone (so when i upload a datetime with hour 10:01 ot shows 13:01)
+      let datetime = new Date(match[1] + "Z");
 
       let type = await prisma.type.findUnique({
         where: {
@@ -47,7 +48,7 @@ export const DataUpload = async (formData: FormData) => {
       try {
         await prisma.log.create({
           data: {
-            datetime: new Date(),
+            datetime: datetime,
             typeId: type?.id,
             service: serviceName,
             message: message,

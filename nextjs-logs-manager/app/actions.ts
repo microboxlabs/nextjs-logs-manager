@@ -3,24 +3,34 @@
 import { PrismaClient } from "@prisma/client";
 import { Filter } from "./page";
 
-interface GetLogsProps {
-  filters?: { typeId?: number; service?: string };
-}
-
 export const GetLogs = async (
   props: { filters: Filter | undefined } | undefined,
 ) => {
   const prisma = new PrismaClient();
 
   // Build dynamic where clause based on filters
-  const whereClause = {
+
+  let from = undefined;
+  let to = undefined;
+
+  if (props?.filters?.from) {
+    from = new Date(props.filters.from);
+    from.setHours(0, 0, 0, 0);
+  }
+
+  if (props?.filters?.to) {
+    to = new Date(props.filters.to);
+    to.setHours(23, 59, 59, 999);
+  }
+
+  let whereClause = {
     typeId: props?.filters?.typeId ? props?.filters.typeId : undefined,
     service: props?.filters?.service ? props?.filters.service : undefined,
-    datetime: props?.filters?.from ? props?.filters.from : undefined,
-    // service: props?.filters?.service ? props?.filters.service : undefined,
+    datetime: {
+      gte: from,
+      lte: to,
+    },
   };
-
-  console.log(whereClause);
 
   const logs = await prisma.log.findMany({
     include: {
@@ -29,6 +39,9 @@ export const GetLogs = async (
           name: true, // only include the name of the type
         },
       },
+    },
+    orderBy: {
+      datetime: "desc",
     },
     where: whereClause,
   });

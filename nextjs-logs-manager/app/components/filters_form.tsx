@@ -25,27 +25,31 @@ interface FiltersProps {
 const Filters: React.FC<FiltersProps> = ({ types, services, setFilter }) => {
   const [activeFrom, setActiveFrom] = useState(false);
   const [activeTo, setActiveTo] = useState(false);
-  const [selectedFrom, setSelectedFrom] = useState<Date | undefined>();
-  const [selectedTo, setSelectedTo] = useState<Date | undefined>();
+  const [selectedFrom, setSelectedFrom] = useState<Date | undefined>(
+    new Date(),
+  );
+  const [selectedTo, setSelectedTo] = useState<Date | undefined>(new Date());
   const [selectedType, setSelectedType] = useState<number | undefined>();
   const [selectedService, setSelectedService] = useState<string | undefined>();
 
   useEffect(() => {
-    if (!activeFrom) {
-      setSelectedFrom(undefined);
-    }
-
-    if (!activeTo) {
-      setSelectedTo(undefined);
-    }
+    console.log({ selectedType, selectedService, selectedFrom, selectedTo });
 
     setFilter({
       typeId: selectedType,
       service: selectedService,
-      from: selectedFrom,
-      to: selectedTo,
+      from: activeFrom ? selectedFrom : undefined,
+      to: activeTo ? selectedTo : undefined,
     });
-  }, [selectedService, selectedType, selectedFrom, selectedTo]);
+  }, [
+    selectedService,
+    selectedType,
+    selectedFrom,
+    selectedTo,
+    activeFrom,
+    activeTo,
+    setFilter,
+  ]);
 
   const typeList = types.map((type) => {
     const color =
@@ -72,15 +76,36 @@ const Filters: React.FC<FiltersProps> = ({ types, services, setFilter }) => {
     );
   });
 
-  const handleFromChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const date = new Date(event.target.value); // Convert string to Date
-    console.log("fechastica" + date);
-    setSelectedFrom(date);
+  const handleFromChange = (datetime: Date) => {
+    setSelectedFrom(datetime);
   };
 
-  const handleToChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const date = new Date(event.target.value); // Convert string to Date
-    setSelectedTo(date);
+  const handleToChange = (datetime: Date) => {
+    setSelectedTo(datetime);
+  };
+
+  const handleActivateFrom = (value: boolean) => {
+    setActiveFrom(value);
+    if (value && selectedFrom != undefined) {
+      setFilter({
+        typeId: selectedType,
+        service: selectedService,
+        from: selectedFrom,
+        to: selectedTo,
+      });
+    }
+  };
+
+  const handleActivateTo = (value: boolean) => {
+    setActiveTo(value);
+    if (value && selectedTo != undefined) {
+      setFilter({
+        typeId: selectedType,
+        service: selectedService,
+        from: selectedFrom,
+        to: selectedTo,
+      });
+    }
   };
 
   // Function to reset all filters
@@ -98,15 +123,21 @@ const Filters: React.FC<FiltersProps> = ({ types, services, setFilter }) => {
         <div className="w-full gap-2">
           <Label htmlFor="From" value="From" />
           <div className="flex max-w-md flex-row content-center gap-4">
-            <Datepicker disabled={!activeFrom} onChange={handleFromChange} />
-            <ToggleSwitch checked={activeFrom} onChange={setActiveFrom} />
+            <Datepicker
+              disabled={!activeFrom}
+              onSelectedDateChanged={handleFromChange}
+            />
+            <ToggleSwitch checked={activeFrom} onChange={handleActivateFrom} />
           </div>
         </div>
         <div className="w-full gap-2">
           <Label htmlFor="To" value="To" />
           <div className="flex max-w-md flex-row content-center gap-4">
-            <Datepicker disabled={!activeTo} onChange={handleToChange} />
-            <ToggleSwitch checked={activeTo} onChange={setActiveTo} />
+            <Datepicker
+              disabled={!activeTo}
+              onSelectedDateChanged={handleToChange}
+            />
+            <ToggleSwitch checked={activeTo} onChange={handleActivateTo} />
           </div>
         </div>
       </div>

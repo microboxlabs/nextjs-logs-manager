@@ -25,7 +25,6 @@ export const middleware = async (req: NextRequest) => {
       return NextResponse.redirect(new URL("/login", req.url));
     }
 
-    console.log(session?.roleId);
     if (routes.get(req.nextUrl.pathname) == 1 && session.roleId != 1) {
       return NextResponse.redirect(new URL("/access_denied", req.url));
     }
