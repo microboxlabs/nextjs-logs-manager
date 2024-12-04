@@ -6,14 +6,19 @@ export function CustomNavbar() {
   return (
     <div className="mb-2 flex w-full items-center justify-between border-b p-3">
       <div>
-        <h1 className="font-extrabold">LogsManager</h1>
+        <Link href="/" className="font-extrabold">
+          LogsManager
+        </Link>
       </div>
       <div className="flex items-center space-x-3">
         <Link className="link-underline" href="/dashboard">
           Dashboard
         </Link>
-        <Link className="link-underline" href="/dashboard">
-          Logs
+        <Link
+          className="link-underline flex items-center "
+          href="/logs"
+        >
+          <span>Logs</span>
         </Link>
         <Link href="/dashboard" className="btn-outline">
           Iniciar sesión
