@@ -114,6 +114,8 @@ const Filters: React.FC<FiltersProps> = ({ types, services, setFilter }) => {
     setActiveTo(false);
     setSelectedType(undefined);
     setSelectedService(undefined);
+    setSelectedFrom(new Date());
+    setSelectedTo(new Date());
   };
 
   return (

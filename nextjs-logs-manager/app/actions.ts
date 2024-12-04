@@ -9,6 +9,7 @@ export const GetLogs = async (
   pageSize: number,
 ) => {
   const prisma = new PrismaClient();
+
   let from = undefined;
   let to = undefined;
 
@@ -47,7 +48,9 @@ export const GetLogs = async (
     where: whereClause,
   });
 
-  const logs_count = await prisma.log.count();
+  const logs_count = await prisma.log.count({
+    where: whereClause,
+  });
 
   const service_names = await prisma.log.findMany({
     distinct: ["service"], // Group by the `service` field

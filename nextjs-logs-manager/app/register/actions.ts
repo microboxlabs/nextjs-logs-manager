@@ -1,9 +1,9 @@
 "use server";
 
-import { PrismaClient } from "@prisma/client";
 import bcrypt from "bcrypt";
 import { createSession } from "../_lib/session";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
+import { PrismaClient } from "@prisma/client";
 
 export const Register = async (prevState: any, formData: FormData) => {
   const prisma = new PrismaClient();
@@ -47,7 +47,7 @@ export const Register = async (prevState: any, formData: FormData) => {
       return { message: "Something went wrong: " + error.message };
     }
   } finally {
-    prisma.$disconnect;
+    await prisma.$disconnect();
   }
 
   if (userData != null) {

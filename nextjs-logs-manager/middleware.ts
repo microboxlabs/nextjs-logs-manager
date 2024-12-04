@@ -3,6 +3,11 @@ import { NextRequest, NextResponse } from "next/server";
 import { decrypt } from "./app/_lib/session";
 import { PrismaClient } from "@prisma/client";
 
+enum UserRole {
+  ADMIN = 1,
+  USER = 2,
+}
+
 // I do this so i can define the routes and their access level:
 //    1: Admin level required
 //    2: either Regular or admin can open that route
@@ -25,7 +30,10 @@ export const middleware = async (req: NextRequest) => {
       return NextResponse.redirect(new URL("/login", req.url));
     }
 
-    if (routes.get(req.nextUrl.pathname) == 1 && session.roleId != 1) {
+    if (
+      routes.get(req.nextUrl.pathname) == 1 &&
+      session.roleId != UserRole.ADMIN
+    ) {
       return NextResponse.redirect(new URL("/access_denied", req.url));
     }
   }

@@ -1,5 +1,7 @@
 "use server";
+
 import { PrismaClient } from "@prisma/client";
+import { prisma } from "../_lib/prisma";
 
 export const DataUpload = async (formData: FormData) => {
   const prisma = new PrismaClient();

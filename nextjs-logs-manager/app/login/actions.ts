@@ -1,8 +1,8 @@
 "use server";
 
-import { PrismaClient } from "@prisma/client";
 import bcrypt from "bcrypt";
 import { createSession } from "../_lib/session";
+import { PrismaClient } from "@prisma/client";
 
 export const Login = async (prevState: any, formData: FormData) => {
   const prisma = new PrismaClient();
@@ -11,8 +11,10 @@ export const Login = async (prevState: any, formData: FormData) => {
   const form_fields = ["username", "password"];
   for (const field of form_fields) {
     if (!formData.get(field)) {
-      console.error(`The field ${field} can't be empty`);
-      return null; // Return early if any field is empty
+      {
+        message: `The field ${field} can't be empty`;
+      }
+      return null;
     }
   }
 
@@ -20,13 +22,9 @@ export const Login = async (prevState: any, formData: FormData) => {
   const username = formData.get("username") as string;
   const password = formData.get("password") as string;
 
-  const user = await prisma.user
-    .findUnique({
-      where: { username: username.trim() },
-    })
-    .catch((err) => {
-      null;
-    });
+  const user = await prisma.user.findUnique({
+    where: { username: username.trim() },
+  });
 
   if (user && (await bcrypt.compare(password, user.password))) {
     await createSession(user.id, user.roleId);

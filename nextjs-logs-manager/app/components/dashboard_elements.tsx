@@ -3,8 +3,8 @@ import { TableRow, TableCell } from "flowbite-react";
 interface DashboardElementProps {
   datetime: Date;
   type: string;
-  service_name: String;
-  message: String;
+  service_name: string;
+  message: string;
 }
 
 const DashboardElement: React.FC<DashboardElementProps> = ({

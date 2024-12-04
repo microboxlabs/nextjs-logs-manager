@@ -10,7 +10,10 @@ import { JWTPayload, SignJWT, jwtVerify } from "jose";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
-// The secret should be in an .env
+if (!process.env.SECRET) {
+  throw new Error("The SECRET value is not setted on the .env file");
+}
+
 const secret = new TextEncoder().encode(process.env.SECRET);
 const alg = "HS256";
 

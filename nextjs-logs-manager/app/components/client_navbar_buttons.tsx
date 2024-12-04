@@ -24,7 +24,7 @@ export const BackButton = () => {
       </Button>
     );
   } else {
-    <></>;
+    return null;
   }
 };
 

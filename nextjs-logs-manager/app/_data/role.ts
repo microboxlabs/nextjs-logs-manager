@@ -3,8 +3,13 @@
 import { PrismaClient } from "@prisma/client";
 
 export const GetRoles = async () => {
-  const prisma = new PrismaClient();
+  try {
+    const prisma = new PrismaClient();
 
-  const data = await prisma.role.findMany();
-  return data;
+    const data = await prisma.role.findMany();
+    return data;
+  } catch (err) {
+    console.error(err);
+    return [];
+  }
 };
