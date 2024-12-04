@@ -1,3 +1,15 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.btn-primary {
+  @apply bg-teal-500 hover:bg-teal-600 text-white rounded px-3 py-1.5
+}
+
+.btn-outline {
+  @apply hover:bg-teal-100 border border-teal-500 text-teal-500 rounded px-3 py-1.5 font-semibold
+}
+
+.link-underline {
+  @apply hover:underline hover:text-teal-500 font-semibold tracking-tight scroll-m-20 antialiased
+}
