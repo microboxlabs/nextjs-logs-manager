@@ -2,11 +2,9 @@
 
 import bcrypt from "bcrypt";
 import { createSession } from "../_lib/session";
-import { PrismaClient } from "@prisma/client";
+import { prisma } from "../_lib/prisma";
 
 export const Login = async (prevState: any, formData: FormData) => {
-  const prisma = new PrismaClient();
-
   // Validate that the username and password fields are not empty
   const form_fields = ["username", "password"];
   for (const field of form_fields) {

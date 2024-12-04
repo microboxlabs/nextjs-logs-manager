@@ -1,11 +1,9 @@
 "use server";
 
-import { PrismaClient } from "@prisma/client";
+import { prisma } from "../_lib/prisma";
 
 export const GetRoles = async () => {
   try {
-    const prisma = new PrismaClient();
-
     const data = await prisma.role.findMany();
     return data;
   } catch (err) {

@@ -3,11 +3,9 @@
 import bcrypt from "bcrypt";
 import { createSession } from "../_lib/session";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
-import { PrismaClient } from "@prisma/client";
+import { prisma } from "../_lib/prisma";
 
 export const Register = async (prevState: any, formData: FormData) => {
-  const prisma = new PrismaClient();
-
   // validate that the data is not empty (make better for later, things like the password might need a especific length identifier)
   const form_fields = ["username", "password", "role"];
 

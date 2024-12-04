@@ -1,6 +1,6 @@
 "use server";
 
-import { PrismaClient } from "@prisma/client";
+import { prisma } from "./_lib/prisma";
 import { Filter } from "./page";
 
 export const GetLogs = async (
@@ -8,8 +8,6 @@ export const GetLogs = async (
   page: number,
   pageSize: number,
 ) => {
-  const prisma = new PrismaClient();
-
   let from = undefined;
   let to = undefined;
 
