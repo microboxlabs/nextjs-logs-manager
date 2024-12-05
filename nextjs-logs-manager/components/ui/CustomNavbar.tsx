@@ -21,9 +21,6 @@ export function CustomNavbar() {
         <Link className="link-underline" href="/dashboard">
           Dashboard
         </Link>
-        <Link className="link-underline flex items-center " href="/logs">
-          <span>Logs</span>
-        </Link>
         <button onClick={() => onLogout()} className="btn-outline">
           Cerrar sesión
         </button>
