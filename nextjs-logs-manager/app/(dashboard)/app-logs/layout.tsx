@@ -1,5 +1,5 @@
 import { auth } from "@/auth";
-import { NotAuthenticated } from "@/components/shared/NotAuthenticated";
+import { NotAuthenticated } from "@/components";
 
 export default async function UploadLayout({
   children,

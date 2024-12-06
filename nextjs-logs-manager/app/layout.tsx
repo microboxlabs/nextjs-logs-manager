@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { ThemeModeScript } from "flowbite-react";
 import "./globals.css";
-import { Provider } from "@/components/providers/Provider";
+import { Provider } from "@/components";
 
 const inter = Inter({ subsets: ["latin"] });
 

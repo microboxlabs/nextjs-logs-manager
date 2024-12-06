@@ -1,6 +1,5 @@
 import { auth } from "@/auth";
-import { CustomNavbar } from "@/components";
-import { NotAuthenticated } from "@/components/shared/NotAuthenticated";
+import { CustomNavbar, NotAuthenticated } from "@/components";
 
 export default async function DashboardLayout({
   children,
