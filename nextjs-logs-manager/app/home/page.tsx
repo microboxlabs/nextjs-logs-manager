@@ -1,8 +1,16 @@
+"use client";
 import Navbar from "@/components/Navbar";
-import { DarkThemeToggle, Button } from "flowbite-react";
+import { Button } from "flowbite-react";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 
-const Home = () => {
+const Landing = () => {
+  const [username, setUsername] = useState("");
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      setUsername(localStorage.getItem("user") || "");
+    }
+  }, []);
   return (
     <>
       <Navbar />
@@ -12,9 +20,11 @@ const Home = () => {
             <h1 className="mb-4 text-4xl font-bold dark:text-white">
               MicroboxLabs Logs Viewer
             </h1>
-            <Button gradientDuoTone="purpleToBlue">
-              <Link href="/auth/signin">Log In</Link>
-            </Button>
+            {username && (
+              <h2 className="mb-4 text-4xl font-bold dark:text-white">
+                Welcome, {username}
+              </h2>
+            )}
           </div>
         </div>
       </main>
@@ -22,4 +32,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default Landing;
