@@ -1,3 +1,4 @@
+"use client";
 import { Dropdown } from "flowbite-react";
 import router from "next/router";
 import { useEffect, useState } from "react";
@@ -22,19 +23,14 @@ const DropDownNavBarLink = () => {
       localStorage.removeItem("token");
       localStorage.removeItem("user");
       localStorage.removeItem("valid");
-      // Redirigir a la página de login
     } else {
-      console.log("Error during logout");
+      // Show error message to user
+      alert("Failed to logout. Please try again.");
     }
   };
 
   return (
     <Dropdown hidden={isLoggedIn ? false : true} label={user}>
-      <button
-        id="dropdownNavbarLink"
-        data-dropdown-toggle="dropdownNavbar"
-        className="flex w-full items-center justify-between rounded px-3 py-2 text-gray-700 hover:bg-gray-100 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white dark:focus:text-white md:w-auto md:border-0 md:p-0 md:hover:bg-transparent md:hover:text-blue-700 md:dark:hover:bg-transparent"
-      ></button>
       <Dropdown.Item>
         <a
           href="#"
@@ -45,7 +41,7 @@ const DropDownNavBarLink = () => {
       </Dropdown.Item>
       <Dropdown.Item className="" onClick={handleLogout}>
         <a
-          href="/"
+          href="/auth/signin"
           className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-600 dark:hover:text-white"
         >
           Sign out

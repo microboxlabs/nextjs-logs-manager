@@ -6,7 +6,7 @@ export async function POST(req: NextRequest) {
   try {
     const { fileContent } = await req.json();
     const logEntries = fileContent
-      .split("\r\n")
+      .split(/\r?\n/)
       .map((line: string) => {
         const match = line.match(/^\[(.+)\] \[(.+)\] (.+): (.+)$/);
         if (match) {
@@ -33,7 +33,9 @@ export async function POST(req: NextRequest) {
 
     // Si usas `better-sqlite3`, el bucle forEach funciona directamente.
     for (const { timestamp, level, service, message } of logEntries) {
-      stmt.run(timestamp, level, service, message);
+      stmt
+        .run(timestamp, level, service, message)
+        .emit("log", { timestamp, level, service, message });
     }
 
     // Finalizar si es necesario

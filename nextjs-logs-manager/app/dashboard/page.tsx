@@ -4,6 +4,7 @@ import FilterForm from "@/components/Filters";
 import LogTable from "@/components/LogTable";
 import ILog from "@/types/ILog";
 import Navbar from "@/components/Navbar";
+import { useRouter } from "next/navigation";
 
 const DashboardPage = () => {
   const [logs, setLogs] = useState<ILog[]>([]);
@@ -11,8 +12,13 @@ const DashboardPage = () => {
   const [page, setPage] = useState(1);
   const [pageSize] = useState(10); // Tamaño fijo para la paginación
   const [totalLogs, setTotalLogs] = useState(0); // Total de registros
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const router = useRouter();
 
   const fetchLogs = async () => {
+    setIsLoading(true);
+    +setError(null);
     const params = new URLSearchParams({
       ...filters,
       page: page.toString(),
@@ -21,19 +27,36 @@ const DashboardPage = () => {
 
     try {
       const response = await fetch(`/api/logs?${params.toString()}`);
+      if (!response.ok) {
+        throw new Error(`Failed to fetch logs: ${response.statusText}`);
+      }
       const data = await response.json();
       setLogs(data.logs);
       setTotalLogs(data.total);
     } catch (error) {
-      console.log("Error fetching logs:", error);
+      setError(error instanceof Error ? error.message : "Failed to fetch logs");
       setLogs([]);
+    } finally {
+      setIsLoading(false);
     }
   };
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      router.push("/auth/signin");
+    }
+  }, [router]);
+
   useEffect(() => {
     fetchLogs();
   }, [filters, page]);
 
-  const handleFilter = (newFilters: any) => {
+  const handleFilter = (newFilters: {
+    startDate?: string;
+    endDate?: string;
+    logLevel?: string;
+    service?: string;
+  }) => {
     setFilters(newFilters);
     setPage(1); // Reinicia a la primera página
   };

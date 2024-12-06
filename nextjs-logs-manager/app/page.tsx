@@ -1,8 +1,10 @@
+"use client";
 import Navbar from "@/components/Navbar";
 import { DarkThemeToggle, Button } from "flowbite-react";
 import Link from "next/link";
+import { FC } from "react";
 
-const Home = () => {
+const Home: FC = () => {
   return (
     <>
       <Navbar />

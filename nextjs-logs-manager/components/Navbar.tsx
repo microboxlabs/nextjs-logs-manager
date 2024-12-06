@@ -12,7 +12,6 @@ const Navbar = () => {
     if (typeof window !== "undefined") {
       const token = localStorage.getItem("token");
       const valid = localStorage.getItem("valid") === "true";
-      console.log("Token:", token, "Valid:", valid); // Debug
       setIsLoggedIn(!!token);
       setIsValid(valid);
     }

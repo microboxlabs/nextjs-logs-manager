@@ -20,9 +20,9 @@
     "paths": {
       "@/*": ["./*"],
       "@/lib/*": ["./lib/*"]
-    }
+    },
+    "types": ["jest", "@testing-library/jest-dom"]
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
-  "exclude": ["node_modules"],
-  "types": ["jest", "@testing-library/jest-dom"]
+  "exclude": ["node_modules"]
 }

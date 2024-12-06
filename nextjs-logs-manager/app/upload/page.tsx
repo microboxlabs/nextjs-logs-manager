@@ -2,15 +2,11 @@
 
 import { TextInput, Button } from "flowbite-react";
 import { useState } from "react";
-import { useRole } from "@/lib/hooks/useRole";
-import { useRouter } from "next/navigation";
 import Navbar from "@/components/Navbar";
 
 const UploadPage = () => {
   const [file, setFile] = useState<File | null>(null);
   const [uploadStatus, setUploadStatus] = useState<string | null>(null);
-  const isAdmin = useRole("admin");
-  const router = useRouter();
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files) {
@@ -26,12 +22,22 @@ const UploadPage = () => {
       return;
     }
 
-    const formData = new FormData();
-    formData.append("fileContent", await file.text());
+    // Validate file size (e.g., max 5MB)
+    const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
+    if (file.size > MAX_FILE_SIZE) {
+      setUploadStatus("File size exceeds 5MB limit.");
+      return;
+    }
+    // Validate file type
+    if (!file.name.endsWith(".txt")) {
+      setUploadStatus("Only .txt files are allowed.");
+      return;
+    }
 
+    const fileContent = await file.text();
     const response = await fetch("/api/upload", {
       method: "POST",
-      body: JSON.stringify({ fileContent: await file.text() }),
+      body: JSON.stringify({ fileContent }),
       headers: { "Content-Type": "application/json" },
     });
 

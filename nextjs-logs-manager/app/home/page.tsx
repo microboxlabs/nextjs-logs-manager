@@ -5,10 +5,19 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 
 const Landing = () => {
-  const [username, setUsername] = useState("");
+  const [username, setUsername] = useState<string>("");
   useEffect(() => {
     if (typeof window !== "undefined") {
-      setUsername(localStorage.getItem("user") || "");
+      try {
+        const storedUser = localStorage.getItem("user");
+        if (storedUser) {
+          // Validate username format
+          const sanitizedUsername = storedUser.replace(/[<>]/g, "");
+          setUsername(sanitizedUsername);
+        }
+      } catch (error) {
+        console.error("Error accessing localStorage:", error);
+      }
     }
   }, []);
   return (
@@ -22,7 +31,7 @@ const Landing = () => {
             </h1>
             {username && (
               <h2 className="mb-4 text-4xl font-bold dark:text-white">
-                Welcome, {username}
+                Welcome, <span>{username.replace(/[<>]/g, "")}</span>
               </h2>
             )}
           </div>

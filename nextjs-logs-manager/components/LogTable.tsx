@@ -23,6 +23,10 @@ const LogTable: React.FC<LogTableProps> = ({
   const totalPages = Math.ceil(total / pageSize);
 
   useEffect(() => {
+    setLogs(initialLogs);
+  }, [initialLogs]);
+
+  useEffect(() => {
     // Conectar al servidor SSE para recibir nuevos logs
     const eventSource = new EventSource("/api/logs/stream");
 
@@ -102,7 +106,7 @@ const LogTable: React.FC<LogTableProps> = ({
         <Button
           onClick={() => onPageChange(page - 1)}
           disabled={page === 1}
-          className="rounded bg-gray-300 text-gray-700 hover:bg-gray-400 disabled:opacity-50"
+          className="rounded bg-gray-300  text-gray-700 hover:bg-gray-400 disabled:opacity-50"
         >
           Previous
         </Button>
@@ -112,7 +116,7 @@ const LogTable: React.FC<LogTableProps> = ({
           <Button
             key={pageNumber}
             onClick={() => onPageChange(pageNumber)}
-            className={`rounded ${
+            className={`rounded  ${
               page === pageNumber
                 ? "bg-blue-500 text-white"
                 : "bg-gray-300 text-gray-700 hover:bg-gray-400"
@@ -126,7 +130,7 @@ const LogTable: React.FC<LogTableProps> = ({
         <Button
           onClick={() => onPageChange(page + 1)}
           disabled={page === totalPages}
-          className="rounded bg-gray-300 text-gray-700 hover:bg-gray-400 disabled:opacity-50"
+          className="rounded bg-gray-300  text-gray-700 hover:bg-gray-400 disabled:opacity-50"
         >
           Next
         </Button>

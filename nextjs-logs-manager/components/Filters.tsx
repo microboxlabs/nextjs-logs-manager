@@ -28,7 +28,11 @@ const FilterForm: React.FC<FilterFormProps> = ({ onFilter }) => {
         type="date"
         name="startDate"
         onChange={handleChange}
-        className=" "
+        className="w-40"
+        aria-label="Start Date"
+        min="2020-01-01"
+        max={new Date().toISOString().split("T")[0]}
+        required
       />
       <TextInput
         type="date"
