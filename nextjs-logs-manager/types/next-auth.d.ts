@@ -8,8 +8,18 @@ declare module "next-auth" {
       email: string;
       emailVerified?: boolean;
       password?: string;
-      role: string;
+      role?: string;
       image?: string;
     } & DefaultSession["user"];
+  }
+
+  interface User {
+    role?: string;
+  }
+}
+
+declare module "next-auth/jwt" {
+  interface JWT {
+    role?: string;
   }
 }
