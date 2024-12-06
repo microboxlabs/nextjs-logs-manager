@@ -12,6 +12,14 @@ export type TLog = {
   message: string;
 };
 
+export type TEditLogForm = Pick<
+  TLog,
+  "logLevel" | "serviceName" | "message"
+> & {
+  date: string;
+  time: string;
+};
+
 export type TEntry = {
   id?: number;
   date: string;
