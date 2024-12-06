@@ -3,6 +3,7 @@
 import Link from "next/link";
 
 import { logout } from "@/actions";
+import { LogOut } from "lucide-react";
 
 export function CustomNavbar() {
   const onLogout = async () => {
@@ -22,7 +23,8 @@ export function CustomNavbar() {
           Dashboard
         </Link>
         <button onClick={() => onLogout()} className="btn-outline">
-          Logout
+          <LogOut />
+          <span>Logout</span>
         </button>
       </div>
     </div>

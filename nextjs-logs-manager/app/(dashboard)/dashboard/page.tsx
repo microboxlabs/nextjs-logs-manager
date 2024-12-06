@@ -3,6 +3,7 @@ import { LogsTable } from "./ui/LogsTable";
 import Link from "next/link";
 import { auth } from "@/auth";
 import { DashboardCards } from "./ui/DashboardCards";
+import { Plus } from "lucide-react";
 
 export default async function DashboardPage() {
   const session = await auth();
@@ -14,7 +15,10 @@ export default async function DashboardPage() {
         <h1 className="text-xl font-bold">Log entries</h1>
         {
           session?.user.role === "admin" && (
-            <Link href="/app-logs/upload" className="btn-primary">Upload logs</Link>
+            <Link href="/app-logs/upload" className="btn-primary">
+              <Plus />
+              <span>Upload logs</span>
+            </Link>
           )
         }
       </div>

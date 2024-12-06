@@ -43,7 +43,7 @@ export default function UploadForm() {
   return (
     <div className="w-[500px] overflow-hidden rounded-lg bg-white shadow-md">
       <div className="border border-gray-200 px-6 py-4">
-        <h3 className="text-lg font-semibold text-gray-900">Subir logs</h3>
+        <h3 className="text-lg font-semibold text-gray-900">Upload logs</h3>
       </div>
 
       <div className="p-6">
@@ -53,7 +53,7 @@ export default function UploadForm() {
               htmlFor="logFile"
               className="block text-sm font-medium text-gray-700"
             >
-              Seleccione el archivo
+              Select a file
             </label>
 
             <input
@@ -100,7 +100,7 @@ export default function UploadForm() {
             disabled={isSubmitting}
             className="btn-primary"
           >
-            {isSubmitting ? "Uploading..." : "Upload Logs"}
+            {isSubmitting ? "Uploading..." : "Upload"}
           </button>
 
           {status.message && (

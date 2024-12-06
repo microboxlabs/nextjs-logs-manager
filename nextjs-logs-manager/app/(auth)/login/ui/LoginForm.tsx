@@ -7,6 +7,7 @@ import { useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
+import { LogIn } from "lucide-react";
 
 export const LoginForm = () => {
   const [error, setError] = useState<string | null>(null);
@@ -67,7 +68,8 @@ export const LoginForm = () => {
           </div>
           {error && <span className="text-red-500">{error}</span>}
           <button type="submit" className="btn-primary">
-            Login
+            <LogIn />
+            <span>Login</span>
           </button>
         </form>
       </div>
