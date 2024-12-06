@@ -26,7 +26,7 @@ export function MainNavbar() {
           {/* Links de Navegación Desktop */}
           <div className="hidden items-center gap-3 md:flex">
             <Link 
-              href="/logs" 
+              href="/pages/logs" 
               className="group flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700"
             >
               <HiOutlineDocumentText className="size-5 transition-transform group-hover:scale-110" />
@@ -34,7 +34,7 @@ export function MainNavbar() {
             </Link>
             {isAdmin && (
               <Link 
-                href="/logs/upload" 
+                href="/pages/admin/upload-logs" 
                 className="group flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700"
               >
                 <HiOutlineUpload className="size-5 transition-transform group-hover:scale-110" />
@@ -114,7 +114,7 @@ export function MainNavbar() {
 
             {/* Links Mobile */}
             <Link 
-              href="/logs"
+              href="/pages/logs"
               className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700"
             >
               <HiOutlineDocumentText className="size-5" />
@@ -122,7 +122,7 @@ export function MainNavbar() {
             </Link>
             {isAdmin && (
               <Link 
-                href="/logs/upload"
+                href="/pages/admin/upload-logs"
                 className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700"
               >
                 <HiOutlineUpload className="size-5" />

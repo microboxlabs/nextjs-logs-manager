@@ -10,7 +10,7 @@ export default function PagesLayout({
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       <MainNavbar />
-      <main className="container mx-auto p-4">
+      <main className="container mx-auto p-4 pt-24">
         {children}
       </main>
     </div>
