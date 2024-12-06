@@ -24,3 +24,9 @@ model Log {
   serviceName String
   message String
 }
+
+model Entry {
+  id    Int     @id @default(autoincrement())
+  date DateTime
+  details String
+}

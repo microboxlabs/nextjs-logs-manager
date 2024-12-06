@@ -1,0 +1,6 @@
+-- CreateTable
+CREATE TABLE "Entry" (
+    "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    "date" DATETIME NOT NULL,
+    "details" TEXT NOT NULL
+);
