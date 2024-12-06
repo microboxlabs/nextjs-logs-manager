@@ -37,11 +37,11 @@ export const LoginForm = () => {
   return (
     <div className="flex min-h-screen items-center justify-center">
       <div className="flex flex-col rounded border border-gray-100 p-10">
-        <h1 className="mb-5 text-xl font-bold">Iniciar sesión</h1>
+        <h1 className="mb-5 text-xl font-bold">Login</h1>
         <form className="flex flex-col" onSubmit={handleSubmit(onSubmit)}>
           <div className="flex flex-col space-y-2">
             <label htmlFor="email" className="text-sm">
-              Correo electrónico
+              Email
             </label>
             <input
               {...register("email")}
@@ -54,7 +54,7 @@ export const LoginForm = () => {
           </div>
           <div className="my-5 flex flex-col space-y-2">
             <label htmlFor="password" className="text-sm">
-              Contraseña
+              Password
             </label>
             <input
               {...register("password")}
@@ -67,7 +67,7 @@ export const LoginForm = () => {
           </div>
           {error && <span className="text-red-500">{error}</span>}
           <button type="submit" className="btn-primary">
-            Entrar
+            Login
           </button>
         </form>
       </div>

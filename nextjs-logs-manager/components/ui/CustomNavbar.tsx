@@ -22,7 +22,7 @@ export function CustomNavbar() {
           Dashboard
         </Link>
         <button onClick={() => onLogout()} className="btn-outline">
-          Cerrar sesión
+          Logout
         </button>
       </div>
     </div>
