@@ -1,36 +1,27 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Next.js Logs Manager
 
-## Getting Started
+Para esta aplicación he usado las siguientes librerías:
 
-First, run the development server:
+1. **Auth.js o NextAuth** -> Es una librería que me permite hacer la autenticación de manera fácil y rápida, además se pueden usar proveedores de autenticación como Google y Github, se puede conectar con OAuth y es casi un estándar para Next.js.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+2. **Prisma** -> Es un ORM muy completo y rápido, permite usar distintos motores de base de datos y simplifica bastante el trabajo.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+3. **TS-Node** -> Para realizar el seed de los usuarios instalé TS-Node debido a que necesitaba ejecutar un script desde la carpeta seed con una función autoinvocada que borra los registros de los usuarios de la base de datos e inserta datos desde mi semilla. Lo mismo podría hacerse para logs de prueba.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+4. **Zod** -> Zod es un validador de datos que soporta TypeScript, lo utilicé para validar mi schema de login.
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+5. **Bcryptjs** -> Lo utilicé para hashear las contraseñas al insertarlas en la base de datos y para compararlas al hacer login.
 
-## Learn More
+## Para correr la aplicación
 
-To learn more about Next.js, take a look at the following resources:
+1. Se debe copiar el archivo `env.template` y renombrarlo a `.env`, luego rellenar los campos faltantes: **DATABASE_URL** ('file:./prisma/dev.db') y **AUTH_SECRET** (puede ser cualquier string pero se recomienda usar el script `openssl rand -base64 32`)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+2. Ejecutar el seed para crear los usuarios con ```npm run seed``` desde una terminal y dentro de la carpeta `nextjs-logs-manager`
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+3. Los datos para probar el sistema son:
+  - Administrador:
+    - Email: admin@test.com
+    - Password: 123456
+  - Usuario normal:
+    - Email: user@test.com
+    - Password: 123456
