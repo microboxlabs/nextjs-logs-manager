@@ -45,6 +45,40 @@ export const LogsTable = ({ logs }: Props) => {
     }
   };
 
+  // Paginación
+  const [currentPage, setCurrentPage] = useState(1);
+  const logsPerPage = 5;
+  const indexOfLastLog = currentPage * logsPerPage;
+  const indexOfFirstLog = indexOfLastLog - logsPerPage;
+  const currentLogs = filteredLogs.slice(indexOfFirstLog, indexOfLastLog);
+  const totalPages = Math.ceil(filteredLogs.length / logsPerPage);
+
+  const Pagination = () => {
+    return (
+      <div className="mt-4 flex justify-center gap-2">
+        <button
+          onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+          disabled={currentPage === 1}
+          className="rounded border px-3 py-1 disabled:opacity-50"
+        >
+          Previous
+        </button>
+        <span className="px-3 py-1">
+          Page {currentPage} of {totalPages}
+        </span>
+        <button
+          onClick={() =>
+            setCurrentPage((prev) => Math.min(prev + 1, totalPages))
+          }
+          disabled={currentPage === totalPages}
+          className="rounded border px-3 py-1 disabled:opacity-50"
+        >
+          Next
+        </button>
+      </div>
+    );
+  };
+
   return (
     <div className="overflow-hidden rounded-lg shadow-md">
       {/* Filtros */}
@@ -114,7 +148,7 @@ export const LogsTable = ({ logs }: Props) => {
       </div>
       {/* Vista mobile */}
       <div className="block md:hidden">
-        {filteredLogs.map((log) => (
+        {currentLogs.map((log) => (
           <div key={log.id} className="border-b p-4 last:border-b-0">
             <div className="grid grid-cols-2 gap-2">
               <div className="text-sm font-medium text-gray-500">Timestamp</div>
@@ -138,6 +172,9 @@ export const LogsTable = ({ logs }: Props) => {
             </div>
           </div>
         ))}
+        <div className="my-4">
+          <Pagination />
+        </div>
       </div>
       {/* Vista desktop */}
       <div className="hidden md:block">
@@ -151,7 +188,7 @@ export const LogsTable = ({ logs }: Props) => {
             </tr>
           </thead>
           <tbody>
-            {filteredLogs.map((log) => (
+            {currentLogs.map((log) => (
               <tr key={log.id} className="border-b bg-white hover:bg-gray-50">
                 <td className="whitespace-nowrap px-6 py-4">
                   {formatDate(log.timestamp)}
@@ -173,6 +210,9 @@ export const LogsTable = ({ logs }: Props) => {
             ))}
           </tbody>
         </table>
+        <div className="my-4">
+          <Pagination />
+        </div>
       </div>
     </div>
   );

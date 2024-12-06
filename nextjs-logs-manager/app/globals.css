@@ -10,6 +10,10 @@
   @apply hover:bg-teal-100 border border-teal-500 text-teal-500 rounded px-3 py-1.5 font-semibold text-sm flex justify-center items-center space-x-2
 }
 
+.btn-disabled {
+  @apply hover:bg-gray-100 border border-gray-500 text-gray-500 rounded px-3 py-1.5 font-semibold text-sm flex justify-center items-center space-x-2
+}
+
 .link-underline {
   @apply hover:underline hover:text-teal-500 font-semibold tracking-tight scroll-m-20 antialiased text-sm flex justify-center items-center space-x-2
 }
