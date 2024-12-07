@@ -74,6 +74,13 @@ export async function POST(request: Request) {
 
     // console.log(newLogs);
     await prisma.log.createMany({ data: newLogs });
+    await prisma.entry.create({
+      data: {
+        date: new Date(),
+        user: "unknown",
+        details: `Registros cargados: ${newLogs.length}`,
+      },
+    });
     await prisma.$disconnect();
 
     return Response.json({});
