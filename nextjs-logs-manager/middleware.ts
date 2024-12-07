@@ -4,7 +4,8 @@ import { NextResponse } from "next/server"
 export default withAuth(
   function middleware(req) {
     const token = req.nextauth.token
-    const isUploadLogsRoute = req.nextUrl.pathname.startsWith("/pages/admin")
+    const isAdminRoute = req.nextUrl.pathname.startsWith("/pages/admin")
+    const isLogsRoute = req.nextUrl.pathname === "/pages/logs"
     const isRootPagesPath = req.nextUrl.pathname === "/pages"
 
     // Si no hay token, redirige al login
@@ -17,8 +18,13 @@ export default withAuth(
       return NextResponse.redirect(new URL("/pages/logs", req.url))
     }
 
+    // Si es usuario regular, solo puede ver logs
+    if (token.role === "REGULAR" && !isLogsRoute) {
+      return NextResponse.redirect(new URL("/pages/logs", req.url))
+    }
+
     // Protección de rutas admin
-    if (isUploadLogsRoute && token.role !== "ADMIN") {
+    if (isAdminRoute && token.role !== "ADMIN") {
       return NextResponse.redirect(new URL("/pages/logs", req.url))
     }
 
