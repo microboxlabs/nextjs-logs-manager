@@ -1,7 +1,9 @@
 "use client";
 
-import { FormEvent, useState, useCallback } from "react";
+import { FormEvent, useState, useCallback, useRef } from "react";
+import { useRouter } from "next/navigation";
 import { useDropzone } from "react-dropzone";
+import axios from "axios";
 
 import FilesList from "./FilesList";
 import { generateId } from "@/shared/utils";
@@ -12,6 +14,8 @@ export type TUploadedFile = {
 };
 
 export default function LogForm() {
+  const formRef = useRef(null);
+  const { push } = useRouter();
   const [isRequiredError, setIsRequiredError] = useState(false);
   const [files, setFiles] = useState<TUploadedFile[]>();
 
@@ -33,12 +37,24 @@ export default function LogForm() {
     accept: { "text/plain": [".txt"] },
   });
 
-  const submit = (e: FormEvent) => {
+  const submit = async (e: FormEvent) => {
     e.preventDefault();
 
     if (!files || files.length === 0) {
       setIsRequiredError(true);
       return;
+    } else {
+      setIsRequiredError(false);
+    }
+
+    try {
+      const formData = new FormData(formRef.current!);
+      await axios.post("/api/upload-logs", formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+      push("/");
+    } catch (error) {
+      alert("Error subiendo registros");
     }
   };
 
@@ -47,15 +63,15 @@ export default function LogForm() {
   };
 
   return (
-    <form onSubmit={submit}>
+    <form onSubmit={submit} ref={formRef}>
       <div className="flex w-full items-center justify-center">
         <label
           htmlFor="dropzone-file"
-          className="flex h-64 w-full cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 hover:bg-gray-100 dark:border-gray-600 dark:bg-gray-700 dark:hover:border-gray-500 dark:hover:bg-gray-600 dark:hover:bg-gray-800"
+          className="flex h-64 w-full cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 hover:bg-gray-100 dark:border-gray-600 dark:bg-gray-700 dark:hover:border-gray-500 dark:hover:bg-gray-800"
           {...getRootProps()}
         >
           <div>
-            <input {...getInputProps()} />
+            <input name="logFiles" {...getInputProps()} />
             {!isDragActive ? (
               <div className="flex flex-col items-center justify-center pb-6 pt-5">
                 <svg
