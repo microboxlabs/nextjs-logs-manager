@@ -1,12 +1,17 @@
 import EditLogForm from "../components/EditLogForm";
+import { PrismaClient } from "@prisma/client";
 
-export default function Log({ params }: { params: { id: string } }) {
+const primsa = new PrismaClient();
+
+export default async function Log({ params }: { params: { id: string } }) {
+  const foundLog = await primsa.log.findFirstOrThrow({
+    where: { id: Number(params.id) },
+  });
+
   return (
     <>
       <h1>{`Registro ${params.id}`}</h1>
-      <EditLogForm
-        log={{ timestamp: "a", logLevel: "b", serviceName: "c", message: "d" }}
-      />
+      <EditLogForm log={foundLog} />
     </>
   );
 }
