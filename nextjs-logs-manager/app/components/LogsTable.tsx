@@ -57,7 +57,7 @@ export default function LogsTable({ logs }: { logs?: TLog[] }) {
               >
                 {log.id}
               </th>
-              <td className="px-6 py-4">{log.date.toDateString()}</td>
+              <td className="px-6 py-4">{`${log.date} ${log.time}`}</td>
               <td className="px-6 py-4">{log.level}</td>
               <td className="px-6 py-4">{log.serviceName}</td>
               <td className="px-6 py-4">{log.message}</td>

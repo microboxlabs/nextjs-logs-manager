@@ -19,8 +19,8 @@ model Account {
 
 model Log {
   id    Int     @id @default(autoincrement())
-  date DateTime
-  time DateTime
+  date  String
+  time  String
   level String
   serviceName String
   message String
@@ -28,7 +28,7 @@ model Log {
 
 model Entry {
   id    Int     @id @default(autoincrement())
-  date DateTime
+  date  String
   user String
   details String
 }

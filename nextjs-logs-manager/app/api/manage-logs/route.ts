@@ -24,7 +24,7 @@ export async function POST(request: Request) {
     await prisma.log.createMany({ data: newLogs });
     await prisma.entry.create({
       data: {
-        date: new Date(),
+        date: new Date().toUTCString(),
         user: "unknown",
         details: `Registros cargados: ${newLogs.length}`,
       },

@@ -6,8 +6,8 @@ export type TSignInForm = {
 
 export type TLog = {
   id?: number;
-  date: Date;
-  time: Date;
+  date: string;
+  time: string;
   level: string;
   serviceName: string;
   message: string;
@@ -15,7 +15,7 @@ export type TLog = {
 
 export type TEntry = {
   id?: number;
-  date: Date;
+  date: string;
   user: string;
   details: string;
 };

@@ -37,7 +37,7 @@ export default function EntriesTable({ entries }: { entries?: TEntry[] }) {
                 {entry.id}
               </th>
               <td className="px-6 py-4">{entry.user}</td>
-              <td className="px-6 py-4">{entry.date.toDateString()}</td>
+              <td className="px-6 py-4">{entry.date}</td>
               <td className="px-6 py-4">{entry.details}</td>
             </tr>
           ))}
