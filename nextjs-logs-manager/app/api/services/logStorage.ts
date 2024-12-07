@@ -1,34 +1,27 @@
 import { LogEntry } from '@/types/logs'
-import { mockLogs } from '@/app/api/services/mockData'
+import { mockLogs } from './mockData'
+
+const STORAGE_KEY = 'logs'
 
 /**
- * Obtiene los logs almacenados del localStorage o los mock logs si estamos en el servidor
- * @returns Array de LogEntry
+ * Obtiene los logs almacenados y validados
  */
-export function getRawLogs(): LogEntry[] {
+export function getLogs(): LogEntry[] {
   if (typeof window === 'undefined') return mockLogs
-  const storedLogs = localStorage.getItem('logs')
+  const storedLogs = localStorage.getItem(STORAGE_KEY)
   return storedLogs ? JSON.parse(storedLogs) : mockLogs
 }
 
 /**
- * Almacena logs en localStorage
- * @param logs - Array de logs a almacenar
+ * Almacena logs y retorna todos los logs actualizados
  */
-export function storeLogs(logs: LogEntry[]): void {
-  if (typeof window !== 'undefined') {
-    localStorage.setItem('logs', JSON.stringify(logs))
-  }
-}
-
-/**
- * Agrega nuevos logs a los existentes
- * @param newLogs - Nuevos logs a agregar
- * @returns Array actualizado de todos los logs
- */
-export function appendLogs(newLogs: LogEntry[]): LogEntry[] {
-  const existingLogs = getRawLogs()
+export function storeAndGetLogs(newLogs: LogEntry[]): LogEntry[] {
+  const existingLogs = getLogs()
   const updatedLogs = [...existingLogs, ...newLogs]
-  storeLogs(updatedLogs)
+  
+  if (typeof window !== 'undefined') {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(updatedLogs))
+  }
+  
   return updatedLogs
 } 

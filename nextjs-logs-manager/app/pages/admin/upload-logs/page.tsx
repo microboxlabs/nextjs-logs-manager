@@ -1,6 +1,5 @@
 'use client'
 
-import React from 'react'
 import { Card } from 'flowbite-react'
 
 export default function UploadLogsPage() {
@@ -13,7 +12,6 @@ export default function UploadLogsPage() {
       </div>
 
       <Card>
-        <h2 className="text-lg font-semibold mb-4">Subir archivo de logs</h2>
         <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
           El archivo debe contener logs en el formato:
           <br />
