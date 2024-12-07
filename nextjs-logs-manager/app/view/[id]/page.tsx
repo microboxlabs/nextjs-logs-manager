@@ -1,4 +1,4 @@
-import EditLogForm from "../components/EditLogForm";
+import EditLogForm from "../../components/EditLogForm";
 import { PrismaClient } from "@prisma/client";
 
 const primsa = new PrismaClient();

@@ -63,7 +63,7 @@ export default function LogsTable({ logs }: { logs?: TLog[] }) {
               <td className="px-6 py-4">{log.message}</td>
               <td className="px-6 py-4">
                 <Link
-                  href={`/${log.id}`}
+                  href={`/view/${log.id}`}
                   className="font-medium text-blue-600 hover:underline dark:text-blue-500"
                 >
                   Ver
