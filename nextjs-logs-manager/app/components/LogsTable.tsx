@@ -1,11 +1,13 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import axios from "axios";
 
 import { TLog } from "@/app/shared/types";
 
 export default function LogsTable({ logs }: { logs?: TLog[] }) {
+  const { refresh } = useRouter();
   if (!logs) {
     return null;
   }
@@ -14,6 +16,7 @@ export default function LogsTable({ logs }: { logs?: TLog[] }) {
     if (confirm("Esta seguro de eliminar este registro")) {
       await axios.delete("/api/manage-logs", { data: id });
       alert("Registro eliminado exitosamente");
+      refresh();
     }
   };
 

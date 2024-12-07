@@ -1,6 +1,5 @@
 import { PrismaClient } from "@prisma/client";
 import type { TLog } from "@/app/shared/types";
-// import { revalidatePath } from "next/cache";
 
 const prisma = new PrismaClient();
 
@@ -103,11 +102,21 @@ export async function PUT(request: Request) {
 export async function DELETE(request: Request) {
   try {
     const logId = await request.json();
-    console.log(logId);
-    // await prisma.log.delete({ where: { id: logId as number } });
-    // revalidatePath("/", "page");
+    // console.log(logId);
+    await prisma.log.delete({ where: { id: logId as number } });
+    await prisma.$disconnect();
 
-    return Response.json({});
+    return Response.json(logId);
+  } catch (error) {
+    return Response.error();
+  }
+}
+
+export async function GET(request: Request) {
+  try {
+    const logs = prisma.log.findMany();
+
+    return Response.json(logs);
   } catch (error) {
     return Response.error();
   }
