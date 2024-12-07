@@ -1,4 +1,4 @@
-import { generateId } from "@/shared/utils";
+import { generateId } from "@/app/shared/utils";
 import type { TUploadedFile } from "./LogForm";
 
 type Props = {

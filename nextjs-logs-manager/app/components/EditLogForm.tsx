@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 
-import type { TLog } from "@/shared/types";
+import type { TLog } from "@/app/shared/types";
 
 export default function EditLogForm({ log }: { log?: TLog }) {
   const {

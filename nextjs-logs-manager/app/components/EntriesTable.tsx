@@ -1,4 +1,4 @@
-import { TEntry } from "@/shared/types";
+import { TEntry } from "@/app/shared/types";
 
 export default function EntriesTable({ entries }: { entries?: TEntry[] }) {
   if (!entries) {

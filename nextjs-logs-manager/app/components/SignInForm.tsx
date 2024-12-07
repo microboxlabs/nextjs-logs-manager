@@ -2,7 +2,7 @@
 
 import { useForm } from "react-hook-form";
 
-import type { TSignInForm } from "@/shared/types";
+import type { TSignInForm } from "@/app/shared/types";
 
 export default function SignInForm() {
   const {

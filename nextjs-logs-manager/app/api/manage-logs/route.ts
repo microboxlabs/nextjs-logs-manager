@@ -1,5 +1,5 @@
 import { PrismaClient } from "@prisma/client";
-import type { TLog } from "@/shared/types";
+import type { TLog } from "@/app/shared/types";
 // import { revalidatePath } from "next/cache";
 
 const prisma = new PrismaClient();

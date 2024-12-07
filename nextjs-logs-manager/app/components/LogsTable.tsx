@@ -3,7 +3,7 @@
 import Link from "next/link";
 import axios from "axios";
 
-import { TLog } from "@/shared/types";
+import { TLog } from "@/app/shared/types";
 
 export default function LogsTable({ logs }: { logs?: TLog[] }) {
   if (!logs) {
@@ -63,7 +63,7 @@ export default function LogsTable({ logs }: { logs?: TLog[] }) {
                   href={`/${log.id}`}
                   className="font-medium text-blue-600 hover:underline dark:text-blue-500"
                 >
-                  View
+                  Ver
                 </Link>
                 <button
                   type="button"

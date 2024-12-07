@@ -6,7 +6,7 @@ import { useDropzone } from "react-dropzone";
 import axios from "axios";
 
 import FilesList from "./FilesList";
-import { generateId } from "@/shared/utils";
+import { generateId } from "@/app/shared/utils";
 
 export type TUploadedFile = {
   id: string;
