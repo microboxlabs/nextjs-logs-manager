@@ -15,7 +15,7 @@ export type TLog = {
 
 export type TEntry = {
   id?: number;
-  date: string;
+  date: Date;
   user: string;
   details: string;
 };

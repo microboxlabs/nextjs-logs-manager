@@ -29,5 +29,6 @@ model Log {
 model Entry {
   id    Int     @id @default(autoincrement())
   date DateTime
+  user String
   details String
 }
