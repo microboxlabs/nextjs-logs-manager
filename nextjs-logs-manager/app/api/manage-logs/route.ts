@@ -51,6 +51,13 @@ export async function PUT(request: Request) {
         message: updatedLog.message,
       },
     });
+    await prisma.entry.create({
+      data: {
+        date: new Date().toUTCString(),
+        user: "unknown",
+        details: `Registro ${updatedLog.id} actualizado`,
+      },
+    });
     prisma.$disconnect();
 
     return Response.json({});
