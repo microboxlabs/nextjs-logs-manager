@@ -39,7 +39,7 @@ export async function POST(request: Request) {
 
 export async function PUT(request: Request) {
   try {
-    const updatedLog = request.body;
+    const updatedLog = (await request.json()) as TLog;
     console.log(updatedLog);
 
     return Response.json({});
