@@ -1,9 +1,10 @@
 import { LogLevel, LogService, LogEntry } from '@/types/logs'
 
 /**
- * Parsea una línea de log en formato [timestamp] [level] service: message
- * @param logLine - Línea de texto del log a parsear
- * @returns Objeto LogEntry parseado
+ * Parsea una línea de log
+ * @param logLine - Línea de texto a parsear
+ * @returns Objeto LogEntry con la información parseada
+ * @throws Error si el formato es inválido
  */
 export function parseLogLine(logLine: string): LogEntry {
   const matches = logLine.match(/\[(.*?)\] \[(.*?)\] (.*?): (.*)/)
@@ -22,8 +23,8 @@ export function parseLogLine(logLine: string): LogEntry {
 
 /**
  * Parsea múltiples líneas de log
- * @param rawLogText - Texto completo con múltiples líneas de log
- * @returns Array de LogEntry parseados
+ * @param rawLogText - Texto completo con múltiples líneas
+ * @returns Array de objetos LogEntry parseados
  */
 export function parseLogText(rawLogText: string): LogEntry[] {
   const logLines = rawLogText.split('\n').filter(line => line.trim())

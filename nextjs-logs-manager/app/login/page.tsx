@@ -29,17 +29,15 @@ export default function LoginPage() {
 
       if (result?.error) {
         setError('Credenciales inválidas')
+        setLoading(false)
         return
       }
 
-      // Redirigir según el rol
-      const role = email === 'admin@local.com' ? 'ADMIN' : 'REGULAR'
-      const redirectPath = role === 'ADMIN' ? '/pages/admin' : '/pages/user'
-      router.push(redirectPath)
+      // Redirigir a logs (ruta válida para ambos roles)
+      router.push('/pages/logs')
       
     } catch (error) {
       setError('Ocurrió un error al iniciar sesión')
-    } finally {
       setLoading(false)
     }
   }
@@ -73,7 +71,7 @@ export default function LoginPage() {
           style="dark"
         >
           <Button color="gray" size="sm">
-            <HiInformationCircle className="h-5 w-5" />
+            <HiInformationCircle className="size-5" />
           </Button>
         </Tooltip>
       </div>
