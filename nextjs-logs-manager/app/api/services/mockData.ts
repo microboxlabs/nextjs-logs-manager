@@ -1,25 +1,10 @@
-import { LogLevel, LogService, LogEntry } from '@/types/logs'
-
-export const mockLogs: LogEntry[] = [
-  {
-    id: '1',
-    timestamp: '2024-11-01 10:00:00',
-    level: LogLevel.INFO,
-    service: LogService.SERVICE_A,
-    message: 'Log de prueba traido desde la API'
-  },
-  {
-    id: '2',
-    timestamp: '2024-11-01 10:01:00',
-    level: LogLevel.ERROR,
-    service: LogService.SERVICE_B,
-    message: 'Error de prueba traido desde la API'
-  },
-  {
-    id: '3',
-    timestamp: '2024-11-01 10:02:00',
-    level: LogLevel.WARNING,
-    service: LogService.SERVICE_C,
-    message: 'Tiempo de respuesta lento.'
-  }
-] 
+/**
+ * Logs crudos de prueba
+ * Simula el contenido de un archivo de texto
+ */
+export const rawMockLogs = `[2024-11-01 10:00:00] [INFO] SERVICE_A: Log de prueba traido desde la API
+[2024-11-01 10:01:00] [ERROR] SERVICE_B: Error de prueba traido desde la API
+[2024-11-01 10:02:00] [WARNING] SERVICE_C: Tiempo de respuesta lento.
+[2024-11-01 10:03:00] [INFO] SERVICE_A: Usuario ha iniciado sesión
+[2024-11-01 10:04:00] [ERROR] SERVICE_B: Conexión a base de datos fallida
+[2024-11-01 10:05:00] [WARNING] SERVICE_A: Alto consumo de memoria` 

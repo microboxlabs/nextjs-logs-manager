@@ -1,20 +1,25 @@
 'use client'
 
-import { useEffect, useState } from 'react'
 import { Table, Badge, TextInput, Select, Pagination } from 'flowbite-react'
 import { HiSearch } from 'react-icons/hi'
-import { LogEntry } from '@/types/logs'
-import { getLogs } from '@/app/api/services/logStorage'
 import { getLogLevelColor } from '@/utils/logStyles'
+import { useLogsManager } from './useLogsManager'
 
 export default function LogsPage() {
-  const [logs, setLogs] = useState<LogEntry[]>([])
-
-  useEffect(() => {
-    // Cargar logs procesados al montar el componente
-    const processedLogs = getLogs()
-    setLogs(processedLogs)
-  }, [])
+  const {
+    currentLogs,
+    totalPages,
+    currentPage,
+    uniqueServices,
+    uniqueLevels,
+    searchText,
+    selectedService,
+    selectedLevel,
+    setSearchText,
+    setSelectedService,
+    setSelectedLevel,
+    setCurrentPage
+  } = useLogsManager()
 
   return (
     <div>
@@ -30,18 +35,26 @@ export default function LogsPage() {
           icon={HiSearch}
           placeholder="Buscar en mensajes..."
           className="md:col-span-2"
+          value={searchText}
+          onChange={(e) => setSearchText(e.target.value)}
         />
-        <Select>
+        <Select
+          value={selectedService}
+          onChange={(e) => setSelectedService(e.target.value)}
+        >
           <option value="">Todos los servicios</option>
-          <option value="Service-A">Service A</option>
-          <option value="Service-B">Service B</option>
-          <option value="Service-C">Service C</option>
+          {uniqueServices.map(service => (
+            <option key={service} value={service}>{service}</option>
+          ))}
         </Select>
-        <Select>
+        <Select
+          value={selectedLevel}
+          onChange={(e) => setSelectedLevel(e.target.value)}
+        >
           <option value="">Todos los niveles</option>
-          <option value="INFO">Info</option>
-          <option value="WARNING">Warning</option>
-          <option value="ERROR">Error</option>
+          {uniqueLevels.map(level => (
+            <option key={level} value={level}>{level}</option>
+          ))}
         </Select>
       </div>
 
@@ -55,7 +68,7 @@ export default function LogsPage() {
             <Table.HeadCell>Mensaje</Table.HeadCell>
           </Table.Head>
           <Table.Body className="divide-y">
-            {logs.map((log) => (
+            {currentLogs.map((log) => (
               <Table.Row 
                 key={log.id} 
                 className="bg-white dark:border-gray-700 dark:bg-gray-800"
@@ -83,9 +96,9 @@ export default function LogsPage() {
       {/* Paginación */}
       <div className="flex items-center justify-center mt-4">
         <Pagination
-          currentPage={1}
-          totalPages={1}
-          onPageChange={() => {}}
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={setCurrentPage}
           showIcons
         />
       </div>
