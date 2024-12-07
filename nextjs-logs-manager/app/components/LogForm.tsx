@@ -49,7 +49,7 @@ export default function LogForm() {
 
     try {
       const formData = new FormData(formRef.current!);
-      await axios.post("/api/upload-logs", formData, {
+      await axios.post("/api/manage-logs", formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
       push("/");

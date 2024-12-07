@@ -1,10 +1,19 @@
-import { DarkThemeToggle } from "flowbite-react";
+import Link from "next/link";
 
-export default function Home() {
+import LogsTable from "./components/LogsTable";
+import { PrismaClient } from "@prisma/client";
+
+const primsa = new PrismaClient();
+
+export default async function Logs() {
+  const logs = await primsa.log.findMany();
+  await primsa.$disconnect();
+
   return (
-    <main className="flex min-h-screen items-center justify-center gap-2 dark:bg-gray-800">
-      <h1 className="text-2xl dark:text-white">Flowbite React + Next.js</h1>
-      <DarkThemeToggle />
-    </main>
+    <>
+      <h1>Registros</h1>
+      <Link href="/upload">Subir registros</Link>
+      <LogsTable logs={logs} />
+    </>
   );
 }
