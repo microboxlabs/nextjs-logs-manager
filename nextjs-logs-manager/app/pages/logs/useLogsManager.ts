@@ -66,10 +66,22 @@ export const useLogsManager = () => {
     const indexOfLastLog = currentPage * logsPerPage
     const indexOfFirstLog = indexOfLastLog - logsPerPage
     
-    return {
+    const result = {
       currentLogs: logs.slice(indexOfFirstLog, indexOfLastLog),
       totalPages: Math.ceil(logs.length / logsPerPage)
     }
+
+    console.log('Pagination Debug:', {
+      total: logs.length,
+      currentPage,
+      logsPerPage,
+      indexOfFirstLog,
+      indexOfLastLog,
+      currentLogsLength: result.currentLogs.length,
+      totalPages: result.totalPages
+    })
+
+    return result
   }
 
   // Cargar logs iniciales

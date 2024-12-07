@@ -3,6 +3,15 @@ import { LogEntry } from '@/types/logs'
 const STORAGE_KEY = 'logs'
 
 /**
+ * Limpia todos los logs almacenados
+ */
+export function clearLogs(): void {
+  if (typeof window !== 'undefined') {
+    localStorage.removeItem(STORAGE_KEY)
+  }
+}
+
+/**
  * Obtiene los logs almacenados
  * @returns Array de logs desde localStorage
  */

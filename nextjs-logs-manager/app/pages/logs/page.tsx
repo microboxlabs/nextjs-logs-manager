@@ -81,7 +81,7 @@ export default function LogsPage() {
                     {log.level}
                   </Badge>
                 </Table.Cell>
-                <Table.Cell>
+                <Table.Cell className="text-gray-900 dark:text-white">
                   {log.service}
                 </Table.Cell>
                 <Table.Cell className="text-gray-700 dark:text-gray-300">
@@ -99,6 +99,25 @@ export default function LogsPage() {
           currentPage={currentPage}
           totalPages={totalPages}
           onPageChange={setCurrentPage}
+          theme={{
+            pages: {
+              base: "xs:mt-0 mt-2 inline-flex items-center -space-x-px",
+              showIcon: "inline-flex",
+              previous: {
+                base: "ml-0 rounded-l-lg border border-gray-300 bg-white py-2 px-3 leading-tight text-gray-500 enabled:hover:bg-gray-100 enabled:hover:text-gray-700 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 enabled:dark:hover:bg-gray-700 enabled:dark:hover:text-white",
+                icon: "h-5 w-5"
+              },
+              next: {
+                base: "rounded-r-lg border border-gray-300 bg-white py-2 px-3 leading-tight text-gray-500 enabled:hover:bg-gray-100 enabled:hover:text-gray-700 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 enabled:dark:hover:bg-gray-700 enabled:dark:hover:text-white",
+                icon: "h-5 w-5"
+              },
+              selector: {
+                base: "w-12 border border-gray-300 bg-white py-2 leading-tight text-gray-500 enabled:hover:bg-gray-100 enabled:hover:text-gray-700 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 enabled:dark:hover:bg-gray-700 enabled:dark:hover:text-white",
+                active: "bg-blue-600 text-white hover:bg-blue-700 hover:text-white dark:bg-blue-600 dark:text-white dark:hover:bg-blue-700",
+                disabled: "opacity-50 cursor-normal"
+              }
+            }
+          }}
           showIcons
         />
       </div>
