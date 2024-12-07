@@ -3,19 +3,19 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 
-import type { TEditLogForm, TLog } from "@/shared/types";
+import type { TLog } from "@/shared/types";
 
 export default function EditLogForm({ log }: { log?: TLog }) {
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<TEditLogForm>({
-    defaultValues: { date: "", time: "", ...log },
+  } = useForm<TLog>({
+    defaultValues: { ...log },
   });
   const [isEditing, setIsEditing] = useState(false);
 
-  const submit = (data: TEditLogForm) => {
+  const submit = (data: TLog) => {
     setIsEditing(false);
   };
 
@@ -124,13 +124,13 @@ export default function EditLogForm({ log }: { log?: TLog }) {
         <input
           id="logLevel"
           className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
-          {...register("logLevel", { required: "Campo nivel requerido" })}
+          {...register("level", { required: "Campo nivel requerido" })}
           disabled={!isEditing}
         />
 
-        {errors && errors.logLevel && (
+        {errors && errors.level && (
           <p className="mt-2 text-sm text-red-600 dark:text-red-500">
-            {errors.logLevel.message}
+            {errors.level.message}
           </p>
         )}
       </div>
