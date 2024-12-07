@@ -40,7 +40,18 @@ export async function POST(request: Request) {
 export async function PUT(request: Request) {
   try {
     const updatedLog = (await request.json()) as TLog;
-    console.log(updatedLog);
+
+    await prisma.log.update({
+      where: { id: updatedLog.id },
+      data: {
+        date: updatedLog.date,
+        time: updatedLog.time,
+        level: updatedLog.level,
+        serviceName: updatedLog.serviceName,
+        message: updatedLog.message,
+      },
+    });
+    prisma.$disconnect();
 
     return Response.json({});
   } catch (error) {

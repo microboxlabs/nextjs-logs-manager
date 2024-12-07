@@ -14,9 +14,13 @@ export default function LogsTable({ logs }: { logs?: TLog[] }) {
 
   const removeLog = async (id: number) => {
     if (confirm("Esta seguro de eliminar este registro")) {
-      await axios.delete("/api/manage-logs", { data: id });
-      alert("Registro eliminado exitosamente");
-      refresh();
+      try {
+        await axios.delete("/api/manage-logs", { data: id });
+        alert("Registro eliminado exitosamente");
+        refresh();
+      } catch (error) {
+        alert("Algo salió mal");
+      }
     }
   };
 

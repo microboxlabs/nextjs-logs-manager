@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import axios from "axios";
 
 import type { TLog } from "@/app/shared/types";
 
@@ -15,8 +16,15 @@ export default function EditLogForm({ log }: { log?: TLog }) {
   });
   const [isEditing, setIsEditing] = useState(false);
 
-  const submit = (data: TLog) => {
+  const submit = async (data: TLog) => {
     setIsEditing(false);
+
+    try {
+      await axios.put("/api/manage-logs", data);
+      alert("Registro actualizado exitosamente");
+    } catch (error) {
+      alert("Algo salió mal");
+    }
   };
 
   const handleEdit = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
@@ -116,17 +124,21 @@ export default function EditLogForm({ log }: { log?: TLog }) {
       </div>
       <div className="mb-6">
         <label
-          htmlFor="logLevel"
+          htmlFor="level"
           className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
         >
           Nivel
         </label>
-        <input
-          id="logLevel"
+        <select
+          id="level"
           className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
           {...register("level", { required: "Campo nivel requerido" })}
           disabled={!isEditing}
-        />
+        >
+          <option value="INFO">INFO</option>
+          <option value="ERROR">ERROR</option>
+          <option value="WARNING">ADVERTENCIA</option>
+        </select>
 
         {errors && errors.level && (
           <p className="mt-2 text-sm text-red-600 dark:text-red-500">
