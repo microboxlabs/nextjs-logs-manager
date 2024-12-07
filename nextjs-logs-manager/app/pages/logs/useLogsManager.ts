@@ -18,6 +18,7 @@ export const useLogsManager = () => {
   // Estado principal
   const [logs, setLogs] = useState<LogEntry[]>([])
   const [filteredLogs, setFilteredLogs] = useState<LogEntry[]>([])
+  const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('desc')
 
   // Estado de filtros
   const [searchText, setSearchText] = useState('')
@@ -27,6 +28,25 @@ export const useLogsManager = () => {
   // Estado de paginación
   const [currentPage, setCurrentPage] = useState(1)
   const logsPerPage = 10
+
+  // Ordenar logs por timestamp
+  const sortLogsByTimestamp = (logs: LogEntry[], direction: 'asc' | 'desc'): LogEntry[] => {
+    return [...logs].sort((a, b) => {
+      const comparison = new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()
+      return direction === 'desc' ? comparison : -comparison
+    })
+  }
+
+  // Toggle dirección de ordenamiento
+  const toggleSortDirection = () => {
+    setSortDirection(prev => {
+      const newDirection = prev === 'desc' ? 'asc' : 'desc'
+      const newSortedLogs = sortLogsByTimestamp(logs, newDirection)
+      setLogs(newSortedLogs)
+      setFilteredLogs(sortLogsByTimestamp(filteredLogs, newDirection))
+      return newDirection
+    })
+  }
 
   // Obtener valores únicos de los logs
   const getUniqueValues = (logs: LogEntry[]) => {
@@ -87,8 +107,9 @@ export const useLogsManager = () => {
   // Cargar logs iniciales
   useEffect(() => {
     const processedLogs = getAllLogs()
-    setLogs(processedLogs)
-    setFilteredLogs(processedLogs)
+    const sortedLogs = sortLogsByTimestamp(processedLogs, sortDirection)
+    setLogs(sortedLogs)
+    setFilteredLogs(sortedLogs)
   }, [])
 
   // Aplicar filtros cuando cambien los criterios
@@ -98,7 +119,7 @@ export const useLogsManager = () => {
       service: selectedService,
       level: selectedLevel
     })
-    setFilteredLogs(filtered)
+    setFilteredLogs(sortLogsByTimestamp(filtered, sortDirection))
   }, [logs, searchText, selectedService, selectedLevel])
 
   // Obtener valores únicos y logs paginados
@@ -109,24 +130,25 @@ export const useLogsManager = () => {
   })
 
   return {
-    // Datos paginados y filtrados
-    currentLogs,
-    totalPages,
-    currentPage,
-    
-    // Opciones de filtro
-    uniqueServices,
-    uniqueLevels,
-    
-    // Estado actual de filtros
-    searchText,
-    selectedService,
-    selectedLevel,
-    
-    // Funciones de actualización
-    setSearchText,
-    setSelectedService,
-    setSelectedLevel,
-    setCurrentPage
+    pagination: {
+      currentPage,
+      totalPages,
+      setCurrentPage
+    },
+    filters: {
+      searchText,
+      selectedService,
+      selectedLevel,
+      setSearchText,
+      setSelectedService,
+      setSelectedLevel,
+      uniqueServices,
+      uniqueLevels
+    },
+    sorting: {
+      direction: sortDirection,
+      toggle: toggleSortDirection
+    },
+    data: currentLogs
   }
 } 

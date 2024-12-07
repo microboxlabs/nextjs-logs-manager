@@ -6,20 +6,7 @@ import { getLogLevelColor } from '@/utils/logStyles'
 import { useLogsManager } from './useLogsManager'
 
 export default function LogsPage() {
-  const {
-    currentLogs,
-    totalPages,
-    currentPage,
-    uniqueServices,
-    uniqueLevels,
-    searchText,
-    selectedService,
-    selectedLevel,
-    setSearchText,
-    setSelectedService,
-    setSelectedLevel,
-    setCurrentPage
-  } = useLogsManager()
+  const { data: logs, pagination, filters, sorting } = useLogsManager()
 
   return (
     <div>
@@ -35,24 +22,24 @@ export default function LogsPage() {
           icon={HiSearch}
           placeholder="Buscar en mensajes..."
           className="md:col-span-2"
-          value={searchText}
-          onChange={(e) => setSearchText(e.target.value)}
+          value={filters.searchText}
+          onChange={(e) => filters.setSearchText(e.target.value)}
         />
         <Select
-          value={selectedService}
-          onChange={(e) => setSelectedService(e.target.value)}
+          value={filters.selectedService}
+          onChange={(e) => filters.setSelectedService(e.target.value)}
         >
           <option value="">Todos los servicios</option>
-          {uniqueServices.map(service => (
+          {filters.uniqueServices.map(service => (
             <option key={service} value={service}>{service}</option>
           ))}
         </Select>
         <Select
-          value={selectedLevel}
-          onChange={(e) => setSelectedLevel(e.target.value)}
+          value={filters.selectedLevel}
+          onChange={(e) => filters.setSelectedLevel(e.target.value)}
         >
           <option value="">Todos los niveles</option>
-          {uniqueLevels.map(level => (
+          {filters.uniqueLevels.map(level => (
             <option key={level} value={level}>{level}</option>
           ))}
         </Select>
@@ -62,13 +49,24 @@ export default function LogsPage() {
       <div className="relative overflow-x-auto rounded-lg border border-gray-200 shadow-md dark:border-gray-700">
         <Table hoverable>
           <Table.Head>
-            <Table.HeadCell className="w-44">Timestamp</Table.HeadCell>
+            <Table.HeadCell className="w-44">
+              <div className="flex items-center gap-2">
+                Timestamp
+                <button
+                  onClick={sorting.toggle}
+                  className="p-1 hover:bg-gray-100 dark:hover:bg-gray-700 rounded"
+                  title={sorting.direction === 'desc' ? 'Más reciente primero' : 'Más antiguo primero'}
+                >
+                  {sorting.direction === 'desc' ? '↓' : '↑'}
+                </button>
+              </div>
+            </Table.HeadCell>
             <Table.HeadCell className="w-28">Nivel</Table.HeadCell>
             <Table.HeadCell className="w-32">Servicio</Table.HeadCell>
             <Table.HeadCell>Mensaje</Table.HeadCell>
           </Table.Head>
           <Table.Body className="divide-y">
-            {currentLogs.map((log) => (
+            {logs.map((log) => (
               <Table.Row 
                 key={log.id} 
                 className="bg-white dark:border-gray-700 dark:bg-gray-800"
@@ -96,12 +94,12 @@ export default function LogsPage() {
       {/* Paginación */}
       <div className="flex items-center justify-center mt-4">
         <Pagination
-          currentPage={currentPage}
-          totalPages={totalPages}
-          onPageChange={setCurrentPage}
+          currentPage={pagination.currentPage}
+          totalPages={pagination.totalPages}
+          onPageChange={pagination.setCurrentPage}
           theme={{
             pages: {
-              base: "xs:mt-0 mt-2 inline-flex items-center -space-x-px",
+              base: "inline-flex items-center mt-2 -space-x-px xs:mt-0",
               showIcon: "inline-flex",
               previous: {
                 base: "ml-0 rounded-l-lg border border-gray-300 bg-white py-2 px-3 leading-tight text-gray-500 enabled:hover:bg-gray-100 enabled:hover:text-gray-700 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 enabled:dark:hover:bg-gray-700 enabled:dark:hover:text-white",
