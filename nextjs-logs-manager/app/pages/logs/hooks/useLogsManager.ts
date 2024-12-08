@@ -34,6 +34,12 @@ export const useLogsManager = () => {
   const [currentPage, setCurrentPage] = useState(1)
   const logsPerPage = 10
 
+  // Estado de rango de fechas
+  const [dateRange, setDateRange] = useState<{ start: Date | null; end: Date | null }>({
+    start: null,
+    end: null
+  })
+
   // Ordenar logs por timestamp
   const sortLogsByTimestamp = (logs: LogEntry[], direction: 'asc' | 'desc'): LogEntry[] => {
     return [...logs].sort((a, b) => {
@@ -71,20 +77,25 @@ export const useLogsManager = () => {
   }
 
   // Filtrar logs según criterios
-  const filterLogs = (logs: LogEntry[], filters: LogFilters) => {
+  const filterLogs = useCallback(() => {
     return logs.filter(log => {
-      const matchesSearch = !filters.searchText || 
-        log.message.toLowerCase().includes(filters.searchText.toLowerCase())
+      const logDate = new Date(log.timestamp)
       
-      const matchesService = !filters.service || 
-        log.service === filters.service
+      // Filtro de fecha
+      const matchesDateRange = !dateRange.start || !dateRange.end || 
+        (logDate >= dateRange.start && logDate <= dateRange.end)
       
-      const matchesLevel = !filters.level || 
-        log.level === filters.level
+      // Filtro de texto
+      const matchesSearch = !searchText || 
+        log.message.toLowerCase().includes(searchText.toLowerCase())
+      
+      // Filtros de nivel y servicio
+      const matchesLevel = !selectedLevel || log.level === selectedLevel
+      const matchesService = !selectedService || log.service === selectedService
 
-      return matchesSearch && matchesService && matchesLevel
+      return matchesDateRange && matchesSearch && matchesLevel && matchesService
     })
-  }
+  }, [logs, dateRange, searchText, selectedLevel, selectedService])
 
   // Paginar logs
   const paginateLogs = (logs: LogEntry[], { currentPage, logsPerPage }: PaginationConfig) => {
@@ -115,13 +126,26 @@ export const useLogsManager = () => {
 
   // Aplicar filtros cuando cambien los criterios
   useEffect(() => {
-    const filtered = filterLogs(logs, {
-      searchText,
-      service: selectedService,
-      level: selectedLevel
+    const filtered = logs.filter(log => {
+      const logDate = new Date(log.timestamp)
+      
+      // Filtro de fecha
+      const matchesDateRange = !dateRange.start || !dateRange.end || (
+        logDate >= dateRange.start && 
+        logDate <= new Date(dateRange.end.getTime() + 24 * 60 * 60 * 1000 - 1) // Incluir todo el día final
+      )
+      
+      // Otros filtros
+      const matchesSearch = !searchText || 
+        log.message.toLowerCase().includes(searchText.toLowerCase())
+      const matchesLevel = !selectedLevel || log.level === selectedLevel
+      const matchesService = !selectedService || log.service === selectedService
+
+      return matchesDateRange && matchesSearch && matchesLevel && matchesService
     })
+
     setFilteredLogs(sortLogsByTimestamp(filtered, sortDirection))
-  }, [logs, searchText, selectedService, selectedLevel, sortDirection])
+  }, [logs, searchText, selectedService, selectedLevel, dateRange, sortDirection])
 
   // Obtener valores únicos y logs paginados
   const { services: uniqueServices, levels: uniqueLevels } = getUniqueValues(logs)
@@ -150,7 +174,12 @@ export const useLogsManager = () => {
       setSelectedService,
       setSelectedLevel,
       uniqueServices,
-      uniqueLevels
+      uniqueLevels,
+      dateRange: {
+        startDate: dateRange.start,
+        endDate: dateRange.end,
+        setDateRange: (start: Date | null, end: Date | null) => setDateRange({ start, end })
+      }
     },
     sorting: {
       direction: sortDirection,

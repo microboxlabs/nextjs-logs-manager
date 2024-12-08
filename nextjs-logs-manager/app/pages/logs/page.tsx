@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { Table, Badge, TextInput, Select, Pagination, Button, Tooltip } from 'flowbite-react'
+import { Table, Badge, TextInput, Select, Pagination, Button, Tooltip, Label } from 'flowbite-react'
 import { HiSearch, HiRefresh, HiTrash, HiPencil } from 'react-icons/hi'
 import { getLogLevelColor } from '@/utils/logStyles'
 import { useLogsManager } from './hooks/useLogsManager'
@@ -10,6 +10,8 @@ import { useSession } from 'next-auth/react'
 import { EditLogModal } from '@/components/modals/EditLogModal'
 import { LogEntry } from '@/types/logs'
 import { LogHandler } from '@/app/api/services/logHandler'
+import { DateRangePicker } from '@/components/DateRangePicker'
+import { LogLevel, LogService } from '@/types/logs'
 
 export default function LogsPage() {
   const { data: logs, pagination, filters, sorting, refreshLogs, handleDeleteLog } = useLogsManager()
@@ -73,32 +75,64 @@ export default function LogsPage() {
       </div>
 
       {/* Filtros */}
-      <div className="mb-6 grid gap-4 md:grid-cols-4">
-        <TextInput
-          icon={HiSearch}
-          placeholder="Buscar en mensajes..."
-          className="md:col-span-2"
-          value={filters.searchText}
-          onChange={(e) => filters.setSearchText(e.target.value)}
-        />
-        <Select
-          value={filters.selectedService}
-          onChange={(e) => filters.setSelectedService(e.target.value)}
-        >
-          <option value="">Todos los servicios</option>
-          {filters.uniqueServices.map(service => (
-            <option key={service} value={service}>{service}</option>
-          ))}
-        </Select>
-        <Select
-          value={filters.selectedLevel}
-          onChange={(e) => filters.setSelectedLevel(e.target.value)}
-        >
-          <option value="">Todos los niveles</option>
-          {filters.uniqueLevels.map(level => (
-            <option key={level} value={level}>{level}</option>
-          ))}
-        </Select>
+      <div className="mb-6 space-y-4">
+        {/* Primera fila: Búsqueda y Fechas */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+          {/* Búsqueda */}
+          <div className="flex flex-col gap-2 lg:col-span-1">
+            <div className="flex items-center justify-between h-[32px]">
+              <Label value="Búsqueda" className="text-sm font-medium text-gray-700 dark:text-gray-300" />
+            </div>
+            <TextInput
+              icon={HiSearch}
+              placeholder="Buscar en mensajes..."
+              value={filters.searchText}
+              onChange={(e) => filters.setSearchText(e.target.value)}
+              sizing="sm"
+              className="w-full"
+            />
+          </div>
+
+          {/* DatePicker */}
+          <div className="lg:col-span-2">
+            <DateRangePicker
+              startDate={filters.dateRange.startDate}
+              endDate={filters.dateRange.endDate}
+              onChange={(start, end) => filters.dateRange.setDateRange(start, end)}
+            />
+          </div>
+        </div>
+
+        {/* Segunda fila: Selects */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div className="flex flex-col gap-2">
+            <Label value="Nivel de log" className="text-sm font-medium text-gray-700 dark:text-gray-300" />
+            <Select
+              value={filters.selectedLevel}
+              onChange={(e) => filters.setSelectedLevel(e.target.value)}
+              sizing="sm"
+            >
+              <option value="">Todos los niveles</option>
+              {filters.uniqueLevels.map(level => (
+                <option key={level} value={level}>{level}</option>
+              ))}
+            </Select>
+          </div>
+          
+          <div className="flex flex-col gap-2">
+            <Label value="Servicio" className="text-sm font-medium text-gray-700 dark:text-gray-300" />
+            <Select
+              value={filters.selectedService}
+              onChange={(e) => filters.setSelectedService(e.target.value)}
+              sizing="sm"
+            >
+              <option value="">Todos los servicios</option>
+              {filters.uniqueServices.map(service => (
+                <option key={service} value={service}>{service}</option>
+              ))}
+            </Select>
+          </div>
+        </div>
       </div>
 
       {/* Tabla de Logs */}
