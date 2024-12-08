@@ -19,3 +19,8 @@ export type TEntry = {
   user: string;
   details: string;
 };
+
+export type BaseCompProps = {
+  children?: React.ReactNode;
+  className?: string;
+};
