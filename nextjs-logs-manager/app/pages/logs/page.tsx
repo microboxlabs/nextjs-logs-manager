@@ -1,25 +1,42 @@
 'use client'
 
+import { useState } from 'react'
 import { Table, Badge, TextInput, Select, Pagination, Button, Tooltip } from 'flowbite-react'
 import { HiSearch, HiRefresh, HiTrash, HiPencil } from 'react-icons/hi'
 import { getLogLevelColor } from '@/utils/logStyles'
 import { useLogsManager } from './hooks/useLogsManager'
 import { clearLogs } from '@/app/api/services/logStorage'
 import { useSession } from 'next-auth/react'
+import { EditLogModal } from '@/components/modals/EditLogModal'
+import { LogEntry } from '@/types/logs'
+import { LogHandler } from '@/app/api/services/logHandler'
 
 export default function LogsPage() {
   const { data: logs, pagination, filters, sorting, refreshLogs, handleDeleteLog } = useLogsManager()
   const { data: session } = useSession()
   const isAdmin = session?.user?.role === 'ADMIN'
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false)
+  const [selectedLog, setSelectedLog] = useState<LogEntry | null>(null)
 
   const handleRefresh = () => {
     refreshLogs()
   }
 
   const handleClear = () => {
-    if (window.confirm('¿Estás seguro? Esto eliminará todos los logs excepto el ejemplo inicial.')) {
-      clearLogs()
-      refreshLogs()
+    clearLogs()
+    refreshLogs()
+  }
+
+  const handleEdit = (log: LogEntry) => {
+    setSelectedLog(log)
+    setIsEditModalOpen(true)
+  }
+
+  const handleConfirmEdit = (updatedLog: Partial<LogEntry>) => {
+    if (selectedLog) {
+      LogHandler.updateLog(selectedLog.id, updatedLog)
+      setIsEditModalOpen(false)
+      setSelectedLog(null)
     }
   }
 
@@ -124,6 +141,7 @@ export default function LogsPage() {
                           size="sm"
                           color="info"
                           className="p-2 bg-blue-500 hover:bg-blue-600 dark:bg-blue-600 dark:hover:bg-blue-700"
+                          onClick={() => handleEdit(log)}
                         >
                           <HiPencil className="h-4 w-4 text-white" />
                         </Button>
@@ -156,7 +174,7 @@ export default function LogsPage() {
                     </h3>
                     {isAdmin ? (
                       <p className="text-sm text-gray-500 dark:text-gray-400 text-center max-w-sm">
-                        Sube algunos registros usando el botón de "Subir Logs" en el panel de administración.
+                        Sube algunos registros usando el botón de Subir Logs en el panel de administración.
                       </p>
                     ) : (
                       <p className="text-sm text-gray-500 dark:text-gray-400 text-center max-w-sm">
@@ -199,6 +217,15 @@ export default function LogsPage() {
           showIcons
         />
       </div>
+
+      <EditLogModal
+        isOpen={isEditModalOpen}
+        onClose={() => setIsEditModalOpen(false)}
+        log={selectedLog}
+        onConfirm={handleConfirmEdit}
+        services={filters.uniqueServices}
+        levels={filters.uniqueLevels}
+      />
     </div>
   )
 } 
