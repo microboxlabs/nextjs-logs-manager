@@ -10,10 +10,10 @@ const formatDate = (
   options: DateFormatOptions = {},
 ): string => {
   const {
-    locale = "es-ES",
+    locale = "en-US",
     format = "medium",
     includeTime = true,
-    hour12 = false,
+    hour12 = true,
   } = options;
 
   const dateObj = date instanceof Date ? date : new Date(date);

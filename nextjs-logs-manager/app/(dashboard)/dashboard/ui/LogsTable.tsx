@@ -18,10 +18,14 @@ export const LogsTable = ({ logs }: Props) => {
   });
 
   // Obtener servicios y niveles
+  // Se convierte a un Set para asegurarse de no repetir
+  // los servicios y luego se transforma nuevamente a un array
   const uniqueServices = Array.from(new Set(logs.map((log) => log.service)));
   const levels = ["INFO", "WARNING", "ERROR"];
 
   // Filtrar logs basado en los filtros seleccionados
+  // Uso useMemo para computar eficientemente la lista de logs
+  // basado en el criterio que se seleccione (servicio, nivel, etc.)
   const filteredLogs = useMemo(() => {
     return logs.filter((log) => {
       const serviceMatch = !selectedService || log.service === selectedService;
@@ -34,6 +38,7 @@ export const LogsTable = ({ logs }: Props) => {
     });
   }, [logs, selectedService, selectedLevel, dateRange]);
 
+  // Asignar un color basado en el nivel
   const getLevelColor = (level: string) => {
     switch (level) {
       case "ERROR":
