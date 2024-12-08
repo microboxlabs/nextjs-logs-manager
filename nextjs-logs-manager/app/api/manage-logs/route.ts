@@ -79,9 +79,10 @@ export async function DELETE(request: Request) {
   }
 }
 
-export async function GET(request: Request) {
+export async function GET() {
   try {
-    const logs = prisma.log.findMany();
+    const logs = await prisma.log.findMany();
+    await prisma.$disconnect();
 
     return Response.json(logs);
   } catch (error) {
