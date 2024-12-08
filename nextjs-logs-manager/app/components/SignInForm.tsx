@@ -3,6 +3,7 @@
 import { useForm } from "react-hook-form";
 
 import type { TSignInForm } from "@/app/shared/types";
+import Button from "./Button";
 
 export default function SignInForm() {
   const {
@@ -16,7 +17,7 @@ export default function SignInForm() {
   const submit = (data: TSignInForm) => {};
 
   return (
-    <form onSubmit={handleSubmit(submit)}>
+    <form onSubmit={handleSubmit(submit)} className="mx-auto max-w-xl">
       <div className="mb-6">
         <label
           htmlFor="email"
@@ -75,12 +76,11 @@ export default function SignInForm() {
           Recordar cuenta
         </label>
       </div>
-      <button
-        type="submit"
-        className="w-full rounded-lg bg-blue-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 sm:w-auto"
-      >
-        Iniciar sesi&oacute;n
-      </button>
+      <div className="flex justify-center md:justify-end">
+        <Button type="submit" className="w-full bg-blue-700 md:w-auto">
+          Iniciar sesi&oacute;n
+        </Button>
+      </div>
     </form>
   );
 }

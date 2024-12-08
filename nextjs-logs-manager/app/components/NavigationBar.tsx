@@ -13,7 +13,7 @@ export default function NavigationBar() {
         <div className="flex items-center lg:order-2">
           <Link
             href="/sign-in"
-            className="mr-2 rounded-lg px-4 py-2 text-sm font-medium text-gray-800 hover:bg-gray-50 focus:outline-none focus:ring-4 focus:ring-gray-300 lg:px-5 lg:py-2.5"
+            className="mr-2 rounded-full px-4 py-2 text-sm font-medium text-gray-800 hover:bg-gray-50 focus:outline-none focus:ring-4 focus:ring-gray-300 lg:px-5 lg:py-2.5"
           >
             Iniciar sesi&oacute;n
           </Link>
