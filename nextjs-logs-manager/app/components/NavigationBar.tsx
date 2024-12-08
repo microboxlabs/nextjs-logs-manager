@@ -64,9 +64,6 @@ export default function NavigationBar() {
           >
             <ul className="flex flex-col lg:mt-0 lg:flex-row lg:space-x-8">
               <li>
-                <Link href="/">Registros</Link>
-              </li>
-              <li>
                 <Link href="/entries">Subidas</Link>
               </li>
             </ul>

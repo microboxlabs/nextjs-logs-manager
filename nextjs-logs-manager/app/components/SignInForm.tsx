@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 
 import type { TSignInForm } from "@/app/shared/types";
 import Button from "./Button";
+import { useAuth } from "../hooks/useAuth";
 
 export default function SignInForm() {
   const {
@@ -13,8 +14,11 @@ export default function SignInForm() {
   } = useForm<TSignInForm>({
     defaultValues: { email: "", password: "", remember: false },
   });
+  const { signIn } = useAuth();
 
-  const submit = (data: TSignInForm) => {};
+  const submit = (data: TSignInForm) => {
+    signIn();
+  };
 
   return (
     <form onSubmit={handleSubmit(submit)} className="mx-auto max-w-xl">
