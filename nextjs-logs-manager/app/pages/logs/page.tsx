@@ -3,12 +3,12 @@
 import { Table, Badge, TextInput, Select, Pagination, Button, Tooltip } from 'flowbite-react'
 import { HiSearch, HiRefresh, HiTrash, HiPencil } from 'react-icons/hi'
 import { getLogLevelColor } from '@/utils/logStyles'
-import { useLogsManager } from './useLogsManager'
+import { useLogsManager } from './hooks/useLogsManager'
 import { clearLogs } from '@/app/api/services/logStorage'
 import { useSession } from 'next-auth/react'
 
 export default function LogsPage() {
-  const { data: logs, pagination, filters, sorting, refreshLogs } = useLogsManager()
+  const { data: logs, pagination, filters, sorting, refreshLogs, handleDeleteLog } = useLogsManager()
   const { data: session } = useSession()
   const isAdmin = session?.user?.role === 'ADMIN'
 
@@ -88,69 +88,85 @@ export default function LogsPage() {
       <div className="relative overflow-x-auto rounded-lg border border-gray-200 shadow-md dark:border-gray-700">
         <Table hoverable>
           <Table.Head>
-            <Table.HeadCell className="w-44">
-              <div className="flex items-center gap-2">
-                Timestamp
-                <button
-                  onClick={sorting.toggle}
-                  className="p-1 hover:bg-gray-100 dark:hover:bg-gray-700 rounded"
-                  title={sorting.direction === 'desc' ? 'Más reciente primero' : 'Más antiguo primero'}
-                >
-                  {sorting.direction === 'desc' ? '↓' : '↑'}
-                </button>
-              </div>
-            </Table.HeadCell>
+            <Table.HeadCell className="w-44">Timestamp</Table.HeadCell>
             <Table.HeadCell className="w-28">Nivel</Table.HeadCell>
             <Table.HeadCell className="w-32">Servicio</Table.HeadCell>
             <Table.HeadCell>Mensaje</Table.HeadCell>
             {isAdmin && (
-              <Table.HeadCell className="w-24">Acciones</Table.HeadCell>
+              <Table.HeadCell className="w-28 text-center">Acciones</Table.HeadCell>
             )}
           </Table.Head>
           <Table.Body className="divide-y">
-            {logs.map((log) => (
-              <Table.Row 
-                key={log.id} 
-                className="bg-white dark:border-gray-700 dark:bg-gray-800"
-              >
-                <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                  {log.timestamp}
-                </Table.Cell>
-                <Table.Cell>
-                  <Badge color={getLogLevelColor(log.level)}>
-                    {log.level}
-                  </Badge>
-                </Table.Cell>
-                <Table.Cell className="text-gray-900 dark:text-white">
-                  {log.service}
-                </Table.Cell>
-                <Table.Cell className="text-gray-700 dark:text-gray-300">
-                  {log.message}
-                </Table.Cell>
-                {isAdmin && (
-                  <Table.Cell className="flex justify-center gap-2">
-                    <Tooltip content="Editar registro" placement="left">
-                      <Button
-                        size="sm"
-                        color="info"
-                        className="p-2 bg-blue-500 hover:bg-blue-600 dark:bg-blue-600 dark:hover:bg-blue-700"
-                      >
-                        <HiPencil className="size-4 text-white" />
-                      </Button>
-                    </Tooltip>
-                    <Tooltip content="Borrar registro" placement="right">
-                      <Button
-                        size="sm"
-                        color="failure"
-                        className="p-2 bg-red-500 hover:bg-red-600 dark:bg-red-600 dark:hover:bg-red-700"
-                      >
-                        <HiTrash className="size-4 text-white" />
-                      </Button>
-                    </Tooltip>
+            {logs.length > 0 ? (
+              logs.map((log) => (
+                <Table.Row 
+                  key={log.id} 
+                  className="bg-white dark:border-gray-700 dark:bg-gray-800"
+                >
+                  <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+                    {log.timestamp}
                   </Table.Cell>
-                )}
+                  <Table.Cell>
+                    <Badge color={getLogLevelColor(log.level)}>
+                      {log.level}
+                    </Badge>
+                  </Table.Cell>
+                  <Table.Cell className="text-gray-900 dark:text-white">
+                    {log.service}
+                  </Table.Cell>
+                  <Table.Cell className="text-gray-700 dark:text-gray-300">
+                    {log.message}
+                  </Table.Cell>
+                  {isAdmin && (
+                    <Table.Cell className="flex justify-center gap-2">
+                      <Tooltip content="Editar registro" placement="left">
+                        <Button
+                          size="sm"
+                          color="info"
+                          className="p-2 bg-blue-500 hover:bg-blue-600 dark:bg-blue-600 dark:hover:bg-blue-700"
+                        >
+                          <HiPencil className="h-4 w-4 text-white" />
+                        </Button>
+                      </Tooltip>
+                      <Tooltip content="Borrar registro" placement="right">
+                        <Button
+                          size="sm"
+                          color="failure"
+                          className="p-2 bg-red-500 hover:bg-red-600 dark:bg-red-600 dark:hover:bg-red-700"
+                          onClick={() => handleDeleteLog(log.id)}
+                        >
+                          <HiTrash className="h-4 w-4 text-white" />
+                        </Button>
+                      </Tooltip>
+                    </Table.Cell>
+                  )}
+                </Table.Row>
+              ))
+            ) : (
+              <Table.Row>
+                <Table.Cell colSpan={isAdmin ? 5 : 4}>
+                  <div className="flex flex-col items-center justify-center py-12 px-4">
+                    <div className="h-24 w-24 text-gray-400 dark:text-gray-500 mb-4">
+                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1} stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
+                      </svg>
+                    </div>
+                    <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">
+                      No hay registros disponibles
+                    </h3>
+                    {isAdmin ? (
+                      <p className="text-sm text-gray-500 dark:text-gray-400 text-center max-w-sm">
+                        Sube algunos registros usando el botón de "Subir Logs" en el panel de administración.
+                      </p>
+                    ) : (
+                      <p className="text-sm text-gray-500 dark:text-gray-400 text-center max-w-sm">
+                        No hay registros disponibles en este momento. Contacta al administrador para más información.
+                      </p>
+                    )}
+                  </div>
+                </Table.Cell>
               </Table.Row>
-            ))}
+            )}
           </Table.Body>
         </Table>
       </div>
