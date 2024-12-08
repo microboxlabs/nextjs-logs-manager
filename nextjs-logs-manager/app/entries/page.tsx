@@ -1,5 +1,7 @@
 import { PrismaClient } from "@prisma/client";
+
 import EntriesTable from "../components/EntriesTable";
+import Heading from "../components/Heading";
 
 const primsa = new PrismaClient();
 
@@ -9,7 +11,7 @@ export default async function Entries() {
 
   return (
     <>
-      <h1>Subidas</h1>
+      <Heading className="mb-8">Subidas</Heading>
       <EntriesTable entries={entries} />
     </>
   );
