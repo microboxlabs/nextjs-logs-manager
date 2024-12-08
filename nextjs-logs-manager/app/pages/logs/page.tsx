@@ -1,7 +1,7 @@
 'use client'
 
 import { Table, Badge, TextInput, Select, Pagination, Button, Tooltip } from 'flowbite-react'
-import { HiSearch, HiRefresh, HiTrash } from 'react-icons/hi'
+import { HiSearch, HiRefresh, HiTrash, HiPencil } from 'react-icons/hi'
 import { getLogLevelColor } from '@/utils/logStyles'
 import { useLogsManager } from './useLogsManager'
 import { clearLogs } from '@/app/api/services/logStorage'
@@ -37,7 +37,7 @@ export default function LogsPage() {
               onClick={handleRefresh}
               className="bg-white hover:bg-gray-100 dark:bg-gray-800 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-200"
             >
-              <HiRefresh className="h-5 w-5" />
+              <HiRefresh className="size-5" />
             </Button>
           </Tooltip>
           {isAdmin && (
@@ -48,7 +48,7 @@ export default function LogsPage() {
                 onClick={handleClear}
                 className="hover:bg-red-600 dark:hover:bg-red-700"
               >
-                <HiTrash className="h-5 w-5" />
+                <HiTrash className="size-5" />
               </Button>
             </Tooltip>
           )}
@@ -103,6 +103,9 @@ export default function LogsPage() {
             <Table.HeadCell className="w-28">Nivel</Table.HeadCell>
             <Table.HeadCell className="w-32">Servicio</Table.HeadCell>
             <Table.HeadCell>Mensaje</Table.HeadCell>
+            {isAdmin && (
+              <Table.HeadCell className="w-24">Acciones</Table.HeadCell>
+            )}
           </Table.Head>
           <Table.Body className="divide-y">
             {logs.map((log) => (
@@ -124,6 +127,28 @@ export default function LogsPage() {
                 <Table.Cell className="text-gray-700 dark:text-gray-300">
                   {log.message}
                 </Table.Cell>
+                {isAdmin && (
+                  <Table.Cell className="flex justify-center gap-2">
+                    <Tooltip content="Editar registro" placement="left">
+                      <Button
+                        size="sm"
+                        color="info"
+                        className="p-2 bg-blue-500 hover:bg-blue-600 dark:bg-blue-600 dark:hover:bg-blue-700"
+                      >
+                        <HiPencil className="size-4 text-white" />
+                      </Button>
+                    </Tooltip>
+                    <Tooltip content="Borrar registro" placement="right">
+                      <Button
+                        size="sm"
+                        color="failure"
+                        className="p-2 bg-red-500 hover:bg-red-600 dark:bg-red-600 dark:hover:bg-red-700"
+                      >
+                        <HiTrash className="size-4 text-white" />
+                      </Button>
+                    </Tooltip>
+                  </Table.Cell>
+                )}
               </Table.Row>
             ))}
           </Table.Body>
