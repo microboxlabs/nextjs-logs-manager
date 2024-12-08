@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import { useForm } from "react-hook-form";
 import { useState } from "react";
@@ -82,10 +82,12 @@ export default function UploadForm() {
                   },
                 },
               })}
-              className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm text-gray-900 
-                         file:mr-4 file:border-0 file:bg-gray-50 file:px-4 
-                         file:py-2 file:text-sm file:font-medium 
-                         file:text-gray-700 hover:file:bg-gray-100"
+              className="w-full rounded-md border border-gray-300 px-3 text-sm text-gray-900 
+                         file:mr-4 file:rounded file:border-0 file:bg-gray-50 
+                         file:px-4 file:py-2 file:text-sm 
+                         file:font-medium file:text-gray-700
+                         hover:file:bg-gray-100
+                         "
             />
 
             {errors.logFile && (
@@ -95,13 +97,11 @@ export default function UploadForm() {
             )}
           </div>
 
-          <button
-            type="submit"
-            disabled={isSubmitting}
-            className="btn-primary"
-          >
-            {isSubmitting ? "Uploading..." : "Upload"}
-          </button>
+          <div className="flex justify-end">
+            <button type="submit" disabled={isSubmitting} className="btn-primary">
+              {isSubmitting ? "Uploading..." : "Upload"}
+            </button>
+          </div>
 
           {status.message && (
             <div
