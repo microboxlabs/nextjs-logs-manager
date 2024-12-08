@@ -3,7 +3,7 @@ import Link from "next/link";
 export default function NavigationBar() {
 
   return (
-    <nav className="mb-6 border-b border-solid border-gray-200 bg-white px-4 py-2.5 lg:mb-8 lg:px-6">
+    <nav className="mb-6 border-b border-solid border-gray-200 bg-white py-2.5 lg:mb-8 lg:px-6">
       <div className="container flex flex-wrap items-center justify-between">
         <Link href="/" className="grid place-items-center">
           <span className="self-center whitespace-nowrap text-xl font-semibold dark:text-white">
@@ -52,7 +52,7 @@ export default function NavigationBar() {
           </button>
         </div>
         <div
-          className="hidden w-full items-center justify-between lg:order-1 lg:ml-8 lg:mr-auto lg:mt-1 lg:flex lg:w-auto"
+          className="hidden w-full items-center justify-between lg:order-1 lg:ml-8 lg:mr-auto lg:flex lg:w-auto"
           id="mobile-menu-2"
         >
           <ul className="flex flex-col lg:mt-0 lg:flex-row lg:space-x-8">

@@ -1,10 +1,10 @@
-import LogForm from "../components/LogForm";
+import LogsForm from "../components/LogsForm";
 
 export default function NewLog() {
   return (
     <>
-      <h1>Nuevos registros</h1>
-      <LogForm />
+      <h1 className="mb-4 text-xl font-bold">Nuevos registros</h1>
+      <LogsForm />
     </>
   );
 }
