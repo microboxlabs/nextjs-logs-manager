@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from 'react'
 import { LogEntry, LogLevel, LogService } from '@/types/logs'
-import { getAllLogs } from '@/app/api/services/logProcessor'
+import { useSession } from 'next-auth/react'
+import { getLogs } from '@/app/api/services/logStorage'
 
 // Tipos para los filtros y paginación
 type LogFilters = {
@@ -15,6 +16,9 @@ type PaginationConfig = {
 }
 
 export const useLogsManager = () => {
+  const { data: session } = useSession()
+  const isAdmin = session?.user?.role === 'ADMIN'
+
   // Estado principal
   const [logs, setLogs] = useState<LogEntry[]>([])
   const [filteredLogs, setFilteredLogs] = useState<LogEntry[]>([])
@@ -86,28 +90,16 @@ export const useLogsManager = () => {
     const indexOfLastLog = currentPage * logsPerPage
     const indexOfFirstLog = indexOfLastLog - logsPerPage
     
-    const result = {
+    return {
       currentLogs: logs.slice(indexOfFirstLog, indexOfLastLog),
       totalPages: Math.ceil(logs.length / logsPerPage)
     }
-
-    console.log('Pagination Debug:', {
-      total: logs.length,
-      currentPage,
-      logsPerPage,
-      indexOfFirstLog,
-      indexOfLastLog,
-      currentLogsLength: result.currentLogs.length,
-      totalPages: result.totalPages
-    })
-
-    return result
   }
 
   // Función para recargar los logs
   const refreshLogs = useCallback(() => {
-    const processedLogs = getAllLogs()
-    const sortedLogs = sortLogsByTimestamp(processedLogs, sortDirection)
+    const currentLogs = getLogs()
+    const sortedLogs = sortLogsByTimestamp(currentLogs, sortDirection)
     setLogs(sortedLogs)
     setFilteredLogs(sortedLogs)
   }, [sortDirection])
@@ -116,10 +108,7 @@ export const useLogsManager = () => {
   useEffect(() => {
     refreshLogs()
     
-    // Escuchar actualizaciones
     window.addEventListener('logsUpdated', refreshLogs)
-    
-    // Limpiar listener
     return () => window.removeEventListener('logsUpdated', refreshLogs)
   }, [refreshLogs])
 
@@ -161,6 +150,7 @@ export const useLogsManager = () => {
       toggle: toggleSortDirection
     },
     data: currentLogs,
+    isAdmin,
     refreshLogs
   }
 } 

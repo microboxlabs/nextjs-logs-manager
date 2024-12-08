@@ -4,17 +4,8 @@ const STORAGE_KEY = 'logs'
 const LOGS_UPDATED_EVENT = 'logsUpdated'
 
 /**
- * Limpia todos los logs almacenados
- */
-export function clearLogs(): void {
-  if (typeof window !== 'undefined') {
-    localStorage.removeItem(STORAGE_KEY)
-  }
-}
-
-/**
- * Obtiene los logs almacenados
- * @returns Array de logs desde localStorage
+ * Obtiene todos los logs almacenados en localStorage
+ * @returns Array de logs o array vacío si no hay datos
  */
 export function getLogs(): LogEntry[] {
   if (typeof window === 'undefined') return []
@@ -23,18 +14,27 @@ export function getLogs(): LogEntry[] {
 }
 
 /**
- * Almacena logs y retorna todos los logs
- * @param newLogs - Nuevos logs a almacenar
+ * Almacena nuevos logs y los combina con los existentes
+ * @param newLogs - Logs nuevos a almacenar
  * @returns Array combinado de logs existentes y nuevos
  */
 export function storeAndGetLogs(newLogs: LogEntry[]): LogEntry[] {
+  if (typeof window === 'undefined') return []
+  
   const existingLogs = getLogs()
   const updatedLogs = [...existingLogs, ...newLogs]
-  
-  if (typeof window !== 'undefined') {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(updatedLogs))
-    window.dispatchEvent(new Event(LOGS_UPDATED_EVENT))
-  }
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(updatedLogs))
+  window.dispatchEvent(new Event(LOGS_UPDATED_EVENT))
   
   return updatedLogs
+}
+
+/**
+ * Elimina todos los logs del almacenamiento
+ * Dispara evento de actualización
+ */
+export function clearLogs(): void {
+  if (typeof window === 'undefined') return
+  localStorage.removeItem(STORAGE_KEY)
+  window.dispatchEvent(new Event(LOGS_UPDATED_EVENT))
 } 
