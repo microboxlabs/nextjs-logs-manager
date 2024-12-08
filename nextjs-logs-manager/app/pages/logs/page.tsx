@@ -5,9 +5,12 @@ import { HiSearch, HiRefresh, HiTrash } from 'react-icons/hi'
 import { getLogLevelColor } from '@/utils/logStyles'
 import { useLogsManager } from './useLogsManager'
 import { clearLogs } from '@/app/api/services/logStorage'
+import { useSession } from 'next-auth/react'
 
 export default function LogsPage() {
   const { data: logs, pagination, filters, sorting, refreshLogs } = useLogsManager()
+  const { data: session } = useSession()
+  const isAdmin = session?.user?.role === 'ADMIN'
 
   const handleRefresh = () => {
     refreshLogs()
@@ -37,16 +40,18 @@ export default function LogsPage() {
               <HiRefresh className="h-5 w-5" />
             </Button>
           </Tooltip>
-          <Tooltip content="Limpiar todos los registros" placement="bottom">
-            <Button 
-              color="failure"
-              size="sm"
-              onClick={handleClear}
-              className="hover:bg-red-600 dark:hover:bg-red-700"
-            >
-              <HiTrash className="h-5 w-5" />
-            </Button>
-          </Tooltip>
+          {isAdmin && (
+            <Tooltip content="Limpiar todos los registros" placement="bottom">
+              <Button 
+                color="failure"
+                size="sm"
+                onClick={handleClear}
+                className="hover:bg-red-600 dark:hover:bg-red-700"
+              >
+                <HiTrash className="h-5 w-5" />
+              </Button>
+            </Tooltip>
+          )}
         </div>
       </div>
 

@@ -75,8 +75,9 @@ export const useUploadLogs = () => {
       const lines = text.split('\n').filter(line => line.trim())
       console.log('Líneas a procesar:', lines.length)
 
+      // Verificar formato básico de logs
       const invalidLines = lines.filter(line => {
-        const isValid = /^\[\d{4}-\d{2}-\d{2}\s\d{2}:\d{2}:\d{2}\]\s\[(INFO|WARNING|ERROR)\]\sService-[A-Z]:\s.*/.test(line.trim())
+        const isValid = /^\[\d{4}-\d{2}-\d{2}\s\d{2}:\d{2}:\d{2}\]\s\[(INFO|WARNING|ERROR)\]\sService-[A-Z]:\s.+\.$/.test(line.trim())
         if (!isValid) {
           console.log('Línea inválida:', line)
         }
