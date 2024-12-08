@@ -1,6 +1,7 @@
 import { LogEntry } from '@/types/logs'
 
 const STORAGE_KEY = 'logs'
+const LOGS_UPDATED_EVENT = 'logsUpdated'
 
 /**
  * Limpia todos los logs almacenados
@@ -32,6 +33,7 @@ export function storeAndGetLogs(newLogs: LogEntry[]): LogEntry[] {
   
   if (typeof window !== 'undefined') {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(updatedLogs))
+    window.dispatchEvent(new Event(LOGS_UPDATED_EVENT))
   }
   
   return updatedLogs

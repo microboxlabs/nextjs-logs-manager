@@ -1,19 +1,53 @@
 'use client'
 
-import { Table, Badge, TextInput, Select, Pagination } from 'flowbite-react'
-import { HiSearch } from 'react-icons/hi'
+import { Table, Badge, TextInput, Select, Pagination, Button, Tooltip } from 'flowbite-react'
+import { HiSearch, HiRefresh, HiTrash } from 'react-icons/hi'
 import { getLogLevelColor } from '@/utils/logStyles'
 import { useLogsManager } from './useLogsManager'
+import { clearLogs } from '@/app/api/services/logStorage'
 
 export default function LogsPage() {
-  const { data: logs, pagination, filters, sorting } = useLogsManager()
+  const { data: logs, pagination, filters, sorting, refreshLogs } = useLogsManager()
+
+  const handleRefresh = () => {
+    refreshLogs()
+  }
+
+  const handleClear = () => {
+    if (window.confirm('¿Estás seguro? Esto eliminará todos los logs excepto el ejemplo inicial.')) {
+      clearLogs()
+      refreshLogs()
+    }
+  }
 
   return (
     <div>
-      <div className="mb-6">
-        <h1 className="text-2xl font-bold mb-4 text-gray-900 dark:text-white">
+      <div className="mb-6 flex justify-between items-center">
+        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
           Registros del Sistema
         </h1>
+        <div className="flex gap-2">
+          <Tooltip content="Actualizar registros" placement="left">
+            <Button 
+              color="gray"
+              size="sm"
+              onClick={handleRefresh}
+              className="bg-white hover:bg-gray-100 dark:bg-gray-800 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-200"
+            >
+              <HiRefresh className="h-5 w-5" />
+            </Button>
+          </Tooltip>
+          <Tooltip content="Limpiar todos los registros" placement="bottom">
+            <Button 
+              color="failure"
+              size="sm"
+              onClick={handleClear}
+              className="hover:bg-red-600 dark:hover:bg-red-700"
+            >
+              <HiTrash className="h-5 w-5" />
+            </Button>
+          </Tooltip>
+        </div>
       </div>
 
       {/* Filtros */}

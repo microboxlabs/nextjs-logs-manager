@@ -1,9 +1,31 @@
 'use client'
 
-import { Card, FileInput, Button } from 'flowbite-react'
+import { Card, FileInput, Button, Alert } from 'flowbite-react'
 import { HiInformationCircle, HiUpload } from 'react-icons/hi'
+import { useUploadLogs } from './useUploadLogs'
 
 export default function UploadLogsPage() {
+  const {
+    handleFileSelect,
+    processFile,
+    isLoading,
+    isSuccess,
+    isError,
+    error,
+    reset,
+    selectedFile
+  } = useUploadLogs()
+
+  const onFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0] || null
+    handleFileSelect(file)
+  }
+
+  const onSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    await processFile()
+  }
+
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="mb-8">
@@ -74,23 +96,72 @@ export default function UploadLogsPage() {
 
         {/* Columna de subida */}
         <Card>
-          <div className="space-y-6">
-            <div>
-              <h3 className="text-lg font-semibold mb-4 text-gray-900 dark:text-white">
-                Seleccionar Archivo
-              </h3>
-              <FileInput
-                id="log-file"
-                accept=".txt"
-                helperText="Archivo de texto plano (.txt)"
-              />
+          <form onSubmit={onSubmit} className="space-y-4">
+            <div className="flex items-center justify-center w-full">
+              <label className="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-gray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500">
+                <div className="flex flex-col items-center justify-center pt-5 pb-6">
+                  <HiUpload className="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400" />
+                  <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">
+                    <span className="font-semibold">Click para subir</span> o arrastra y suelta
+                  </p>
+                  <p className="text-xs text-gray-500 dark:text-gray-400">
+                    Archivo TXT (MAX. 5MB)
+                  </p>
+                  {selectedFile && (
+                    <p className="mt-2 text-sm text-blue-600 dark:text-blue-400">
+                      Archivo seleccionado: {selectedFile.name}
+                    </p>
+                  )}
+                </div>
+                <input
+                  type="file"
+                  className="hidden"
+                  accept=".txt"
+                  onChange={onFileChange}
+                  disabled={isLoading}
+                />
+              </label>
             </div>
 
-            <Button className="w-full">
-              <HiUpload className="mr-2 size-5" />
-              Subir Archivo
-            </Button>
-          </div>
+            {error && (
+              <div className="p-4 text-red-800 bg-red-100 dark:bg-red-900 dark:text-red-200 rounded-lg">
+                {error}
+              </div>
+            )}
+
+            {isSuccess && (
+              <div className="p-4 text-green-800 bg-green-100 dark:bg-green-900 dark:text-green-200 rounded-lg">
+                Archivo procesado correctamente
+              </div>
+            )}
+
+            <div className="flex justify-end space-x-3">
+              <Button
+                type="button"
+                color="gray"
+                onClick={reset}
+                disabled={isLoading}
+              >
+                Limpiar
+              </Button>
+              <Button
+                type="submit"
+                disabled={!selectedFile || isLoading}
+                className="relative"
+              >
+                {isLoading ? (
+                  <>
+                    <span className="opacity-0">Procesar</span>
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                    </div>
+                  </>
+                ) : (
+                  'Procesar'
+                )}
+              </Button>
+            </div>
+          </form>
         </Card>
       </div>
     </div>

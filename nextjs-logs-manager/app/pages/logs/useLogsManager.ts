@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { LogEntry, LogLevel, LogService } from '@/types/logs'
 import { getAllLogs } from '@/app/api/services/logProcessor'
 
@@ -104,13 +104,24 @@ export const useLogsManager = () => {
     return result
   }
 
-  // Cargar logs iniciales
-  useEffect(() => {
+  // Función para recargar los logs
+  const refreshLogs = useCallback(() => {
     const processedLogs = getAllLogs()
     const sortedLogs = sortLogsByTimestamp(processedLogs, sortDirection)
     setLogs(sortedLogs)
     setFilteredLogs(sortedLogs)
-  }, [])
+  }, [sortDirection])
+
+  // Cargar logs iniciales y escuchar actualizaciones
+  useEffect(() => {
+    refreshLogs()
+    
+    // Escuchar actualizaciones
+    window.addEventListener('logsUpdated', refreshLogs)
+    
+    // Limpiar listener
+    return () => window.removeEventListener('logsUpdated', refreshLogs)
+  }, [refreshLogs])
 
   // Aplicar filtros cuando cambien los criterios
   useEffect(() => {
@@ -120,7 +131,7 @@ export const useLogsManager = () => {
       level: selectedLevel
     })
     setFilteredLogs(sortLogsByTimestamp(filtered, sortDirection))
-  }, [logs, searchText, selectedService, selectedLevel])
+  }, [logs, searchText, selectedService, selectedLevel, sortDirection])
 
   // Obtener valores únicos y logs paginados
   const { services: uniqueServices, levels: uniqueLevels } = getUniqueValues(logs)
@@ -149,6 +160,7 @@ export const useLogsManager = () => {
       direction: sortDirection,
       toggle: toggleSortDirection
     },
-    data: currentLogs
+    data: currentLogs,
+    refreshLogs
   }
 } 
