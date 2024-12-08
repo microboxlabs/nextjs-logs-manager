@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { processRawLogs } from '@/app/api/services/logProcessor'
-import { storeAndGetLogs } from '@/app/api/services/logStorage'
+
 
 type UploadStatus = 'idle' | 'loading' | 'success' | 'error'
 
