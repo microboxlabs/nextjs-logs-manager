@@ -1,7 +1,8 @@
 import Link from "next/link";
+import { PrismaClient } from "@prisma/client";
 
 import LogsTable from "./components/LogsTable";
-import { PrismaClient } from "@prisma/client";
+import Heading from "./components/Heading";
 
 const primsa = new PrismaClient();
 
@@ -11,8 +12,12 @@ export default async function Logs() {
 
   return (
     <>
-      <h1>Registros</h1>
-      <Link href="/upload">Subir registros</Link>
+      <header className="mb-8 flex flex-col gap-4 sm:flex-row sm:justify-between">
+        <Heading>Registros</Heading>
+        <Link href="/upload" className="btn bg-green-700">
+          Subir registros
+        </Link>
+      </header>
       <LogsTable logs={logs} />
     </>
   );

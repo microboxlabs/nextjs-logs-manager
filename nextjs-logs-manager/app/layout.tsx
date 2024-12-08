@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Script from "next/script";
 import { Inter } from "next/font/google";
 import { ThemeModeScript } from "flowbite-react";
 import "./globals.css";
@@ -27,6 +28,7 @@ export default function RootLayout({
         <main className="container">{children}</main>
         <Footer />
       </body>
+      <Script src="../node_modules/flowbite/dist/flowbite.min.js" />
     </html>
   );
 }
