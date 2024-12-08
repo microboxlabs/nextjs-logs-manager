@@ -8,10 +8,5 @@ export default async function Log({ params }: { params: { id: string } }) {
     where: { id: Number(params.id) },
   });
 
-  return (
-    <>
-      <h1>{`Registro ${params.id}`}</h1>
-      <EditLogForm log={foundLog} />
-    </>
-  );
+  return <EditLogForm log={foundLog} />;
 }
