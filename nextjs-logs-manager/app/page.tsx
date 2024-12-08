@@ -7,7 +7,7 @@ export default function Home() {
       <p className="mb-6 text-lg">
         LogsManager. Here you can view and upload all your logs
       </p>
-      <Link href="/login" className="rounded bg-blue-500 px-4 py-2 text-white hover:bg-blue-700">
+      <Link href="/login" className="btn-primary">
         Get Started
       </Link>
     </div>
