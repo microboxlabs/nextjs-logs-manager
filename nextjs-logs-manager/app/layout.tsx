@@ -34,7 +34,7 @@ export default function RootLayout({
           </AuthGuard>
         </AuthContextProvider>
       </body>
-      <Script src="../node_modules/flowbite/dist/flowbite.min.js" />
+      <Script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js" />
     </html>
   );
 }

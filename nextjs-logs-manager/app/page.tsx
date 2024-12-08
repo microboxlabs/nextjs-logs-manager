@@ -11,7 +11,7 @@ import { TLog } from "./shared/types";
 import Spinner from "./components/Spinner";
 
 export default function Logs() {
-  const [logs, setLogs] = useState<TLog[]>();
+  const [logs, setLogs] = useState<TLog[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const { isAuth, isAdmin } = useAuth();
 

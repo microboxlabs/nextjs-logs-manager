@@ -5,9 +5,11 @@ import { useRouter } from "next/navigation";
 import axios from "axios";
 
 import { TLog } from "@/app/shared/types";
+import { useAuth } from "../hooks/useAuth";
 
 export default function LogsTable({ logs }: { logs?: TLog[] }) {
   const { refresh } = useRouter();
+  const { isAdmin } = useAuth();
   if (!logs) {
     return null;
   }
@@ -44,9 +46,11 @@ export default function LogsTable({ logs }: { logs?: TLog[] }) {
             <th scope="col" className="px-6 py-3">
               Mensaje
             </th>
-            <th scope="col" className="px-6 py-3">
-              Acciones
-            </th>
+            {isAdmin && (
+              <th scope="col" className="px-6 py-3">
+                Acciones
+              </th>
+            )}
           </tr>
         </thead>
         <tbody>
@@ -65,18 +69,23 @@ export default function LogsTable({ logs }: { logs?: TLog[] }) {
               <td className="px-6 py-4">{log.level}</td>
               <td className="px-6 py-4">{log.serviceName}</td>
               <td className="px-6 py-4">{log.message}</td>
-              <td className="px-6 py-4">
-                <Link href={`/view/${log.id}`} className="btn mr-4 bg-blue-600">
-                  Ver
-                </Link>
-                <button
-                  type="button"
-                  className="text-red-500"
-                  onClick={removeLog.bind(null, log.id!)}
-                >
-                  Eliminar
-                </button>
-              </td>
+              {isAdmin && (
+                <td className="px-6 py-4">
+                  <Link
+                    href={`/view/${log.id}`}
+                    className="btn mr-4 bg-blue-600"
+                  >
+                    Ver
+                  </Link>
+                  <button
+                    type="button"
+                    className="text-red-500"
+                    onClick={removeLog.bind(null, log.id!)}
+                  >
+                    Eliminar
+                  </button>
+                </td>
+              )}
             </tr>
           ))}
         </tbody>
