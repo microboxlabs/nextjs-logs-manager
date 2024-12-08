@@ -66,15 +66,12 @@ export default function LogsTable({ logs }: { logs?: TLog[] }) {
               <td className="px-6 py-4">{log.serviceName}</td>
               <td className="px-6 py-4">{log.message}</td>
               <td className="px-6 py-4">
-                <Link
-                  href={`/view/${log.id}`}
-                  className="font-medium text-blue-600 hover:underline dark:text-blue-500"
-                >
+                <Link href={`/view/${log.id}`} className="btn mr-4 bg-blue-600">
                   Ver
                 </Link>
                 <button
                   type="button"
-                  className="mb-2 me-2 rounded-lg bg-red-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-red-300 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900"
+                  className="text-red-500"
                   onClick={removeLog.bind(null, log.id!)}
                 >
                   Eliminar
