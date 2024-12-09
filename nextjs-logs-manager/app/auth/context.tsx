@@ -1,14 +1,15 @@
 "use client";
 
 import { createContext, useState } from "react";
+import { Role, TLoginResponse } from "../shared/types";
 
 export const AuthContext = createContext({
-  name: "",
+  username: "",
   email: "",
   isAuth: false,
   isAdmin: false,
   token: "",
-  signIn: () => {},
+  signIn: (data: TLoginResponse) => {},
   signOut: () => {},
   loadStoredAuth: () => {},
 });
@@ -18,16 +19,23 @@ export default function AuthContextProvider({
 }: {
   children: React.ReactNode;
 }) {
-  const [user, setUser] = useState({ name: "", email: "" });
+  const [user, setUser] = useState({ username: "", email: "" });
   const [auth, setAuth] = useState({
     isAuth: false,
     isAdmin: false,
     token: "",
   });
 
-  const signIn = () => {
-    const userData = { name: "", email: "" };
-    const authData = { isAuth: true, isAdmin: true, token: "" };
+  const signIn = (data: TLoginResponse) => {
+    const userData = {
+      username: data.account.username,
+      email: data.account.email,
+    };
+    const authData = {
+      isAuth: true,
+      isAdmin: data.account.roleId === Role.Admin,
+      token: data.token,
+    };
 
     setUser(userData);
     setAuth(authData);
@@ -37,7 +45,7 @@ export default function AuthContextProvider({
   };
 
   const signOut = () => {
-    setUser({ name: "", email: "" });
+    setUser({ username: "", email: "" });
     setAuth({ isAuth: false, isAdmin: true, token: "" });
     localStorage.clear();
   };

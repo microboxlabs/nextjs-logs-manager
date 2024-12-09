@@ -1,8 +1,9 @@
 "use client";
 
 import { useForm } from "react-hook-form";
+import axios from "axios";
 
-import type { TSignInForm } from "@/app/shared/types";
+import type { TSignInForm, TLoginResponse } from "@/app/shared/types";
 import Button from "./Button";
 import { useAuth } from "../hooks/useAuth";
 
@@ -16,8 +17,13 @@ export default function SignInForm() {
   });
   const { signIn } = useAuth();
 
-  const submit = (data: TSignInForm) => {
-    signIn();
+  const submit = async (data: TSignInForm) => {
+    try {
+      const res = await axios.post<TLoginResponse>("/api/auth", data);
+      signIn(res.data);
+    } catch (error) {
+      alert("Credenciales incorrectas");
+    }
   };
 
   return (
