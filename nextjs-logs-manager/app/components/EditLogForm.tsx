@@ -1,17 +1,19 @@
 "use client";
 
 import { useState } from "react";
-import { useForm } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 import axios from "axios";
+import { Datepicker, TextInput, Label, Button, Select } from "flowbite-react";
 
 import type { TLog } from "@/app/shared/types";
 import Heading from "./Heading";
-import Button from "./Button";
+import ErrorMessage from "./ErrorMessage";
 
 export default function EditLogForm({ log }: { log?: TLog }) {
   const {
-    register,
+    control,
     handleSubmit,
+    watch,
     formState: { errors },
   } = useForm<TLog>({
     defaultValues: { ...log },
@@ -39,11 +41,11 @@ export default function EditLogForm({ log }: { log?: TLog }) {
       <header className="mb-4 flex flex-col gap-6 sm:mb-8 sm:flex-row sm:justify-between">
         <Heading className="text-blue-500">{`Registro #${log!.id}`}</Heading>
         {isEditing ? (
-          <Button type="submit" className="bg-green-700">
+          <Button type="submit" color="success">
             Guardar cambios
           </Button>
         ) : (
-          <Button type="button" className="bg-blue-700" onClick={handleEdit}>
+          <Button type="button" onClick={handleEdit}>
             Editar
           </Button>
         )}
@@ -52,146 +54,104 @@ export default function EditLogForm({ log }: { log?: TLog }) {
       <div className="max-w-screen-sm">
         <div className="flex flex-col sm:flex-row sm:gap-8">
           <div className="mb-6">
-            <label
-              htmlFor="date"
-              className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
-            >
-              Fecha
-            </label>
-            <div className="relative">
-              <div className="pointer-events-none absolute inset-y-0 start-0 flex items-center ps-3.5">
-                <svg
-                  className="h-4 w-4 text-gray-500 dark:text-gray-400"
-                  aria-hidden="true"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="currentColor"
-                  viewBox="0 0 20 20"
-                >
-                  <path d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z" />
-                </svg>
-              </div>
-              <input
-                id="date"
-                type="text"
-                className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 ps-10 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
-                {...register("date", { required: "Campo fecha requerido" })}
-                disabled={!isEditing}
-              />
-            </div>
-
+            <Label htmlFor="date">Fecha</Label>
+            <Controller
+              control={control}
+              name="date"
+              rules={{ required: "Campo fecha requerido" }}
+              render={({ field: { value, onChange } }) => (
+                <Datepicker
+                  id="date"
+                  language="es-MX"
+                  disabled={!isEditing}
+                  // TODO: Fix input binding
+                  value={value}
+                  onChange={onChange}
+                />
+              )}
+            />
             {errors && errors.date && (
-              <p className="mt-2 text-sm text-red-600 dark:text-red-500">
-                {errors.date.message}
-              </p>
+              <ErrorMessage>{errors.date.message}</ErrorMessage>
             )}
           </div>
 
           <div className="mb-6">
-            <label
-              htmlFor="time"
-              className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
-            >
-              Hora:
-            </label>
-            <div className="relative">
-              <div className="pointer-events-none absolute inset-y-0 end-0 top-0 flex items-center pe-3.5">
-                <svg
-                  className="h-4 w-4 text-gray-500 dark:text-gray-400"
-                  aria-hidden="true"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm11-4a1 1 0 1 0-2 0v4a1 1 0 0 0 .293.707l3 3a1 1 0 0 0 1.414-1.414L13 11.586V8Z"
-                    clipRule="evenodd"
-                  />
-                </svg>
-              </div>
-              <input
-                type="time"
-                id="time"
-                className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm leading-none text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
-                {...register("time", { required: "Campo tiempo requerido" })}
-                disabled={!isEditing}
-              />
-            </div>
-
+            <Label htmlFor="time">Hora:</Label>
+            <Controller
+              control={control}
+              name="time"
+              rules={{ required: "Campo tiempo requerido" }}
+              render={({ field: { value, onChange } }) => (
+                <TextInput
+                  type="time"
+                  disabled={!isEditing}
+                  value={value}
+                  onChange={onChange}
+                />
+              )}
+            />
             {errors && errors.time && (
-              <p className="mt-2 text-sm text-red-600 dark:text-red-500">
-                {errors.time.message}
-              </p>
+              <ErrorMessage>{errors.time.message}</ErrorMessage>
             )}
           </div>
         </div>
 
         <div className="mb-6">
-          <label
-            htmlFor="level"
-            className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
-          >
-            Nivel
-          </label>
-          <select
-            id="level"
-            className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
-            {...register("level", { required: "Campo nivel requerido" })}
-            disabled={!isEditing}
-          >
-            <option value="INFO">INFO</option>
-            <option value="ERROR">ERROR</option>
-            <option value="WARNING">ADVERTENCIA</option>
-          </select>
-
+          <Label htmlFor="level">Nivel</Label>
+          <Controller
+            control={control}
+            name="level"
+            rules={{ required: "Campo nivel requerido" }}
+            render={({ field: { value, onChange } }) => (
+              <Select disabled={!isEditing} value={value} onChange={onChange}>
+                <option value="INFO">INFO</option>
+                <option value="ERROR">ERROR</option>
+                <option value="WARNING">WARNING</option>
+              </Select>
+            )}
+          />
           {errors && errors.level && (
-            <p className="mt-2 text-sm text-red-600 dark:text-red-500">
-              {errors.level.message}
-            </p>
+            <ErrorMessage>{errors.level.message}</ErrorMessage>
           )}
         </div>
 
         <div className="mb-6">
-          <label
-            htmlFor="serviceName"
-            className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
-          >
-            Nombre del servicio
-          </label>
-          <input
-            id="serviceName"
-            className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
-            {...register("serviceName", {
+          <Label htmlFor="serviceName">Nombre del servicio</Label>
+          <Controller
+            control={control}
+            name="serviceName"
+            rules={{
               required: "Campo nombre del servicio requerido",
-            })}
-            disabled={!isEditing}
+            }}
+            render={({ field: { value, onChange } }) => (
+              <TextInput
+                disabled={!isEditing}
+                value={value}
+                onChange={onChange}
+              />
+            )}
           />
-
           {errors && errors.serviceName && (
-            <p className="mt-2 text-sm text-red-600 dark:text-red-500">
-              {errors.serviceName.message}
-            </p>
+            <ErrorMessage>{errors.serviceName.message}</ErrorMessage>
           )}
         </div>
 
         <div className="mb-6">
-          <label
-            htmlFor="message"
-            className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
-          >
-            Mensaje
-          </label>
-          <input
-            id="message"
-            className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
-            {...register("message", { required: "Mensaje requerido" })}
-            disabled={!isEditing}
+          <Label htmlFor="message">Mensaje</Label>
+          <Controller
+            control={control}
+            name="message"
+            rules={{ required: "Mensaje requerido" }}
+            render={({ field: { value, onChange } }) => (
+              <TextInput
+                disabled={!isEditing}
+                value={value}
+                onChange={onChange}
+              />
+            )}
           />
-
           {errors && errors.message && (
-            <p className="mt-2 text-sm text-red-600 dark:text-red-500">
-              {errors.message.message}
-            </p>
+            <ErrorMessage>{errors.message.message}</ErrorMessage>
           )}
         </div>
       </div>
