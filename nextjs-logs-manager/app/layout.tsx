@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Script from "next/script";
 import { Inter } from "next/font/google";
 import { ThemeModeScript } from "flowbite-react";
 import "./globals.css";
@@ -34,7 +33,6 @@ export default function RootLayout({
           </AuthGuard>
         </AuthContextProvider>
       </body>
-      <Script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js" />
     </html>
   );
 }
