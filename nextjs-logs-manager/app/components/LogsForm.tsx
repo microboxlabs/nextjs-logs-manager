@@ -4,10 +4,11 @@ import { FormEvent, useState, useCallback, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { useDropzone } from "react-dropzone";
 import axios from "axios";
+import { Button } from "flowbite-react";
 
 import FilesList from "./FilesList";
-import Button from "./Button";
 import { generateId } from "@/app/shared/utils";
+import ErrorMessage from "./ErrorMessage";
 
 export type TUploadedFile = {
   id: string;
@@ -76,7 +77,7 @@ export default function LogForm() {
             {!isDragActive ? (
               <div className="flex flex-col items-center justify-center pb-6 pt-5">
                 <svg
-                  className="mb-4 h-8 w-8 text-gray-500 dark:text-gray-400"
+                  className="mb-4 size-8 text-gray-500"
                   aria-hidden="true"
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
@@ -111,13 +112,11 @@ export default function LogForm() {
         database. <br />
       </p>
       {isRequiredError && (
-        <p className="mt-2 text-sm text-red-600 dark:text-red-500">
-          Al menos un archivo es requerido
-        </p>
+        <ErrorMessage>Al menos un archivo es requerido</ErrorMessage>
       )}
       <FilesList files={files} onRemove={removeFile} />
       <div className="mt-8 flex flex-col sm:flex-row sm:justify-end">
-        <Button type="submit" className=" bg-blue-700">
+        <Button type="submit" pill color="success">
           Subir registros
         </Button>
       </div>
