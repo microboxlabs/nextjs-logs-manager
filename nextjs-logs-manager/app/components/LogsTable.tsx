@@ -1,14 +1,17 @@
 "use client";
 
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import axios from "axios";
 
 import { TLog } from "@/app/shared/types";
 import { useAuth } from "../hooks/useAuth";
 
-export default function LogsTable({ logs }: { logs?: TLog[] }) {
-  const { refresh } = useRouter();
+type Props = {
+  logs?: TLog[];
+  refresh: () => void;
+};
+
+export default function LogsTable({ logs, refresh }: Props) {
   const { isAdmin } = useAuth();
   if (!logs) {
     return null;

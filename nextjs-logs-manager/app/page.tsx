@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import axios from "axios";
 
 import LogsTable from "./components/LogsTable";
@@ -15,11 +15,15 @@ export default function Logs() {
   const [isLoading, setIsLoading] = useState(true);
   const { isAuth, isAdmin } = useAuth();
 
-  useEffect(() => {
+  const fetchLogs = useCallback(() => {
     axios.get("/api/manage-logs").then((res) => {
       setLogs(res.data);
       setIsLoading(false);
     });
+  }, []);
+
+  useEffect(() => {
+    fetchLogs();
   }, []);
 
   if (isLoading) {
@@ -40,7 +44,7 @@ export default function Logs() {
           </Link>
         )}
       </header>
-      <LogsTable logs={logs} />
+      <LogsTable logs={logs} refresh={fetchLogs} />
     </>
   );
 }
