@@ -3,12 +3,12 @@
 import Link from "next/link";
 import { useState, useEffect, useCallback } from "react";
 import axios from "axios";
+import { Spinner } from "flowbite-react";
 
 import LogsTable from "./components/LogsTable";
 import Heading from "./components/Heading";
 import { useAuth } from "./hooks/useAuth";
 import type { TLog, TPaginatedLogsResponse } from "./shared/types";
-import Spinner from "./components/Spinner";
 
 export default function Logs() {
   const [logs, setLogs] = useState<TLog[]>([]);

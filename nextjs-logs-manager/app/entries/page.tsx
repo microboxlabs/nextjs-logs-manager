@@ -2,11 +2,11 @@
 
 import { useState, useEffect, useCallback } from "react";
 import axios from "axios";
+import { Spinner } from "flowbite-react";
 
 import EntriesTable from "../components/EntriesTable";
 import Heading from "../components/Heading";
 import type { TEntry, TPaginatedEntriesResponse } from "../shared/types";
-import Spinner from "../components/Spinner";
 
 export default function Entries() {
   const [entries, setEntries] = useState<TEntry[]>([]);
