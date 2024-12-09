@@ -39,13 +39,13 @@ export default function EditLogForm({ log }: { log?: TLog }) {
   return (
     <form onSubmit={handleSubmit(submit)}>
       <header className="mb-4 flex flex-col gap-6 sm:mb-8 sm:flex-row sm:justify-between">
-        <Heading className="text-blue-500">{`Registro #${log!.id}`}</Heading>
+        <Heading className="text-teal-700">{`Registro #${log!.id}`}</Heading>
         {isEditing ? (
-          <Button type="submit" color="success">
+          <Button type="submit" color="success" pill>
             Guardar cambios
           </Button>
         ) : (
-          <Button type="button" onClick={handleEdit}>
+          <Button type="button" onClick={handleEdit} pill>
             Editar
           </Button>
         )}
