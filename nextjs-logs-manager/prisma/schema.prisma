@@ -14,7 +14,8 @@ model Account {
   id    Int     @id @default(autoincrement())
   email String  @unique
   password String
-  name  String?
+  username  String
+  roleId Int
 }
 
 model Log {

@@ -24,3 +24,20 @@ export type BaseCompProps = {
   children?: React.ReactNode;
   className?: string;
 };
+
+export enum Role {
+  Admin = 1,
+  User,
+}
+
+export type TAccount = {
+  id: number;
+  email: string;
+  username: string;
+  roleId: Role;
+};
+
+export type TLoginResponse = {
+  token: string;
+  account: TAccount;
+};
