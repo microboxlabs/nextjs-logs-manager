@@ -1,10 +1,15 @@
-import { DarkThemeToggle } from "flowbite-react";
+import Link from "next/link";
 
 export default function Home() {
   return (
-    <main className="flex min-h-screen items-center justify-center gap-2 dark:bg-gray-800">
-      <h1 className="text-2xl dark:text-white">Flowbite React + Next.js</h1>
-      <DarkThemeToggle />
-    </main>
+    <div className="flex min-h-screen flex-col items-center justify-center">
+      <h1 className="mb-4 text-4xl font-bold">Welcome!</h1>
+      <p className="mb-6 text-lg">
+        LogsManager. Here you can view and upload all your logs
+      </p>
+      <Link href="/login" className="btn-primary">
+        Get Started
+      </Link>
+    </div>
   );
 }
