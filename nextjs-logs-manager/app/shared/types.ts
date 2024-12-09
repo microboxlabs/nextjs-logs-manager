@@ -42,8 +42,8 @@ export type TLoginResponse = {
   account: TAccount;
 };
 
-export type TPaginatedLogsResponse = {
-  data: TLog[];
+type PaginatedReponse<T> = {
+  data: T[];
   pagination: {
     page: number;
     perPage: number;
@@ -51,3 +51,7 @@ export type TPaginatedLogsResponse = {
     totalCount: number;
   };
 };
+
+export type TPaginatedLogsResponse = PaginatedReponse<TLog>;
+
+export type TPaginatedEntriesResponse = PaginatedReponse<TEntry>;
