@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useState, useEffect, useCallback } from "react";
 import axios from "axios";
-import { Spinner } from "flowbite-react";
+import { Spinner, Button } from "flowbite-react";
 
 import LogsTable from "./components/LogsTable";
 import Heading from "./components/Heading";
@@ -60,9 +60,9 @@ export default function Logs() {
       <header className="mb-8 flex flex-col gap-4 sm:flex-row sm:justify-between">
         <Heading>Registros</Heading>
         {isAuth && isAdmin && (
-          <Link href="/upload" className="btn bg-green-700">
+          <Button as={Link} href="/upload" color="success" pill>
             Subir registros
-          </Link>
+          </Button>
         )}
       </header>
       <LogsTable
