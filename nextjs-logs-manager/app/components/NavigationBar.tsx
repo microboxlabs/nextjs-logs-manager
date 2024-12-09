@@ -1,75 +1,49 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useAuth } from "../hooks/useAuth";
-import Button from "./Button";
+import { Navbar, Button } from "flowbite-react";
 
 export default function NavigationBar() {
   const { isAuth, isAdmin, signOut } = useAuth();
+  const pathname = usePathname();
 
   return (
-    <nav className="mb-6 flex h-[70px] border-b border-solid border-gray-200 bg-white py-2.5 lg:mb-8 lg:px-6">
-      <div className="container flex flex-wrap items-center justify-between">
-        <Link href="/" className="grid place-items-center">
-          <span className="self-center whitespace-nowrap text-xl font-semibold dark:text-white">
-            Logs manager
-          </span>
-        </Link>
-        <div className="flex items-center lg:order-2">
-          {isAuth && (
-            <>
-              <Button onClick={() => signOut()} className="bg-black">
-                Cerrar sesi&oacute;n
-              </Button>
-              <button
-                data-collapse-toggle="mobile-menu-2"
-                type="button"
-                className="ml-1 inline-flex items-center rounded-lg p-2 text-sm text-gray-500 lg:hidden"
-                aria-controls="mobile-menu-2"
-                aria-expanded="false"
-              >
-                <span className="sr-only">Open main menu</span>
-                <svg
-                  className="h-6 w-6"
-                  fill="currentColor"
-                  viewBox="0 0 20 20"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z"
-                    clipRule="evenodd"
-                  ></path>
-                </svg>
-                <svg
-                  className="hidden h-6 w-6"
-                  fill="currentColor"
-                  viewBox="0 0 20 20"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                    clipRule="evenodd"
-                  ></path>
-                </svg>
-              </button>
-            </>
-          )}
-        </div>
-        {isAuth && isAdmin && (
-          <div
-            className="hidden w-full items-center justify-between lg:order-1 lg:ml-8 lg:mr-auto lg:flex lg:w-auto"
-            id="mobile-menu-2"
-          >
-            <ul className="flex flex-col lg:mt-0 lg:flex-row lg:space-x-8">
-              <li>
-                <Link href="/entries">Subidas</Link>
-              </li>
-            </ul>
-          </div>
+    <Navbar
+      rounded
+      className="mb-8 flex h-[70px] items-center shadow-sm sm:px-0"
+    >
+      <Navbar.Brand className="text-xl font-bold">Logs manager</Navbar.Brand>
+      <div className="flex md:order-2">
+        {isAuth && (
+          <>
+            <Button
+              onClick={() => signOut()}
+              pill
+              color="dark"
+              className="mr-2 md:mr-0"
+            >
+              Cerrar sesi&oacute;n
+            </Button>
+            {isAdmin && <Navbar.Toggle />}
+          </>
         )}
       </div>
-    </nav>
+      {isAuth && isAdmin && (
+        <Navbar.Collapse>
+          <Navbar.Link as={Link} href="/" active={pathname === "/"}>
+            Registros
+          </Navbar.Link>
+          <Navbar.Link
+            as={Link}
+            href="/entries"
+            active={pathname === "/entries"}
+          >
+            Subidas
+          </Navbar.Link>
+        </Navbar.Collapse>
+      )}
+    </Navbar>
   );
 }

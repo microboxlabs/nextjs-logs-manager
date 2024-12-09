@@ -33,7 +33,7 @@ export default function SignInForm() {
         <span className="font-medium">Usuarios:</span>
         <ul className="mt-1.5 list-inside list-disc">
           <li>admin@prueba.com / admin123</li>
-          <li>user@prueba.com / usuario123</li>
+          <li>usuario@prueba.com / usuario123</li>
         </ul>
       </Alert>
 
