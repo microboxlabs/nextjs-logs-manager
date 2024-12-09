@@ -1,5 +1,5 @@
+import { Table, Pagination } from "flowbite-react";
 import { TEntry } from "@/app/shared/types";
-import Pagination from "./Pagination";
 
 type Props = {
   entries?: TEntry[];
@@ -22,50 +22,34 @@ export default function EntriesTable({
   }
 
   return (
-    <div>
-      <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
-        <table className="w-full text-left text-sm text-gray-500 dark:text-gray-400 rtl:text-right">
-          <thead className="bg-gray-50 text-xs uppercase text-gray-700 dark:bg-gray-700 dark:text-gray-400">
-            <tr>
-              <th scope="col" className="px-6 py-3">
-                Id
-              </th>
-              <th scope="col" className="px-6 py-3">
-                Usuario
-              </th>
-              <th scope="col" className="px-6 py-3">
-                Fecha
-              </th>
-              <th scope="col" className="px-6 py-3">
-                Detalles
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {entries?.map((entry) => (
-              <tr
-                key={entry.id}
-                className="border-b odd:bg-white even:bg-gray-50 dark:border-gray-700 odd:dark:bg-gray-900 even:dark:bg-gray-800"
-              >
-                <th
-                  scope="row"
-                  className="whitespace-nowrap px-6 py-4 font-medium text-gray-900 dark:text-white"
-                >
-                  {entry.id}
-                </th>
-                <td className="px-6 py-4">{entry.user}</td>
-                <td className="px-6 py-4">{entry.date}</td>
-                <td className="px-6 py-4">{entry.details}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+    <div className="overflow-x-auto">
+      <Table striped>
+        <Table.Head>
+          <Table.HeadCell>Id</Table.HeadCell>
+          <Table.HeadCell>Usuario</Table.HeadCell>
+          <Table.HeadCell>Fecha</Table.HeadCell>
+          <Table.HeadCell>Detalles</Table.HeadCell>
+        </Table.Head>
+        <Table.Body className="divide-y">
+          {entries?.map((entry) => (
+            <Table.Row key={entry.id} className="bg-white">
+              <Table.Cell className="whitespace-nowrap font-medium text-gray-900">
+                {entry.id}
+              </Table.Cell>
+              <Table.Cell>{entry.user}</Table.Cell>
+              <Table.Cell>{entry.date}</Table.Cell>
+              <Table.Cell>{entry.details}</Table.Cell>
+            </Table.Row>
+          ))}
+        </Table.Body>
+      </Table>
+      <div className="mt-4 flex justify-center">
+        <Pagination
+          currentPage={pagination.page}
+          totalPages={pagination.totalPages}
+          onPageChange={onPageChange}
+        />
       </div>
-      <Pagination
-        currentPage={pagination.page}
-        totalPages={pagination.totalPages}
-        onPageChange={onPageChange}
-      />
     </div>
   );
 }

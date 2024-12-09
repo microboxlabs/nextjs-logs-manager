@@ -8,7 +8,7 @@ export default function Footer() {
             <a
               target="_blank"
               href="https://github.com/almsrr"
-              className="font-medium text-blue-600 hover:underline dark:text-blue-500"
+              className="font-medium text-teal-700 hover:underline dark:text-blue-500"
             >
               @Almsrr
             </a>
