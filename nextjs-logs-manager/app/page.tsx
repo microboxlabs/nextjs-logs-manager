@@ -7,24 +7,41 @@ import axios from "axios";
 import LogsTable from "./components/LogsTable";
 import Heading from "./components/Heading";
 import { useAuth } from "./hooks/useAuth";
-import { TLog } from "./shared/types";
+import type { TLog, TPaginatedLogsResponse } from "./shared/types";
 import Spinner from "./components/Spinner";
 
 export default function Logs() {
   const [logs, setLogs] = useState<TLog[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [pagination, setPagination] = useState({
+    page: 1,
+    perPage: 1,
+    totalPages: 1,
+    totalCount: 1,
+  });
   const { isAuth, isAdmin } = useAuth();
 
   const fetchLogs = useCallback(() => {
-    axios.get("/api/manage-logs").then((res) => {
-      setLogs(res.data);
-      setIsLoading(false);
-    });
-  }, []);
+    axios
+      .get<TPaginatedLogsResponse>("/api/manage-logs", {
+        params: { page: pagination.page },
+      })
+      .then((res) => {
+        setLogs(res.data.data);
+        setIsLoading(false);
+        setPagination((s) => ({
+          ...s,
+          page: res.data.pagination.page,
+          perPage: res.data.pagination.perPage,
+          totalPages: res.data.pagination.totalPages,
+          totalCount: res.data.pagination.totalCount,
+        }));
+      });
+  }, [pagination.page]);
 
   useEffect(() => {
     fetchLogs();
-  }, []);
+  }, [fetchLogs]);
 
   if (isLoading) {
     return (
@@ -33,6 +50,10 @@ export default function Logs() {
       </div>
     );
   }
+
+  const handlePageChange = (page: number) => {
+    setPagination((s) => ({ ...s, page }));
+  };
 
   return (
     <>
@@ -44,7 +65,12 @@ export default function Logs() {
           </Link>
         )}
       </header>
-      <LogsTable logs={logs} refresh={fetchLogs} />
+      <LogsTable
+        logs={logs}
+        refresh={fetchLogs}
+        pagination={pagination}
+        onPageChange={handlePageChange}
+      />
     </>
   );
 }

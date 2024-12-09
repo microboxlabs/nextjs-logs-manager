@@ -1,6 +1,7 @@
+import type { NextRequest } from "next/server";
 import { PrismaClient } from "@prisma/client";
 import { extractLogsFromFile } from "@/app/shared/utils";
-import type { TLog } from "@/app/shared/types";
+import type { TLog, TPaginatedLogsResponse } from "@/app/shared/types";
 
 const prisma = new PrismaClient();
 
@@ -79,12 +80,28 @@ export async function DELETE(request: Request) {
   }
 }
 
-export async function GET() {
+export async function GET(request: NextRequest) {
   try {
-    const logs = await prisma.log.findMany();
+    const params = request.nextUrl.searchParams;
+    const page = params.get("page") ? Number(params.get("page")) : 1;
+    const limit = 10;
+    const skip = (page - 1) * limit;
+
+    const logs = await prisma.log.findMany({ skip, take: limit });
+    const count = await prisma.log.count();
     await prisma.$disconnect();
 
-    return Response.json(logs);
+    const res: TPaginatedLogsResponse = {
+      data: logs,
+      pagination: {
+        page,
+        perPage: limit,
+        totalCount: count,
+        totalPages: Math.ceil(count / limit),
+      },
+    };
+
+    return Response.json(res);
   } catch (error) {
     return Response.error();
   }

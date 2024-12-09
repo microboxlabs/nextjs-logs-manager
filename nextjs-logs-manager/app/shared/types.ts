@@ -41,3 +41,13 @@ export type TLoginResponse = {
   token: string;
   account: TAccount;
 };
+
+export type TPaginatedLogsResponse = {
+  data: TLog[];
+  pagination: {
+    page: number;
+    perPage: number;
+    totalPages: number;
+    totalCount: number;
+  };
+};
