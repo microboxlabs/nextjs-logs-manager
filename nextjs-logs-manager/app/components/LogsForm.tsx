@@ -19,7 +19,7 @@ export default function LogForm() {
   const formRef = useRef(null);
   const { push } = useRouter();
   const [isRequiredError, setIsRequiredError] = useState(false);
-  const [files, setFiles] = useState<TUploadedFile[]>();
+  const [files, setFiles] = useState<TUploadedFile[]>([]);
 
   const onDrop = useCallback((files: File[]) => {
     setFiles((prevFiles) => {
@@ -50,7 +50,11 @@ export default function LogForm() {
     }
 
     try {
-      const formData = new FormData(formRef.current!);
+      const formData = new FormData();
+      for (let i = 0; i < files.length; i++) {
+        formData.append("logFiles", files[i].file);
+      }
+
       await axios.post("/api/manage-logs", formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });

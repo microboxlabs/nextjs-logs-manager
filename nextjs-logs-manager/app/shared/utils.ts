@@ -1,10 +1,10 @@
 import { v4 as uuid } from "uuid";
-import type { TLog } from "@/app/shared/types";
+import type { Log } from "@prisma/client";
 
 export const generateId = () => uuid();
 
 export const extractLogsFromFile = (content: string) => {
-  const logs: TLog[] = [];
+  const logs: Log[] = [];
 
   const fileLines = content.split("\n");
 
@@ -19,6 +19,7 @@ export const extractLogsFromFile = (content: string) => {
     const message = fileLines[i].split(": ")[1];
 
     const newLog = {
+      id: undefined!,
       date,
       time,
       level,
