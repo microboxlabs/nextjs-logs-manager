@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 import axios from "axios";
-import { useState } from "react";
 import { Table, Pagination, Button } from "flowbite-react";
 
 import { TLog } from "@/app/shared/types";
@@ -26,20 +25,19 @@ export default function LogsTable({
   pagination,
   onPageChange,
 }: Props) {
-  const [page, setPage] = useState();
   const { isAdmin } = useAuth();
   if (!logs) {
     return null;
   }
 
   const removeLog = async (id: number) => {
-    if (confirm("Esta seguro de eliminar este registro")) {
+    if (confirm("Are you sure do you want to delete this log?")) {
       try {
         await axios.delete("/api/manage-logs", { data: id });
-        alert("Registro eliminado exitosamente");
+        alert("Log deleted successfully");
         refresh();
       } catch (error) {
-        alert("Algo salió mal");
+        alert("Something went wrong");
       }
     }
   };
@@ -49,11 +47,11 @@ export default function LogsTable({
       <Table striped>
         <Table.Head>
           <Table.HeadCell>Id</Table.HeadCell>
-          <Table.HeadCell>Fecha</Table.HeadCell>
-          <Table.HeadCell>Nivel</Table.HeadCell>
-          <Table.HeadCell>Servicio</Table.HeadCell>
-          <Table.HeadCell>Mensaje</Table.HeadCell>
-          {isAdmin && <Table.HeadCell>Acciones</Table.HeadCell>}
+          <Table.HeadCell>Timestamp</Table.HeadCell>
+          <Table.HeadCell>Severity</Table.HeadCell>
+          <Table.HeadCell>Service</Table.HeadCell>
+          <Table.HeadCell>Message</Table.HeadCell>
+          {isAdmin && <Table.HeadCell>Actions</Table.HeadCell>}
         </Table.Head>
         <Table.Body className="divide-y">
           {logs?.map((log) => (
@@ -69,14 +67,14 @@ export default function LogsTable({
                 <Table.Cell>
                   <div className="flex gap-2">
                     <Button as={Link} href={`/view/${log.id}`} pill>
-                      Ver
+                      View
                     </Button>
                     <Button
                       onClick={removeLog.bind(null, log.id!)}
                       color="red"
                       pill
                     >
-                      Eliminar
+                      Delete
                     </Button>
                   </div>
                 </Table.Cell>

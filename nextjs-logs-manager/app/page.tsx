@@ -58,10 +58,10 @@ export default function Logs() {
   return (
     <>
       <header className="mb-8 flex flex-col gap-4 sm:flex-row sm:justify-between">
-        <Heading>Registros</Heading>
+        <Heading>Logs</Heading>
         {isAuth && isAdmin && (
           <Button as={Link} href="/upload" color="success" pill>
-            Subir registros
+            Upload logs
           </Button>
         )}
       </header>
