@@ -56,7 +56,7 @@ export default function LogForm() {
       });
       push("/");
     } catch (error) {
-      alert("Error subiendo registros");
+      alert("Error while uploading logs");
     }
   };
 
@@ -92,32 +92,32 @@ export default function LogForm() {
                   />
                 </svg>
                 <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">
-                  <span className="font-semibold">Click para subir</span> o
-                  arrastre y suelte
+                  <span className="font-semibold">Click here to upload</span> or
+                  drag and drop
                 </p>
                 <p className="text-xs text-gray-500 dark:text-gray-400">.TXT</p>
               </div>
             ) : (
-              <p>Suelte aqu&iacute;</p>
+              <p>Drop here</p>
             )}
           </div>
         </label>
       </div>
       <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">
-        Para un correcto procesamiento, los registros en el archivo deben estar
-        en el siguiente formato: <br />
+        For correct processing, the records in the file must be in the following
+        format: <br />
         [2024-11-01 10:00:00] [INFO] Service-A: Successfully completed task.{" "}
         <br />
         [2024-11-01 10:01:00] [ERROR] Service-B: Failed to connect to the
         database. <br />
       </p>
       {isRequiredError && (
-        <ErrorMessage>Al menos un archivo es requerido</ErrorMessage>
+        <ErrorMessage>At least one file required</ErrorMessage>
       )}
       <FilesList files={files} onRemove={removeFile} />
       <div className="mt-8 flex flex-col sm:flex-row sm:justify-end">
         <Button type="submit" pill color="success">
-          Subir registros
+          Upload logs
         </Button>
       </div>
     </form>
