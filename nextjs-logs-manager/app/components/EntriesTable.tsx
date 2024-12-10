@@ -1,8 +1,8 @@
 import { Table, Pagination } from "flowbite-react";
-import { TEntry } from "@/app/shared/types";
+import type { Entry } from "@prisma/client";
 
 type Props = {
-  entries?: TEntry[];
+  entries?: Entry[];
   pagination: {
     page: number;
     perPage: number;

@@ -1,23 +1,9 @@
+import type { Account, Log, Entry } from "@prisma/client";
+
 export type TSignInForm = {
   email: string;
   password: string;
   remember: boolean;
-};
-
-export type TLog = {
-  id?: number;
-  date: string;
-  time: string;
-  level: string;
-  serviceName: string;
-  message: string;
-};
-
-export type TEntry = {
-  id?: number;
-  date: string;
-  user: string;
-  details: string;
 };
 
 export type BaseCompProps = {
@@ -30,16 +16,9 @@ export enum Role {
   User,
 }
 
-export type TAccount = {
-  id: number;
-  email: string;
-  username: string;
-  roleId: Role;
-};
-
 export type TLoginResponse = {
   token: string;
-  account: TAccount;
+  account: Account;
 };
 
 type PaginatedReponse<T> = {
@@ -52,6 +31,6 @@ type PaginatedReponse<T> = {
   };
 };
 
-export type TPaginatedLogsResponse = PaginatedReponse<TLog>;
+export type TPaginatedLogsResponse = PaginatedReponse<Log>;
 
-export type TPaginatedEntriesResponse = PaginatedReponse<TEntry>;
+export type TPaginatedEntriesResponse = PaginatedReponse<Entry>;

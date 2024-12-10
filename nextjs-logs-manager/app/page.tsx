@@ -4,14 +4,15 @@ import Link from "next/link";
 import { useState, useEffect, useCallback } from "react";
 import axios from "axios";
 import { Spinner, Button } from "flowbite-react";
+import type { Log } from "@prisma/client";
 
 import LogsTable from "./components/LogsTable";
 import Heading from "./components/Heading";
 import { useAuth } from "./hooks/useAuth";
-import type { TLog, TPaginatedLogsResponse } from "./shared/types";
+import type { TPaginatedLogsResponse } from "./shared/types";
 
 export default function Logs() {
-  const [logs, setLogs] = useState<TLog[]>([]);
+  const [logs, setLogs] = useState<Log[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [pagination, setPagination] = useState({
     page: 1,

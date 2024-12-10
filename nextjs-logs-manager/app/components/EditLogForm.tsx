@@ -4,23 +4,23 @@ import { useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import axios from "axios";
 import { Datepicker, TextInput, Label, Button, Select } from "flowbite-react";
+import type { Log } from "@prisma/client";
 
-import type { TLog } from "@/app/shared/types";
 import Heading from "./Heading";
 import ErrorMessage from "./ErrorMessage";
 
-export default function EditLogForm({ log }: { log?: TLog }) {
+export default function EditLogForm({ log }: { log?: Log }) {
   const {
     control,
     handleSubmit,
     watch,
     formState: { errors },
-  } = useForm<TLog>({
+  } = useForm<Log>({
     defaultValues: { ...log },
   });
   const [isEditing, setIsEditing] = useState(false);
 
-  const submit = async (data: TLog) => {
+  const submit = async (data: Log) => {
     setIsEditing(false);
 
     try {

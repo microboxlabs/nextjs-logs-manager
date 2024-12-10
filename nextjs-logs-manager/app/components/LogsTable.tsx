@@ -3,12 +3,12 @@
 import Link from "next/link";
 import axios from "axios";
 import { Table, Pagination, Button } from "flowbite-react";
+import type { Log } from "@prisma/client";
 
-import { TLog } from "@/app/shared/types";
 import { useAuth } from "../hooks/useAuth";
 
 type Props = {
-  logs?: TLog[];
+  logs?: Log[];
   refresh: () => void;
   pagination: {
     page: number;
