@@ -54,7 +54,7 @@ export default function Entries() {
 
   return (
     <>
-      <Heading className="mb-8">Subidas</Heading>
+      <Heading className="mb-8">Entries</Heading>
       <EntriesTable
         entries={entries}
         pagination={pagination}

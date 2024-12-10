@@ -26,9 +26,9 @@ export default function EntriesTable({
       <Table striped>
         <Table.Head>
           <Table.HeadCell>Id</Table.HeadCell>
-          <Table.HeadCell>Usuario</Table.HeadCell>
-          <Table.HeadCell>Fecha</Table.HeadCell>
-          <Table.HeadCell>Detalles</Table.HeadCell>
+          <Table.HeadCell>User</Table.HeadCell>
+          <Table.HeadCell>Date</Table.HeadCell>
+          <Table.HeadCell>Details</Table.HeadCell>
         </Table.Head>
         <Table.Body className="divide-y">
           {entries?.map((entry) => (
