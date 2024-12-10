@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useState } from "react";
+import { createContext, useState, useCallback } from "react";
 import { Role, TLoginResponse } from "../shared/types";
 
 export const AuthContext = createContext({
@@ -50,7 +50,7 @@ export default function AuthContextProvider({
     localStorage.clear();
   };
 
-  const loadStoredAuth = () => {
+  const loadStoredAuth = useCallback(() => {
     const existingUserData = localStorage.getItem("lm-user");
     if (existingUserData) {
       const user = JSON.parse(existingUserData);
@@ -62,7 +62,7 @@ export default function AuthContextProvider({
       const auth = JSON.parse(existingAuthData);
       setAuth(auth);
     }
-  };
+  }, []);
 
   const ctxValue = {
     ...user,
