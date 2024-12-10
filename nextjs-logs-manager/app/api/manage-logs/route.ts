@@ -1,7 +1,7 @@
 import type { NextRequest } from "next/server";
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient, Log } from "@prisma/client";
 import { extractLogsFromFile } from "@/app/shared/utils";
-import type { TLog, TPaginatedLogsResponse } from "@/app/shared/types";
+import type { TPaginatedLogsResponse } from "@/app/shared/types";
 
 const prisma = new PrismaClient();
 
@@ -10,7 +10,7 @@ export async function POST(request: Request) {
     const formData = await request.formData();
     const files = formData.getAll("logFiles");
     const textDecoder = new TextDecoder("utf-8");
-    let newLogs: TLog[] = [];
+    let newLogs: Log[] = [];
 
     for (let i = 0; i < files.length; i++) {
       const file = files[i] as File;
@@ -26,11 +26,10 @@ export async function POST(request: Request) {
     await prisma.entry.create({
       data: {
         date: new Date().toUTCString(),
-        user: "unknown",
-        details: `Registros cargados: ${newLogs.length}`,
+        user: "Unknown",
+        details: `Logs uploaded: ${newLogs.length}`,
       },
     });
-    await prisma.$disconnect();
 
     return Response.json({});
   } catch (error) {
@@ -40,7 +39,7 @@ export async function POST(request: Request) {
 
 export async function PUT(request: Request) {
   try {
-    const updatedLog = (await request.json()) as TLog;
+    const updatedLog = (await request.json()) as Log;
 
     await prisma.log.update({
       where: { id: updatedLog.id },
@@ -55,11 +54,10 @@ export async function PUT(request: Request) {
     await prisma.entry.create({
       data: {
         date: new Date().toUTCString(),
-        user: "unknown",
-        details: `Registro ${updatedLog.id} actualizado`,
+        user: "Unknown",
+        details: `Log #${updatedLog.id} updated`,
       },
     });
-    prisma.$disconnect();
 
     return Response.json({});
   } catch (error) {
@@ -72,7 +70,6 @@ export async function DELETE(request: Request) {
     const logId = await request.json();
     // console.log(logId);
     await prisma.log.delete({ where: { id: logId as number } });
-    await prisma.$disconnect();
 
     return Response.json(logId);
   } catch (error) {
@@ -89,7 +86,6 @@ export async function GET(request: NextRequest) {
 
     const logs = await prisma.log.findMany({ skip, take: limit });
     const count = await prisma.log.count();
-    await prisma.$disconnect();
 
     const res: TPaginatedLogsResponse = {
       data: logs,

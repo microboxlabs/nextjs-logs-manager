@@ -10,7 +10,6 @@ export async function POST(request: Request) {
     const account = await prisma.account.findFirstOrThrow({
       where: { email: credentials.email },
     });
-    await prisma.$disconnect();
     // console.log(credentials);
     // console.log(account);
 

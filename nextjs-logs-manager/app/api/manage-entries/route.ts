@@ -13,7 +13,6 @@ export async function GET(request: NextRequest) {
 
     const logs = await prisma.entry.findMany({ skip, take: limit });
     const count = await prisma.entry.count();
-    await prisma.$disconnect();
 
     const res: TPaginatedEntriesResponse = {
       data: logs,

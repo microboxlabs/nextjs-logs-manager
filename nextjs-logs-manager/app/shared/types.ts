@@ -18,7 +18,7 @@ export enum Role {
 
 export type TLoginResponse = {
   token: string;
-  account: Account;
+  account: Omit<Account, "password">;
 };
 
 type PaginatedReponse<T> = {
