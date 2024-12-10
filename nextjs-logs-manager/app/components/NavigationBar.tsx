@@ -24,7 +24,7 @@ export default function NavigationBar() {
               color="dark"
               className="mr-2 md:mr-0"
             >
-              Cerrar sesi&oacute;n
+              Sign out
             </Button>
             {isAdmin && <Navbar.Toggle />}
           </>
@@ -33,14 +33,14 @@ export default function NavigationBar() {
       {isAuth && isAdmin && (
         <Navbar.Collapse>
           <Navbar.Link as={Link} href="/" active={pathname === "/"}>
-            Registros
+            Logs
           </Navbar.Link>
           <Navbar.Link
             as={Link}
             href="/entries"
             active={pathname === "/entries"}
           >
-            Subidas
+            Entries
           </Navbar.Link>
         </Navbar.Collapse>
       )}
