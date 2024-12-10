@@ -3,5 +3,5 @@
 @tailwind utilities;
 
 body {
-  @apply bg-background;
+  background: linear-gradient(120deg, #f55c7a 40%, #f68c70);
 }

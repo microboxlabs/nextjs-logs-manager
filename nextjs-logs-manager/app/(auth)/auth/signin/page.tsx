@@ -6,7 +6,7 @@ import {
 } from "@/schema/user.schema";
 import { NextPage } from "next";
 import { signIn, useSession } from "next-auth/react";
-import { redirect } from "next/navigation";
+import { redirect, useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -31,10 +31,12 @@ type SigninOptions = "credentials";
 
 type LoadingState = Record<SigninOptions, boolean>;
 
-const SignInPage: NextPage = ({
-  params: { callbackUrl, error: errorType },
-}: any) => {
+const SignInPage: NextPage = () => {
   const session = useSession();
+  const params = useSearchParams();
+
+  const callbackUrl = params.get("callbackUrl") || "/";
+  const errorType = params.get("error");
 
   useEffect(() => {
     if (session.status === "authenticated") {
@@ -78,8 +80,9 @@ const SignInPage: NextPage = ({
       <div className="relative mx-auto h-screen max-w-6xl px-4 sm:px-6">
         <div className="pb-12 pt-32 md:pb-20 md:pt-40">
           <div className="mx-auto max-w-3xl pb-12 text-center">
-            <h1 className="text-4xl font-semibold text-white drop-shadow-md">
-              Welcome back!
+            <h1 className="text-accent3 text-6xl font-normal drop-shadow-md">
+              [<span className="font-bold text-white">Log</span>]
+              <span className="text-white">in</span>
             </h1>
           </div>
 
@@ -89,11 +92,12 @@ const SignInPage: NextPage = ({
           >
             <div className="mb-5">
               <input
-                type="email"
-                id="email"
-                className="focus:border-accent focus:ring-accent dark:focus:border-accent dark:focus:ring-accent block w-full rounded-lg border-none bg-gray-50 p-2.5 text-sm text-gray-900 dark:bg-white dark:bg-opacity-40 dark:text-white dark:placeholder-gray-600"
-                placeholder="name@flowbite.com"
+                type="text"
+                id="username"
+                className="block w-full rounded-lg border-none bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-accent focus:ring-accent dark:bg-white dark:bg-opacity-40 dark:text-white dark:placeholder-gray-600 dark:focus:border-accent dark:focus:ring-accent"
+                placeholder="Username"
                 required
+                min={3}
                 disabled={isLoading.credentials}
                 {...register("username")}
               />
@@ -103,9 +107,10 @@ const SignInPage: NextPage = ({
                 type="password"
                 id="password"
                 placeholder="Password"
-                className="focus:border-accent focus:ring-accent dark:focus:border-accent dark:focus:ring-accent block w-full rounded-lg border-none bg-gray-50 p-2.5 text-sm text-gray-900 dark:bg-white dark:bg-opacity-40 dark:text-white dark:placeholder-gray-600"
+                className="block w-full rounded-lg border-none bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-accent focus:ring-accent dark:bg-white dark:bg-opacity-40 dark:text-white dark:placeholder-gray-600 dark:focus:border-accent dark:focus:ring-accent"
                 autoComplete="on"
                 required
+                min={7}
                 disabled={isLoading.credentials}
                 {...register("password")}
               />
@@ -113,7 +118,7 @@ const SignInPage: NextPage = ({
 
             <button
               type="submit"
-              className="bg-accent2 hover:bg-accent w-full rounded-lg px-5 py-2.5 text-center text-sm font-medium text-white focus:outline-none focus:ring-4 focus:ring-blue-300"
+              className="mb-5 w-full rounded-lg bg-accent2 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-accent focus:outline-none focus:ring-4 focus:ring-blue-300"
               disabled={getDisabledState("credentials")}
             >
               Sign In{" "}
@@ -121,7 +126,11 @@ const SignInPage: NextPage = ({
                 -&gt;
               </span>
             </button>
-            <span className="text-sm text-red-500">{error}</span>
+            <span
+              className={`${error ? "block" : "hidden"} rounded-md bg-red-500 px-2 py-1 text-sm text-white`}
+            >
+              {error}
+            </span>
           </form>
         </div>
       </div>
