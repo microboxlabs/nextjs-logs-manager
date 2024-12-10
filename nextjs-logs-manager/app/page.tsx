@@ -27,6 +27,11 @@ export default function Logs() {
       params: { page: pagination.page },
     });
 
+    if (res.data.data.length === 0 && pagination.page > 1) {
+      handlePageChange(pagination.page - 1);
+      return;
+    }
+
     setLogs(res.data.data);
     setIsLoading(false);
     setPagination((s) => ({
