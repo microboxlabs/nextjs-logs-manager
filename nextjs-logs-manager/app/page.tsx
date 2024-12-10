@@ -22,22 +22,20 @@ export default function Logs() {
   });
   const { isAuth, isAdmin } = useAuth();
 
-  const fetchLogs = useCallback(() => {
-    axios
-      .get<TPaginatedLogsResponse>("/api/manage-logs", {
-        params: { page: pagination.page },
-      })
-      .then((res) => {
-        setLogs(res.data.data);
-        setIsLoading(false);
-        setPagination((s) => ({
-          ...s,
-          page: res.data.pagination.page,
-          perPage: res.data.pagination.perPage,
-          totalPages: res.data.pagination.totalPages,
-          totalCount: res.data.pagination.totalCount,
-        }));
-      });
+  const fetchLogs = useCallback(async () => {
+    const res = await axios.get<TPaginatedLogsResponse>("/api/manage-logs", {
+      params: { page: pagination.page },
+    });
+
+    setLogs(res.data.data);
+    setIsLoading(false);
+    setPagination((s) => ({
+      ...s,
+      page: res.data.pagination.page,
+      perPage: res.data.pagination.perPage,
+      totalPages: res.data.pagination.totalPages,
+      totalCount: res.data.pagination.totalCount,
+    }));
   }, [pagination.page]);
 
   useEffect(() => {
