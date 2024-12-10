@@ -25,9 +25,9 @@ export default function EditLogForm({ log }: { log?: TLog }) {
 
     try {
       await axios.put("/api/manage-logs", data);
-      alert("Registro actualizado exitosamente");
+      alert("Log updated successfully");
     } catch (error) {
-      alert("Algo salió mal");
+      alert("Something went wrong");
     }
   };
 
@@ -39,14 +39,14 @@ export default function EditLogForm({ log }: { log?: TLog }) {
   return (
     <form onSubmit={handleSubmit(submit)}>
       <header className="mb-4 flex flex-col gap-6 sm:mb-8 sm:flex-row sm:justify-between">
-        <Heading className="text-teal-700">{`Registro #${log!.id}`}</Heading>
+        <Heading className="text-teal-700">{`Log #${log!.id}`}</Heading>
         {isEditing ? (
           <Button type="submit" color="success" pill>
-            Guardar cambios
+            Save changes
           </Button>
         ) : (
           <Button type="button" onClick={handleEdit} pill>
-            Editar
+            Update
           </Button>
         )}
       </header>
@@ -54,15 +54,14 @@ export default function EditLogForm({ log }: { log?: TLog }) {
       <div className="max-w-screen-sm">
         <div className="flex flex-col sm:flex-row sm:gap-8">
           <div className="mb-6">
-            <Label htmlFor="date">Fecha</Label>
+            <Label htmlFor="date">Date</Label>
             <Controller
               control={control}
               name="date"
-              rules={{ required: "Campo fecha requerido" }}
+              rules={{ required: "Date required" }}
               render={({ field: { value, onChange } }) => (
                 <Datepicker
                   id="date"
-                  language="es-MX"
                   disabled={!isEditing}
                   // TODO: Fix input binding
                   value={value}
@@ -76,11 +75,11 @@ export default function EditLogForm({ log }: { log?: TLog }) {
           </div>
 
           <div className="mb-6">
-            <Label htmlFor="time">Hora:</Label>
+            <Label htmlFor="time">Time:</Label>
             <Controller
               control={control}
               name="time"
-              rules={{ required: "Campo tiempo requerido" }}
+              rules={{ required: "Time required" }}
               render={({ field: { value, onChange } }) => (
                 <TextInput
                   type="time"
@@ -97,11 +96,11 @@ export default function EditLogForm({ log }: { log?: TLog }) {
         </div>
 
         <div className="mb-6">
-          <Label htmlFor="level">Nivel</Label>
+          <Label htmlFor="level">Serverity</Label>
           <Controller
             control={control}
             name="level"
-            rules={{ required: "Campo nivel requerido" }}
+            rules={{ required: "Severity required" }}
             render={({ field: { value, onChange } }) => (
               <Select disabled={!isEditing} value={value} onChange={onChange}>
                 <option value="INFO">INFO</option>
@@ -116,12 +115,12 @@ export default function EditLogForm({ log }: { log?: TLog }) {
         </div>
 
         <div className="mb-6">
-          <Label htmlFor="serviceName">Nombre del servicio</Label>
+          <Label htmlFor="serviceName">Service</Label>
           <Controller
             control={control}
             name="serviceName"
             rules={{
-              required: "Campo nombre del servicio requerido",
+              required: "Service required",
             }}
             render={({ field: { value, onChange } }) => (
               <TextInput
@@ -137,11 +136,11 @@ export default function EditLogForm({ log }: { log?: TLog }) {
         </div>
 
         <div className="mb-6">
-          <Label htmlFor="message">Mensaje</Label>
+          <Label htmlFor="message">Message</Label>
           <Controller
             control={control}
             name="message"
-            rules={{ required: "Mensaje requerido" }}
+            rules={{ required: "Message required" }}
             render={({ field: { value, onChange } }) => (
               <TextInput
                 disabled={!isEditing}

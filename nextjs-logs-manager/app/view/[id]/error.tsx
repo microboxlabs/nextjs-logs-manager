@@ -6,9 +6,9 @@ import { Button } from "flowbite-react";
 export default function LogViewPageError({ reset }: { reset: () => void }) {
   return (
     <div className="flex flex-col items-center justify-center">
-      <Heading>Algo sali&oacute; mal</Heading>
+      <Heading>Something went wrong</Heading>
       <Button pill onClick={() => reset()}>
-        Intentar de nuevo
+        Try again
       </Button>
     </div>
   );
