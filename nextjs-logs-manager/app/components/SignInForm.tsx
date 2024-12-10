@@ -23,26 +23,26 @@ export default function SignInForm() {
       const res = await axios.post<TLoginResponse>("/api/auth", data);
       signIn(res.data);
     } catch (error) {
-      alert("Credenciales incorrectas");
+      alert("Bad credentials");
     }
   };
 
   return (
-    <form onSubmit={handleSubmit(submit)} className="mx-auto max-w-xl">
+    <form onSubmit={handleSubmit(submit)} className="mx-auto max-w-lg">
       <Alert className="mb-6">
         <span className="font-medium">Usuarios:</span>
         <ul className="mt-1.5 list-inside list-disc">
-          <li>admin@prueba.com / admin123</li>
-          <li>usuario@prueba.com / usuario123</li>
+          <li>admin@test.com / admin123</li>
+          <li>user@test.com / user123</li>
         </ul>
       </Alert>
 
       <div className="mb-6">
-        <Label htmlFor="email">Correo electr&oacute;nico</Label>
+        <Label htmlFor="email">Email</Label>
         <Controller
           control={control}
           name="email"
-          rules={{ required: "Correo electrónico requerido" }}
+          rules={{ required: "Email required" }}
           render={({ field: { value, onChange } }) => (
             <TextInput
               id="email"
@@ -59,11 +59,11 @@ export default function SignInForm() {
         )}
       </div>
       <div className="mb-6">
-        <Label htmlFor="password">Contrase&ntilde;a</Label>
+        <Label htmlFor="password">Password</Label>
         <Controller
           control={control}
           name="password"
-          rules={{ required: "Contraseña requerida" }}
+          rules={{ required: "Password required" }}
           render={({ field: { value, onChange } }) => (
             <TextInput
               id="password"
@@ -83,13 +83,13 @@ export default function SignInForm() {
       <div className="flex items-center gap-2">
         <Checkbox id="remember" />
         <Label htmlFor="remember" className="flex">
-          Recordar cuenta
+          Remember me
         </Label>
       </div>
 
-      <div className="flex justify-center md:justify-end">
+      <div className="mt-6 flex justify-center md:justify-end">
         <Button type="submit" pill>
-          Iniciar sesi&oacute;n
+          Sign in
         </Button>
       </div>
     </form>
