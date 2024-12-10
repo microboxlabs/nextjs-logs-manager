@@ -4,7 +4,7 @@ export default function Footer() {
       <div className="container">
         <div className="flex h-[100px] items-center pb-8 pt-4">
           <p>
-            Desarrollador por{" "}
+            Coded by{" "}
             <a
               target="_blank"
               href="https://github.com/almsrr"
