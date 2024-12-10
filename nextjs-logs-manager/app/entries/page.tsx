@@ -9,6 +9,7 @@ import EntriesTable from "../components/EntriesTable";
 import Heading from "../components/Heading";
 import type { TPaginatedEntriesResponse } from "../shared/types";
 
+// It's an extra
 export default function Entries() {
   const [entries, setEntries] = useState<Entry[]>([]);
   const [isLoading, setIsLoading] = useState(true);

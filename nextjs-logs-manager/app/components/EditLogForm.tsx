@@ -13,7 +13,6 @@ export default function EditLogForm({ log }: { log?: Log }) {
   const {
     control,
     handleSubmit,
-    watch,
     formState: { errors },
   } = useForm<Log>({
     defaultValues: { ...log },
@@ -63,9 +62,14 @@ export default function EditLogForm({ log }: { log?: Log }) {
                 <Datepicker
                   id="date"
                   disabled={!isEditing}
-                  // TODO: Fix input binding
-                  value={value}
-                  onChange={onChange}
+                  defaultDate={new Date(value)}
+                  onSelectedDateChanged={(e) => {
+                    const dateStr = e.toJSON();
+                    const i = dateStr.indexOf("T");
+                    const selectedDateStr = dateStr.slice(0, i);
+                    // console.log(date);
+                    onChange(selectedDateStr);
+                  }}
                 />
               )}
             />
