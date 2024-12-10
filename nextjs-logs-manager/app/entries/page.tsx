@@ -21,22 +21,26 @@ export default function Entries() {
   });
 
   const fetchEntries = useCallback(async () => {
-    const res = await axios.get<TPaginatedEntriesResponse>(
-      "/api/manage-entries",
-      {
-        params: { page: pagination.page },
-      },
-    );
+    try {
+      const res = await axios.get<TPaginatedEntriesResponse>(
+        "/api/manage-entries",
+        {
+          params: { page: pagination.page },
+        },
+      );
 
-    setEntries(res.data.data);
-    setIsLoading(false);
-    setPagination((s) => ({
-      ...s,
-      page: res.data.pagination.page,
-      perPage: res.data.pagination.perPage,
-      totalPages: res.data.pagination.totalPages,
-      totalCount: res.data.pagination.totalCount,
-    }));
+      setEntries(res.data.data);
+      setIsLoading(false);
+      setPagination((s) => ({
+        ...s,
+        page: res.data.pagination.page,
+        perPage: res.data.pagination.perPage,
+        totalPages: res.data.pagination.totalPages,
+        totalCount: res.data.pagination.totalCount,
+      }));
+    } catch (error) {
+      alert("Something went wrong");
+    }
   }, [pagination.page]);
 
   useEffect(() => {

@@ -23,24 +23,28 @@ export default function Logs() {
   const { isAuth, isAdmin } = useAuth();
 
   const fetchLogs = useCallback(async () => {
-    const res = await axios.get<TPaginatedLogsResponse>("/api/manage-logs", {
-      params: { page: pagination.page },
-    });
+    try {
+      const res = await axios.get<TPaginatedLogsResponse>("/api/manage-logs", {
+        params: { page: pagination.page },
+      });
 
-    if (res.data.data.length === 0 && pagination.page > 1) {
-      handlePageChange(pagination.page - 1);
-      return;
+      if (res.data.data.length === 0 && pagination.page > 1) {
+        handlePageChange(pagination.page - 1);
+        return;
+      }
+
+      setLogs(res.data.data);
+      setIsLoading(false);
+      setPagination((s) => ({
+        ...s,
+        page: res.data.pagination.page,
+        perPage: res.data.pagination.perPage,
+        totalPages: res.data.pagination.totalPages,
+        totalCount: res.data.pagination.totalCount,
+      }));
+    } catch (error) {
+      alert("Something went wrong");
     }
-
-    setLogs(res.data.data);
-    setIsLoading(false);
-    setPagination((s) => ({
-      ...s,
-      page: res.data.pagination.page,
-      perPage: res.data.pagination.perPage,
-      totalPages: res.data.pagination.totalPages,
-      totalCount: res.data.pagination.totalCount,
-    }));
   }, [pagination.page]);
 
   useEffect(() => {
