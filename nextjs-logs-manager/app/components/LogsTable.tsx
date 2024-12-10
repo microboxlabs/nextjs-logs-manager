@@ -1,8 +1,9 @@
 "use client";
 
 import Link from "next/link";
+import { useState } from "react";
 import axios from "axios";
-import { Table, Pagination, Button } from "flowbite-react";
+import { Table, Pagination, Button, Select, Datepicker } from "flowbite-react";
 import type { Log } from "@prisma/client";
 
 import { useAuth } from "../hooks/useAuth";
@@ -10,6 +11,7 @@ import { useAuth } from "../hooks/useAuth";
 type Props = {
   logs?: Log[];
   refresh: () => void;
+
   pagination: {
     page: number;
     perPage: number;
@@ -26,6 +28,9 @@ export default function LogsTable({
   onPageChange,
 }: Props) {
   const { isAdmin } = useAuth();
+  const [severity, setSeverity] = useState("");
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
 
   const removeLog = async (id: number) => {
     if (confirm("Are you sure do you want to delete this log?")) {
@@ -49,6 +54,42 @@ export default function LogsTable({
 
   return (
     <div className="overflow-x-auto">
+      <div className="flex gap-4 pb-4 pt-2">
+        <div>
+          <Select
+            value={severity}
+            onChange={(e) => setSeverity(e.target.value)}
+          >
+            <option value="">ALL</option>
+            <option value="INFO">INFO</option>
+            <option value="ERROR">ERROR</option>
+            <option value="WARNING">WARNING</option>
+          </Select>
+        </div>
+        <div>
+          <Datepicker
+            id="date"
+            onSelectedDateChanged={(e) => {
+              const dateStr = e.toJSON();
+              const i = dateStr.indexOf("T");
+              const selectedDateStr = dateStr.slice(0, i);
+              setStartDate(selectedDateStr);
+            }}
+          />
+        </div>
+        <div>
+          <Datepicker
+            id="date"
+            onSelectedDateChanged={(e) => {
+              const dateStr = e.toJSON();
+              const i = dateStr.indexOf("T");
+              const selectedDateStr = dateStr.slice(0, i);
+              setEndDate(selectedDateStr);
+            }}
+          />
+        </div>
+        <Button pill>Apply</Button>
+      </div>
       <Table striped>
         <Table.Head>
           <Table.HeadCell>Id</Table.HeadCell>
