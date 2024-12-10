@@ -26,9 +26,6 @@ export default function LogsTable({
   onPageChange,
 }: Props) {
   const { isAdmin } = useAuth();
-  if (!logs) {
-    return null;
-  }
 
   const removeLog = async (id: number) => {
     if (confirm("Are you sure do you want to delete this log?")) {
@@ -41,6 +38,14 @@ export default function LogsTable({
       }
     }
   };
+
+  if (!logs || logs.length === 0) {
+    return (
+      <div className="grid h-[300px] place-content-center">
+        <p>No data</p>
+      </div>
+    );
+  }
 
   return (
     <div className="overflow-x-auto">

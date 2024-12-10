@@ -17,8 +17,13 @@ export default function EntriesTable({
   pagination,
   onPageChange,
 }: Props) {
-  if (!entries) {
-    return null;
+
+  if (!entries || entries.length === 0) {
+    return (
+      <div className="grid h-[300px] place-content-center">
+        <p>No data</p>
+      </div>
+    );
   }
 
   return (
