@@ -20,6 +20,7 @@ export default function LogForm() {
   const { push } = useRouter();
   const [isRequiredError, setIsRequiredError] = useState(false);
   const [files, setFiles] = useState<TUploadedFile[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   const onDrop = useCallback((files: File[]) => {
     setFiles((prevFiles) => {
@@ -55,11 +56,14 @@ export default function LogForm() {
         formData.append("logFiles", files[i].file);
       }
 
+      setIsLoading(true);
       await axios.post("/api/manage-logs", formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
       push("/");
+      setIsLoading(false);
     } catch (error) {
+      setIsLoading(false);
       alert("Error while uploading logs");
     }
   };
@@ -120,7 +124,7 @@ export default function LogForm() {
       )}
       <FilesList files={files} onRemove={removeFile} />
       <div className="mt-8 flex flex-col sm:flex-row sm:justify-end">
-        <Button type="submit" pill color="success">
+        <Button type="submit" pill color="success" isProcessing={isLoading}>
           Upload logs
         </Button>
       </div>
