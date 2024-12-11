@@ -10,6 +10,7 @@ import { redirect, useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import Logo from "@/components/Logo";
 
 const errors: Record<string, string> = {
   Signin: "Try signing in with a different account.",
@@ -80,10 +81,7 @@ const SignInPage: NextPage = () => {
       <div className="relative mx-auto h-screen max-w-6xl px-4 sm:px-6">
         <div className="pb-12 pt-32 md:pb-20 md:pt-40">
           <div className="mx-auto max-w-3xl pb-12 text-center">
-            <h1 className="text-6xl font-normal text-accent3 drop-shadow-md">
-              [<span className="font-bold text-white">Log</span>]
-              <span className="text-white">in</span>
-            </h1>
+            <Logo text="in" />
           </div>
 
           <form

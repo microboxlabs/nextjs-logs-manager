@@ -1,4 +1,5 @@
 "use client";
+import Logo from "@/components/Logo";
 import LogTable from "@/components/Logs/LogTable";
 import LogUploadForm from "@/components/Logs/LogUploadForm";
 import { Log } from "@prisma/client";
@@ -34,12 +35,14 @@ export default function Home() {
   }, []);
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center gap-2 dark:bg-gray-800">
-      <h1 className="text-2xl dark:text-white">Logs</h1>
+    <main className="flex min-h-screen flex-col items-center justify-center gap-8 p-8 dark:bg-gray-800">
+      <Logo className="text-3xl" text="s" />
 
-      {logs ? <LogTable logs={logs} /> : null}
+      <div className="flex flex-wrap justify-center gap-6">
+        {logs ? <LogTable logs={logs} /> : null}
 
-      {session.status != "loading" ? <LogUploadForm /> : null}
+        {session.status != "loading" ? <LogUploadForm /> : null}
+      </div>
 
       <Link href="/auth/signout">Log out</Link>
     </main>
