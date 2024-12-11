@@ -81,7 +81,7 @@ const SignInPage: NextPage = () => {
       <div className="relative mx-auto h-screen max-w-6xl px-4 sm:px-6">
         <div className="pb-12 pt-32 md:pb-20 md:pt-40">
           <div className="mx-auto max-w-3xl pb-12 text-center">
-            <Logo text="in" />
+            <Logo className="text-6xl" text="in" />
           </div>
 
           <form

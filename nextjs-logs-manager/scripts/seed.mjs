@@ -60,8 +60,6 @@ async function seedDatabase() {
     await prisma.log.createMany({
       data: sampleLogs,
     });
-
-    console.log("Database seeded successfully");
   } catch (error) {
     console.error("Seeding error:", error);
     process.exit(1);

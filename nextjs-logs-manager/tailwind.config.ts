@@ -25,7 +25,7 @@ const config: Config = {
         "linear-gradient-background":
           "linear-gradient(120deg, #f55c7a 40%, #f68c70)",
         "linear-gradient-background2":
-          "linear-gradient(120deg, #f68c70 40%, #f57c73)",
+          "linear-gradient(-45deg, #e2e5e4 8%, #ffffff)",
       },
     },
   },
