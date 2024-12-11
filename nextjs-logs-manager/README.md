@@ -2,7 +2,26 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 ## Getting Started
 
-First, run the development server:
+.env file
+
+NEXTAUTH_SECRET="your-secret-key-here"
+NEXTAUTH_URL="http://localhost:3000"
+
+First, create database and run the seed script
+
+# Generate Prisma client
+
+npx prisma generate
+
+# Create database migrations
+
+npx prisma migrate dev --name init
+
+# Run the seed script
+
+npm run seed
+
+Then, run the development server:
 
 ```bash
 npm run dev

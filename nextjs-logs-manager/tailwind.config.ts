@@ -9,7 +9,25 @@ const config: Config = {
     flowbite.content(),
   ],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        sans: ["var(--font-inter)", "sans-serif"],
+      },
+      colors: {
+        accent: "#f6bc66",
+        background: "#f55c7a",
+        secondary: "#f57c73",
+        primary: "#f68c70",
+        accent2: "#f6ac69",
+        accent3: "#70d6ff",
+      },
+      backgroundImage: {
+        "linear-gradient-background":
+          "linear-gradient(120deg, #f55c7a 40%, #f68c70)",
+        "linear-gradient-background2":
+          "linear-gradient(-45deg, #e2e5e4 8%, #ffffff)",
+      },
+    },
   },
   plugins: [flowbite.plugin()],
 };
