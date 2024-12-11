@@ -11,16 +11,13 @@ model User {
   id       Int      @id @default(autoincrement())
   username String   @unique
   password String
-  role     String   // Changed from UserRole enum to String
-  logs     Log[]
+  role     String   
 }
 
 model Log {
   id        Int      @id @default(autoincrement())
   timestamp DateTime
-  level     String   // Changed from LogLevel enum to String
+  level     String   
   service   String
   message   String
-  userId    Int
-  user      User     @relation(fields: [userId], references: [id])
 }

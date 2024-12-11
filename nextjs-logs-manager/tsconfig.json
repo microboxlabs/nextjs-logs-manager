@@ -3,9 +3,7 @@
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "noEmit": true,
-    "target": "es2020",
-    "module": "ES2020",
-    "moduleResolution": "bundler",
+    "module": "CommonJS",
     "esModuleInterop": true,
     "strict": true,
     "skipLibCheck": true,
@@ -21,14 +19,16 @@
     ],
     "paths": {
       "@/*": ["./*"]
-    }
+    },
+    "moduleResolution": "node"
   },
   "include": [
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    "scripts/seed.mjs"
+    "scripts/seed.mjs",
+    "next.config.js"
   ],
   "exclude": ["node_modules"]
 }

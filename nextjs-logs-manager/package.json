@@ -25,6 +25,9 @@
     "zod": "^3.23.8"
   },
   "devDependencies": {
+    "@babel/core": "^7.26.0",
+    "@babel/preset-env": "^7.26.0",
+    "@babel/preset-react": "^7.26.3",
     "@types/bcryptjs": "^2.4.6",
     "@types/node": "^20.17.9",
     "@types/react": "^18.3.14",

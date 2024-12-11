@@ -4,10 +4,14 @@ import { ThemeModeScript } from "flowbite-react";
 import "./globals.css";
 import Providers from "@/providers/Providers";
 
-const inter = Inter({ subsets: ["latin"] });
+const inter = Inter({
+  subsets: ["latin"],
+  variable: "--font-inter",
+  display: "swap",
+});
 
 export const metadata: Metadata = {
-  title: "[log]in",
+  title: "[Log]in",
   description: "Logs Ingestion and Viewing",
 };
 
@@ -18,10 +22,8 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <head>
-        <ThemeModeScript />
-      </head>
-      <body className={inter.className}>
+      <head></head>
+      <body className={`bg-linear-gradient-background ${inter.className}`}>
         <Providers>{children}</Providers>
       </body>
     </html>

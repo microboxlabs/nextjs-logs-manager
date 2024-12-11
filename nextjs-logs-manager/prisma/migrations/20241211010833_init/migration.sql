@@ -12,9 +12,7 @@ CREATE TABLE "Log" (
     "timestamp" DATETIME NOT NULL,
     "level" TEXT NOT NULL,
     "service" TEXT NOT NULL,
-    "message" TEXT NOT NULL,
-    "userId" INTEGER NOT NULL,
-    CONSTRAINT "Log_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
+    "message" TEXT NOT NULL
 );
 
 -- CreateIndex
