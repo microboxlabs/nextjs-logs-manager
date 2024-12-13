@@ -11,7 +11,7 @@ export interface Log {
 export const logService = {
     async fetchLogs(): Promise<Log[]> {
         try {
-            const response = await axios.get<Log[]>("/api/logs");
+            const response = await axios.get<Log[]>("/api/log");
             return response.data;
         } catch (error) {
             console.error("Error fetching logs:", error);

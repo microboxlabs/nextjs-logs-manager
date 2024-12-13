@@ -1,11 +1,13 @@
 "use client";
 
+import { useRouter } from "next/router";
 import { useState } from "react";
-import LoginForm from "@/forms/loginForm";
-import { useRouter } from "next/navigation";
-import Loader from "@/components/Loader";
-import { useAuth } from "@/lib/authContext";
-import { login } from "@/services/auth.login.service";
+import Loader from "../components/Loader";
+import LoginForm from "../forms/loginForm";
+import { useAuth } from "../lib/authContext";
+import { login } from "../services/auth.login.service";
+
+
 
 const LoginPage: React.FC = () => {
     const [errorMessage, setErrorMessage] = useState<string | null>(null);

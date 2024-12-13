@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import { ThemeModeScript } from "flowbite-react";
-import "./globals.css";
-import Navbar from "@/components/Navbar";
-import { AuthProvider } from "@/lib/authContext";
+import { Navbar, ThemeModeScript } from "flowbite-react";
+import { AuthProvider } from "@/src/lib/authContext";
+import "../styles/globals.css";
+
 
 const inter = Inter({ subsets: ["latin"] });
 
