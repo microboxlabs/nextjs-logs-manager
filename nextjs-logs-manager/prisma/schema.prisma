@@ -1,0 +1,61 @@
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id           Int      @id @default(autoincrement())
+  email        String   @unique
+  passwordHash String
+  roleId       Int
+  role         Role     @relation(fields: [roleId], references: [id])
+}
+
+model Role {
+  id             Int             @id @default(autoincrement())
+  name           String          @unique
+  users          User[]
+  rolePermissions RolePermission[]
+}
+
+model Permission {
+  id             Int             @id @default(autoincrement())
+  name           String          @unique
+  rolePermissions RolePermission[]
+}
+
+model RolePermission {
+  id           Int        @id @default(autoincrement())
+  roleId       Int
+  permissionId Int
+  role         Role       @relation(fields: [roleId], references: [id])
+  permission   Permission @relation(fields: [permissionId], references: [id])
+
+  @@unique([roleId, permissionId])
+}
+
+model LogEntry {
+  id          Int       @id @default(autoincrement())
+  timestamp   DateTime
+  levelId     Int
+  level       LogLevel  @relation(fields: [levelId], references: [id])
+  serviceId   Int
+  service     Service   @relation(fields: [serviceId], references: [id])
+  message     String
+}
+
+model LogLevel {
+  id       Int       @id @default(autoincrement())
+  name     String    @unique
+  logs     LogEntry[]
+}
+
+model Service {
+  id       Int       @id @default(autoincrement())
+  name     String    @unique
+  logs     LogEntry[]
+}
