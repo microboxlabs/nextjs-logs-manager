@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { ThemeModeScript } from "flowbite-react";
 import "./globals.css";
+import Navbar from "@/components/Navbar";
+import { AuthProvider } from "@/lib/authContext";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -19,8 +21,18 @@ export default function RootLayout({
     <html lang="en">
       <head>
         <ThemeModeScript />
+        <title>{(metadata.title as string) ?? "Default Title"}</title>
+        <meta name="description" content={metadata.description ?? undefined} />
       </head>
-      <body className={inter.className}>{children}</body>
+      <body className={inter.className}>
+        <AuthProvider>
+          <Navbar />
+          <main>{children}</main>
+          <footer>
+            {/* TODO: Pendiente en caso de ser necesario */}
+          </footer>
+        </AuthProvider>
+      </body>
     </html>
   );
 }
