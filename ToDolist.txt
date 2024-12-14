@@ -1,0 +1,38 @@
+1- agregar estructura de DB(SQLite)
+2- Estructura de modelo: 
+    (user:{name, password, role}, 
+    log:{ DateTime, LogLevel, microservice, message} 
+    )
+3- crear seccion cargar archivo txt y procesarlo(sacar cada componente a travez de Regex) y guardar en DB
+
+4- crear page de login(default: regular user)
+
+5- generar dashboard para el admin(despues del login)
+
+
+
+//
+import { NextResponse } from "next/server";
+import { getToken } from "next-auth/jwt";
+
+export async function middleware(req: NextRequest) {
+  const token = await getToken({ req });
+  const url = req.nextUrl.clone();
+
+  if (!token) {
+    url.pathname = "/login";
+    return NextResponse.redirect(url);
+  }
+
+  const isAdminRoute = url.pathname.startsWith("/admin");
+  if (isAdminRoute && token.role !== "admin") {
+    url.pathname = "/403"; // Página de acceso denegado
+    return NextResponse.redirect(url);
+  }
+
+  return NextResponse.next();
+}
+
+export const config = {
+  matcher: ["/admin/:path*", "/dashboard/:path*"], // Rutas protegidas
+};
