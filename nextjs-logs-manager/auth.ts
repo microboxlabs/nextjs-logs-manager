@@ -16,7 +16,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
                         email
                     }
                 })
-                console.log(user)
                 if (!user) throw new Error('UserNotFound')
                 if (user.password !== credentials.password) throw new Error('InvalidCredentials')
 
