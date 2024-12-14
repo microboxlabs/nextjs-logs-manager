@@ -17,6 +17,7 @@ model User {
   image         String?
   accounts      Account[]
   sessions      Session[]
+  logs          Log[]
   // Optional for WebAuthn support
   Authenticator Authenticator[]
 
@@ -79,4 +80,14 @@ model Authenticator {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@id([userId, credentialID])
+}
+
+model Log {
+  id      String   @id @default(uuid())
+  date    DateTime
+  status  String
+  service String
+  message String
+  userId  String
+  user    User     @relation(fields: [userId], references: [id])
 }
