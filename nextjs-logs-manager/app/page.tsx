@@ -2,7 +2,7 @@
 import { DarkThemeToggle } from "flowbite-react";
 import { Button } from "flowbite-react";
 import { useRouter } from "next/navigation";
-import Login from "./component/login/login-form";
+import Login from "./components/login/login-form";
 
 export default function Home() {
   const router = useRouter()

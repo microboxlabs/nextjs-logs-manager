@@ -31,6 +31,7 @@ export async function createLogs(
   }
 
   const db = await getDb();
+  //const timestamp = new Date().toISOString(); //--> function para generar auto las fechas (borrar el time de params)
   await initLogsTable();
 
   const result = await db.run(
