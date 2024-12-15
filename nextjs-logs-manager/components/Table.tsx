@@ -14,12 +14,12 @@ export const Table = ({ initData }: any) => {
     const paginationButtons = [...Array(pagination.totalPages)].map((_, index) => index + 1);
 
     const handlePagination = async (e: any) => {
-        const resp = await fetch(`${apiUrl}/log?limit=10&offset=${(e.target.value - 1) * 10}&status=${filters.status}&service=${filters.service}`)
+        const resp = await fetch(`${apiUrl}/log?limit=5&offset=${(e.target.value - 1) * 5}&status=${filters.status}&service=${filters.service}`)
         const dataLogs = await resp.json()
         setLogs(dataLogs)
     }
     const populatedData = async () => {
-        const resp = await fetch(`${apiUrl}/log?status=${filters.status}&service=${filters.service}`)
+        const resp = await fetch(`${apiUrl}/log?limit=5&status=${filters.status}&service=${filters.service}`)
         const dataLogs = await resp.json()
         setLogs(dataLogs)
     }

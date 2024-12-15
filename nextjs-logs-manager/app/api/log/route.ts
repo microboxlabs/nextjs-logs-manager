@@ -17,7 +17,6 @@ export const POST = async (request: Request) => {
             ...uploadFileDto!.logs
         ]
     })
-    console.log('data subida')
     return NextResponse.json(resp)
 }
 
@@ -28,7 +27,6 @@ export const GET = async (request: Request) => {
     const status = url.searchParams.get('status') || undefined
     const service = url.searchParams.get('service') || undefined
 
-    console.log(status)
     const total = await prisma.log.count({
         where: {
             status,
