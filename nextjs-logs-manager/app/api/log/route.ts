@@ -20,3 +20,31 @@ export const POST = async (request: Request) => {
     console.log('data subida')
     return NextResponse.json(resp)
 }
+
+export const GET = async (request: Request) => {
+    const url = new URL(request.url);
+    const limit = +(url.searchParams.get('limit') || 10);  // Obtener el parámetro 'limit'
+    const offset = +(url.searchParams.get('offset') || 0);
+    const total = await prisma.log.count()
+
+    if (isNaN(limit) || limit <= 0) {
+        return NextResponse.json({ error: 'Invalid limit parameter' }, { status: 400 });
+    }
+    if (isNaN(offset) || offset < 0) {
+        return NextResponse.json({ error: 'Invalid offset parameter' }, { status: 400 });
+    }
+
+    const resp = await prisma.log.findMany({
+        take: limit,
+        skip: offset,
+    })
+
+    return NextResponse.json({
+        data: resp,
+        pagination: {
+            total,
+            totalPages: Math.ceil(total / limit)
+        }
+
+    })
+}
