@@ -1,17 +1,18 @@
 import { Table } from "@/components/Table";
-import { apiUrl } from "@/constants/routes";
-
-
+import { getStatus } from "../../utils/getStatus";
+import { getService } from "../../utils/getService";
+import { getInitData } from "../../utils/getInitData";
 
 export default async function DashboardPage() {
-    const resp = await fetch(`${apiUrl}/log?limit=5`, {
-        cache: "no-store"
-    })
-    const data = await resp.json()
+
+    const dataLogs = await getInitData()
+    const dataStatus = await getStatus()
+    const dataServices = await getService()
     return (
         <main className="flex flex-col gap-8">
             <div className="text-3xl">Dashboard</div>
-            <Table initData={data} />
+            <Table initData={dataLogs} dataStatus={dataStatus} dataServices={dataServices} />
         </main>
     );
+
 }

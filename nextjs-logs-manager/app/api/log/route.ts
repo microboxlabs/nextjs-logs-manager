@@ -26,11 +26,16 @@ export const GET = async (request: Request) => {
     const offset = +(url.searchParams.get('offset') || 0);
     const status = url.searchParams.get('status') || undefined
     const service = url.searchParams.get('service') || undefined
-
+    const initDate = url.searchParams.get('initDate') || undefined
+    const endDate = url.searchParams.get('endDate') || undefined
     const total = await prisma.log.count({
         where: {
             status,
-            service
+            service,
+            date: {
+                gte: initDate,
+                lte: endDate
+            }
         }
     })
 
@@ -46,7 +51,11 @@ export const GET = async (request: Request) => {
         skip: offset,
         where: {
             status,
-            service
+            service,
+            date: {
+                gte: initDate,
+                lte: endDate
+            }
         }
     })
 
