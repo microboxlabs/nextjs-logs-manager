@@ -1,8 +1,11 @@
+
+import { FileContent } from '@/types/types';
 import { uploadData } from '@/utils/uploadData';
 import { useState } from 'react'
 
+
 export const useUpload = () => {
-    const [fileContent, setFileContent] = useState<any>([]);
+    const [fileContent, setFileContent] = useState<FileContent[]>([]);
 
     const handleFileChange = (e: any) => {
         const file = e.target.files[0]; // Obtén el archivo seleccionado
@@ -11,20 +14,19 @@ export const useUpload = () => {
             reader.onload = () => {
                 const text = reader.result as string;
                 const lines = text.split(/\r?\n/).filter((line) => line.trim() !== '');
-                const parsedData = lines.map((line) => {
-
+                const parsedData = lines.reduce((acc: FileContent[], line) => {
                     const regex = /^\[(.*?)]\ \[(.*?)\] (.*?): (.*)$/;
                     const match = line.match(regex);
 
                     if (match) {
                         const [, date, status, service, message] = match;
-                        return { date, status, service, message };
+
+                        acc.push({ date, status, service, message });
                     }
 
-                    return null; // Si no coincide, devolver null (puedes manejarlo según tus necesidades)
-                }).filter(Boolean); // Elimina nulos
-
-                setFileContent(parsedData);
+                    return acc;
+                }, []);
+                setFileContent(parsedData)
             };
             reader.readAsText(file); // Lee el archivo como texto
         }

@@ -1,6 +1,7 @@
-import { apiUrl } from "@/constants/routes";
+import { apiUrl } from "@/constants/constants";
+import { FileContent } from "@/types/types";
 
-export const uploadData = async (fileContent: any) => {
+export const uploadData = async (fileContent: FileContent[]) => {
     try {
         const response = await fetch(`${apiUrl}/log`, {
             method: "POST",

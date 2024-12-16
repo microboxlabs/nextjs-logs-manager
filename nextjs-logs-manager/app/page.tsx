@@ -1,6 +1,6 @@
 import { auth } from "@/auth";
 import { LoginForm } from "@/components/LoginForm";
-import { loginErrors } from "@/constants/routes";
+import { loginErrors } from "@/constants/constants";
 import { redirect } from "next/navigation";
 
 
