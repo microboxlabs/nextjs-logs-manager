@@ -1,93 +1,75 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { Card } from "flowbite-react";
-import { FaFileAlt, FaPlus, FaUsers, FaCogs } from "react-icons/fa";
+import { FaFileAlt, FaPlus, FaUsers } from "react-icons/fa";
 import Breadcrumb from "@/src/components/Breadcrumb";
 
-interface User {
-    id: number;
-    email: string;
-    role: string;
+interface CardItem {
+    title: string;
+    icon: React.ElementType;
+    path: string;
+    roles?: string[];
 }
 
 const DashboardPage: React.FC = () => {
-    const [user, setUser] = useState<User | null>(null);
+    const { data: session, status } = useSession();
     const router = useRouter();
 
-    useEffect(() => {
-        const token = localStorage.getItem("access_token");
-        const storedUser = localStorage.getItem("user");
+    const cards: CardItem[] = [
+        { title: "View Logs", icon: FaFileAlt, path: "/dashboard/logs-view" },
+        { title: "Create New Log", icon: FaPlus, path: "/dashboard/logs/create", roles: ["ADMIN"] },
+        { title: "View Users", icon: FaUsers, path: "/dashboard/users", roles: ["ADMIN"] },
+        { title: "User Profile", icon: FaUsers, path: "/dashboard/profile" },
+    ];
 
-        if (!token || !storedUser) {
-            router.push("/");
-            return;
-        }
+    if (status === "loading") {
+        return <p>Loading...</p>;
+    }
 
-        setUser(JSON.parse(storedUser));
-    }, [router]);
+    if (!session) {
+        router.push("/login");
+        return null;
+    }
+
+    const userRole = session?.user?.role || "";
 
     const handleNavigation = (path: string) => {
         router.push(path);
     };
 
     return (
-        <div className="flex min-h-screen flex-col bg-gray-50 px-4 dark:bg-gray-900">
-            <Breadcrumb />
-            <div className="mx-auto w-full max-w-6xl rounded-lg bg-white p-6 shadow-lg dark:bg-gray-800 sm:p-8">
-                <h2 className="mb-4 text-center text-xl font-semibold text-gray-900 dark:text-white sm:text-2xl">
-                    Welcome Back, {user?.email || "User"}
+        <div className="flex min-h-screen flex-col bg-gray-100 px-4 py-6 dark:bg-gray-900">
+            <div className="mx-auto w-full max-w-7xl px-4">
+                <Breadcrumb />
+            </div>
+            <div className="mx-auto w-full max-w-7xl rounded-lg bg-white p-6 shadow-md dark:bg-gray-800 sm:p-8">
+                <h2 className="mb-4 text-center text-2xl font-bold text-gray-900 dark:text-white">
+                    Welcome Back, {session?.user?.email || "User"}
                 </h2>
-                <p className="mb-6 text-center text-gray-700 dark:text-gray-300 sm:text-lg">
+                <p className="mb-6 text-center text-base text-gray-600 dark:text-gray-300">
                     Select an action to proceed
                 </p>
-                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                    <Card
-                        onClick={() => handleNavigation("/dashboard/logs-view")}
-                        className="cursor-pointer transition hover:shadow-lg"
-                    >
-                        <FaFileAlt className="mx-auto text-4xl text-gray-500 dark:text-gray-300" />
-                        <h3 className="mt-4 text-center text-lg font-semibold text-gray-900 dark:text-white">
-                            View Logs
-                        </h3>
-                    </Card>
+                <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2">
+                    {cards.map((card) => {
+                        if (card.roles && !card.roles.includes(userRole)) return null;
 
-                    {user?.role === "ADMIN" && (
-                        <Card
-                            onClick={() => handleNavigation("/dashboard/logs/create")}
-                            className="cursor-pointer transition hover:shadow-lg"
-                        >
-                            <FaPlus className="mx-auto text-4xl text-gray-500 dark:text-gray-300" />
-                            <h3 className="mt-4 text-center text-lg font-semibold text-gray-900 dark:text-white">
-                                Create New Log
-                            </h3>
-                        </Card>
-                    )}
-
-                    {user?.role === "ADMIN" && (
-                        <Card
-                            onClick={() => handleNavigation("/dashboard/users")}
-                            className="cursor-pointer transition hover:shadow-lg"
-                        >
-                            <FaUsers className="mx-auto text-4xl text-gray-500 dark:text-gray-300" />
-                            <h3 className="mt-4 text-center text-lg font-semibold text-gray-900 dark:text-white">
-                                View All Users & Roles
-                            </h3>
-                        </Card>
-                    )}
-
-                    {user?.role === "ADMIN" && (
-                        <Card
-                            onClick={() => handleNavigation("/dashboard/settings")}
-                            className="cursor-pointer transition hover:shadow-lg"
-                        >
-                            <FaCogs className="mx-auto text-4xl text-gray-500 dark:text-gray-300" />
-                            <h3 className="mt-4 text-center text-lg font-semibold text-gray-900 dark:text-white">
-                                Manage Settings
-                            </h3>
-                        </Card>
-                    )}
+                        return (
+                            <Card
+                                key={card.title}
+                                className="cursor-pointer rounded-lg bg-white text-center shadow-md transition-transform duration-300 hover:scale-105 hover:shadow-lg dark:bg-gray-700"
+                                onClick={() => handleNavigation(card.path)}
+                            >
+                                <div className="mx-auto flex size-16 items-center justify-center rounded-full bg-blue-100 text-blue-600 dark:bg-blue-700 dark:text-blue-300">
+                                    <card.icon className="text-3xl" />
+                                </div>
+                                <h3 className="mt-4 text-lg font-semibold text-gray-800 dark:text-white">
+                                    {card.title}
+                                </h3>
+                            </Card>
+                        );
+                    })}
                 </div>
             </div>
         </div>

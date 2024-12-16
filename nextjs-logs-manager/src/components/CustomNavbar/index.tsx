@@ -8,7 +8,10 @@ export default function CustomNavbar() {
     const { data: session, status } = useSession();
 
     const handleLogout = async () => {
-        await signOut();
+        await signOut({
+            callbackUrl: "/login",
+            redirect: true,
+        });
     };
 
     return (

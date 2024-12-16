@@ -36,7 +36,8 @@ const LoginPage: React.FC = () => {
     };
 
     return (
-        <div className="flex min-h-screen flex-col items-center justify-center bg-gray-50 px-4 dark:bg-gray-900">
+        <div className="relative flex min-h-screen flex-col items-center justify-center bg-gray-50 px-4 dark:bg-gray-900">
+            {loading && <Loader overlay={true} />}
             <div className="w-full max-w-md rounded-lg bg-white p-6 shadow-lg dark:bg-gray-800 sm:p-8">
                 <h2 className="mb-6 text-center text-xl font-semibold text-gray-900 dark:text-white sm:text-2xl">
                     Welcome Back
@@ -47,7 +48,6 @@ const LoginPage: React.FC = () => {
                     </div>
                 )}
                 <LoginForm handleSubmit={handleSubmit} />
-                {loading && <Loader overlay={true} />}
             </div>
         </div>
     );
