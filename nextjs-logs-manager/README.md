@@ -30,7 +30,7 @@ pnpm run dev
 ```
 
 ### Populate the database with test users
-Open your browser and navigate to the following URL, or simply [Click here](http://localhost:3000/api/seed) to populate the database with test users. to populate the database with test users:
+Open your browser and navigate to the following URL, or simply <a href="http://localhost:3000/api/seed" target="_blank">Click here</a> to populate the database with test users.
 ```
 http://localhost:3000/api/seed
 ```
