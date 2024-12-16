@@ -29,7 +29,9 @@ const Loader: React.FC<LoaderProps> = ({
 
     return overlay ? (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-            <Spinner className={`${sizeClasses[size]} ${colorClasses[colorStyle]}`} />
+            <div className="flex size-full items-center justify-center">
+                <Spinner className={`${sizeClasses[size]} ${colorClasses[colorStyle]}`} />
+            </div>
         </div>
     ) : (
         <div className="flex h-screen items-center justify-center">

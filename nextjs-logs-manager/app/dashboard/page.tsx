@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Card } from "flowbite-react";
 import { FaFileAlt, FaPlus, FaUsers, FaCogs } from "react-icons/fa";
-import Breadcrumb from "@/components/Breadcrumb";
+import Breadcrumb from "@/src/components/Breadcrumb";
 
 interface User {
     id: number;
@@ -32,21 +32,17 @@ const DashboardPage: React.FC = () => {
         router.push(path);
     };
 
-    const breadcrumbItems = [{ label: "Dashboard" }];
-
     return (
         <div className="flex min-h-screen flex-col bg-gray-50 px-4 dark:bg-gray-900">
-            <div className="mx-auto w-full max-w-6xl p-4">
-                <Breadcrumb items={breadcrumbItems} />
-            </div>
-            <div className="mx-auto w-full max-w-6xl rounded-lg bg-white p-8 shadow-lg dark:bg-gray-800">
-                <h2 className="mb-6 text-center text-2xl font-semibold text-gray-900 dark:text-white sm:text-3xl">
+            <Breadcrumb />
+            <div className="mx-auto w-full max-w-6xl rounded-lg bg-white p-6 shadow-lg dark:bg-gray-800 sm:p-8">
+                <h2 className="mb-4 text-center text-xl font-semibold text-gray-900 dark:text-white sm:text-2xl">
                     Welcome Back, {user?.email || "User"}
                 </h2>
                 <p className="mb-6 text-center text-gray-700 dark:text-gray-300 sm:text-lg">
                     Select an action to proceed
                 </p>
-                <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
                     <Card
                         onClick={() => handleNavigation("/dashboard/logs-view")}
                         className="cursor-pointer transition hover:shadow-lg"

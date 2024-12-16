@@ -1,31 +1,51 @@
 "use client";
 
-import { Breadcrumb as FlowbiteBreadcrumb } from "flowbite-react";
-import Link from "next/link";
+import { Breadcrumb as FlowbiteBreadcrumb, BreadcrumbItem as FlowbiteBreadcrumbItem } from "flowbite-react";
+import { HiHome } from "react-icons/hi";
+import { usePathname } from "next/navigation";
 
-interface BreadcrumbItem {
-    label: string;
-    href?: string; // Si es null, será un elemento de texto, no un link
-}
+const Breadcrumb: React.FC = () => {
+    const pathname = usePathname();
 
-interface BreadcrumbProps {
-    items: BreadcrumbItem[];
-}
+    // Dividir el pathname en segmentos para generar el breadcrumb
+    const pathSegments = pathname.split("/").filter((segment) => segment);
 
-const Breadcrumb: React.FC<BreadcrumbProps> = ({ items }) => {
+    // Generar los ítems del breadcrumb
+    type BreadcrumbItem = {
+        label: string;
+        href?: string;
+        icon?: React.FC<React.SVGProps<SVGSVGElement>>;
+    };
+
+    const breadcrumbItems: BreadcrumbItem[] = [
+        {
+            label: "Home",
+            href: "/",
+            icon: HiHome,
+        },
+        ...pathSegments.map((segment, index) => {
+            const href = `/${pathSegments.slice(0, index + 1).join("/")}`;
+            const label = segment.charAt(0).toUpperCase() + segment.slice(1);
+            return { label, href };
+        }),
+    ];
+
+    // El último elemento será texto sin enlace
+    if (breadcrumbItems.length > 1) {
+        breadcrumbItems[breadcrumbItems.length - 1].href = undefined;
+    }
+
     return (
         <FlowbiteBreadcrumb aria-label="Breadcrumb">
-            {items.map((item, index) =>
+            {breadcrumbItems.map((item, index) =>
                 item.href ? (
-                    <Link key={index} href={item.href} passHref>
-                        <FlowbiteBreadcrumb.Item>
-                            {item.label}
-                        </FlowbiteBreadcrumb.Item>
-                    </Link>
-                ) : (
-                    <FlowbiteBreadcrumb.Item key={index}>
+                    <FlowbiteBreadcrumbItem key={index} href={item.href} icon={item.icon}>
                         {item.label}
-                    </FlowbiteBreadcrumb.Item>
+                    </FlowbiteBreadcrumbItem>
+                ) : (
+                    <FlowbiteBreadcrumbItem key={index} icon={item.icon}>
+                        {item.label}
+                    </FlowbiteBreadcrumbItem>
                 )
             )}
         </FlowbiteBreadcrumb>

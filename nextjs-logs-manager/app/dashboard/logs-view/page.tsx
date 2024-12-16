@@ -1,11 +1,12 @@
 "use client";
 
+import Breadcrumb from "@/src/components/Breadcrumb";
+import { columns_logs } from "@/src/constants/columns.logs-view";
+import DataTable from "@/src/components/DataTable";
+import Loader from "@/src/components/Loader";
+import { Log, logService } from "@/src/services/logs.getAll.service";
 import { useEffect, useState } from "react";
-import Breadcrumb from "@/components/Breadcrumb";
-import DataTable from "@/components/DataTable";
-import Loader from "@/components/Loader";
-import { columns_logs } from "@/constants/columns.logs-view";
-import { Log, logService } from "@/services/logs.getAll.service";
+
 
 const ViewLogsPage: React.FC = () => {
     const [logs, setLogs] = useState<Log[]>([]);
@@ -26,15 +27,10 @@ const ViewLogsPage: React.FC = () => {
         fetchLogs();
     }, []);
 
-    const breadcrumbItems = [
-        { label: "Dashboard", href: "/dashboard" },
-        { label: "Logs View" },
-    ];
-
     return (
         <div className="min-h-screen bg-gray-50 px-4 dark:bg-gray-900">
             <div className="mx-auto w-full max-w-6xl p-4">
-                <Breadcrumb items={breadcrumbItems} />
+                <Breadcrumb />
                 {loading ? (
                     <div className="flex items-center justify-center">
                         <Loader overlay={false} />
