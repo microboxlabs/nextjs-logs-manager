@@ -10,6 +10,10 @@ pnpm i
 ```
 npx auth secret
 ```
+### Create a .env file in the root of project with the following content:
+```
+DATABASE_URL="file:./dev.db"
+```
 ### Create the Prisma client
 ```
 npx prisma generate
