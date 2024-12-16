@@ -1,5 +1,5 @@
-import prisma from "@/lib/db";
-import generateHash from "@/lib/generateHash";
+import prisma from "@/src/lib/db";
+import generateHash from "@/src/lib/generateHash";
 
 async function main() {
     // Seed Roles

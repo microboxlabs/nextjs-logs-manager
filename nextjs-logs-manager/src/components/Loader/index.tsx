@@ -14,7 +14,6 @@ const Loader: React.FC<LoaderProps> = ({
     colorStyle = "primary",
     overlay = false,
 }) => {
-    // Map props to corresponding TailwindCSS classes
     const sizeClasses = {
         small: "w-6 h-6",
         medium: "w-12 h-12",
@@ -28,8 +27,9 @@ const Loader: React.FC<LoaderProps> = ({
     };
 
     return overlay ? (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-            <Spinner className={`${sizeClasses[size]} ${colorClasses[colorStyle]}`} />
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60">
+            <div className="absolute inset-0 bg-black opacity-60"></div>
+            <Spinner className={`${sizeClasses[size]} ${colorClasses[colorStyle]} relative`} />
         </div>
     ) : (
         <div className="flex h-screen items-center justify-center">
