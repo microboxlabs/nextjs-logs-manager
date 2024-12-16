@@ -1,8 +1,10 @@
 "use client"
 import { useUpload } from '@/hooks/useUpload'
 
+
 export const UploadFile = () => {
     const { fileContent, handleFileChange, upload } = useUpload()
+
     return (
         <section className='w-full h-full flex flex-col gap-2'>
             <div>

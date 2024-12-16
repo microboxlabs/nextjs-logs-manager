@@ -2,11 +2,11 @@
 import { FileContent } from '@/types/types';
 import { uploadData } from '@/utils/uploadData';
 import { useState } from 'react'
-
+import { useRouter } from 'next/navigation'
 
 export const useUpload = () => {
     const [fileContent, setFileContent] = useState<FileContent[]>([]);
-
+    const router = useRouter()
     const handleFileChange = (e: any) => {
         const file = e.target.files[0]; // Obtén el archivo seleccionado
         if (file) {
@@ -32,8 +32,10 @@ export const useUpload = () => {
         }
     };
 
-    const upload = () => {
-        uploadData(fileContent)
+    const upload = async () => {
+        await uploadData(fileContent)
+        router.push('/dashboard ')
+        window.location.href = '/dashboard';
     }
 
     return {
