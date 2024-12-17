@@ -1,6 +1,7 @@
 import prisma from "@/src/lib/db";
 import { LogEntry } from "@/src/types/db.types";
 import { NextResponse } from "next/server";
+import { broadcastLog } from "./events/route";
 
 // getAllLogs
 export async function GET() {
@@ -44,16 +45,13 @@ export async function POST(request: Request) {
         }
 
         // Convert ids to number if they are strings
-        if (typeof levelId === "string") {
-            levelId = parseInt(levelId, 10);
-        }
-        if (typeof serviceId === "string") {
-            serviceId = parseInt(serviceId, 10);
-        }
+        if (typeof levelId === "string") levelId = parseInt(levelId, 10);
+        if (typeof serviceId === "string") serviceId = parseInt(serviceId, 10);
 
+        // Crear el log
         const newLog = await prisma.logEntry.create({
             data: {
-                timestamp: new Date(), // Para poder generar un timestamp de la fecha actual ya que es creado manualmente
+                timestamp: new Date(),
                 levelId,
                 serviceId,
                 message,
@@ -72,6 +70,9 @@ export async function POST(request: Request) {
             serviceName: newLog.service.name,
             message: newLog.message,
         };
+
+        // Emitir el evento SSE a todos los clientes conectados
+        broadcastLog(formattedLog);
 
         return NextResponse.json(formattedLog, { status: 201 });
     } catch (error) {

@@ -1,12 +1,12 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import Breadcrumb from "@/src/components/Breadcrumb";
 import { columns_logs } from "@/src/constants/columns.logs-view";
 import DataTable from "@/src/components/DataTable";
 import Loader from "@/src/components/Loader";
-import { Log, logService } from "@/src/services/logs.getAll.service";
-import { useEffect, useState } from "react";
-
+import { logsSSEService } from "@/src/services/logs.sse.service";
+import { logService, Log } from "@/src/services/logs.getAll.service";
 
 const ViewLogsPage: React.FC = () => {
     const [logs, setLogs] = useState<Log[]>([]);
@@ -25,6 +25,13 @@ const ViewLogsPage: React.FC = () => {
         };
 
         fetchLogs();
+
+        // Conectar al SSE para escuchar logs en tiempo real
+        const disconnect = logsSSEService.connect((newLog) => {
+            setLogs((prevLogs) => [newLog, ...prevLogs]); // Agregar el nuevo log al inicio
+        });
+
+        return () => disconnect(); // Limpiar la conexión SSE
     }, []);
 
     return (

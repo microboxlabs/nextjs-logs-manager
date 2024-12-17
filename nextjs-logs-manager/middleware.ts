@@ -1,36 +1,34 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getToken } from "next-auth/jwt";
 
+const PUBLIC_ROUTES = ["/api/auth", "/login"];
+const ADMIN_ONLY_ROUTES = ["/api/levels", "/api/services", "/api/log/upload", "/api/users"];
+const AUTHENTICATED_ROUTES = ["/api/logs/events", "/dashboard/user-profile"];
+
 export async function middleware(req: NextRequest) {
     const { pathname } = req.nextUrl;
 
-    // Allow public routes like authentication and login
-    if (pathname.startsWith("/api/auth") || pathname === "/login") {
+    // Permitir rutas públicas
+    if (PUBLIC_ROUTES.some(route => pathname.startsWith(route))) {
         return NextResponse.next();
     }
 
-    // Get the authentication token
+    // Obtener el token
     const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
 
-    // If there is no token, redirect to /login
     if (!token) {
         return NextResponse.redirect(new URL("/login", req.url));
     }
 
     const userRole = (token.role as string)?.toLowerCase();
 
-    // Block specific routes for admins only
-    const adminOnlyRoutes = ["/api/levels", "/api/services", "/api/log/upload", "/api/users"];
-
-    if (adminOnlyRoutes.some((route) => pathname.startsWith(route))) {
-        if (userRole !== "admin") {
-            return NextResponse.redirect(new URL("/dashboard", req.url));
-        }
+    // Permitir acceso a rutas autenticadas
+    if (AUTHENTICATED_ROUTES.includes(pathname)) {
+        return NextResponse.next();
     }
 
-    // Protect any route that contains "admin"
-    const isAdminRoute = pathname.toLowerCase().includes("admin");
-    if (isAdminRoute && userRole !== "admin") {
+    // Rutas solo para admin
+    if (ADMIN_ONLY_ROUTES.some(route => pathname.startsWith(route)) && userRole !== "admin") {
         return NextResponse.redirect(new URL("/dashboard", req.url));
     }
 
