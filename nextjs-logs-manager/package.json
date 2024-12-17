@@ -19,6 +19,7 @@
     "bcrypt": "^5.1.1",
     "flowbite": "^2.5.2",
     "flowbite-react": "^0.8.0",
+    "formidable": "^3.5.2",
     "formik": "^2.4.6",
     "next": "14.2.20",
     "next-auth": "^4.24.11",
@@ -29,6 +30,7 @@
   "devDependencies": {
     "@types/axios": "^0.14.4",
     "@types/bcrypt": "^5.0.2",
+    "@types/formidable": "^3.4.5",
     "@types/jsonwebtoken": "^9.0.7",
     "@types/next-auth": "^3.15.0",
     "@types/node": "^20",

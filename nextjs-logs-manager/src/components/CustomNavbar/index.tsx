@@ -1,18 +1,13 @@
 "use client";
 
-import { useSession, signOut } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import Link from "next/link";
-import { Button, Navbar, DarkThemeToggle } from "flowbite-react";
+import { Navbar, DarkThemeToggle } from "flowbite-react";
+import AvatarMenu from "../AvatarMenu";
 
 export default function CustomNavbar() {
     const { data: session, status } = useSession();
-
-    const handleLogout = async () => {
-        await signOut({
-            callbackUrl: "/login",
-            redirect: true,
-        });
-    };
+    const isAdmin = session?.user?.role === "ADMIN";
 
     return (
         <Navbar
@@ -20,79 +15,64 @@ export default function CustomNavbar() {
             rounded
             className="bg-gray-100 shadow-md dark:bg-gray-800 dark:text-white"
         >
-            <Navbar.Brand as={Link} href="/">
+            {/* LOGO */}
+            <Navbar.Brand
+                as={Link}
+                href={status === "authenticated" ? "/dashboard" : "/auth/login"}
+            >
                 <span className="self-center whitespace-nowrap text-xl font-semibold text-gray-900 dark:text-white">
                     Log Manager
                 </span>
             </Navbar.Brand>
 
-            <div className="ml-auto flex items-center gap-2 md:order-2">
-                {/* Contenido Desktop (≥ md) */}
-                <div className="hidden items-center gap-2 md:flex">
-                    {status === "authenticated" && (
-                        <>
-                            <span className="text-sm text-gray-700 dark:text-gray-300">
-                                {session.user?.email} ({session.user?.role})
-                            </span>
-                            <DarkThemeToggle />
-                            <Button
-                                onClick={handleLogout}
-                                color="failure"
-                                size="sm"
-                                className="text-white dark:text-gray-800"
-                            >
-                                Logout
-                            </Button>
-                        </>
-                    )}
-
-                    {status === "unauthenticated" && (
-                        <>
-                            <DarkThemeToggle />
-                            <Link href="/login">
-                                <Button color="success" size="sm">
-                                    Login
-                                </Button>
-                            </Link>
-                        </>
-                    )}
-                </div>
-
-                {/* Toggle + DarkTheme solo para Mobile (< md) */}
-                <div className="flex items-center gap-2 md:hidden">
-                    <DarkThemeToggle />
-                    <Navbar.Toggle />
-                </div>
-            </div>
-
+            {/* Collapse: Menú de navegación principal */}
             <Navbar.Collapse>
-                {/* Contenido Mobile (< md) */}
-                <div className="block md:hidden">
-                    {status === "authenticated" && (
-                        <>
-                            <span className="text-sm text-gray-700 dark:text-gray-300">
-                                {session.user?.email} ({session.user?.role})
-                            </span>
-                            <Button
-                                onClick={handleLogout}
-                                color="failure"
-                                size="sm"
-                                className="w-full text-white dark:text-gray-800"
+                {status === "authenticated" && (
+                    <>
+                        <Navbar.Link
+                            as={Link}
+                            href="/dashboard/logs-view"
+                            className="hover:text-blue-600 dark:hover:text-blue-400"
+                        >
+                            Logs View
+                        </Navbar.Link>
+                        {isAdmin && (
+                            <Navbar.Link
+                                as={Link}
+                                href="/dashboard/logs-view/new-log"
+                                className="hover:text-blue-600 dark:hover:text-blue-400"
                             >
-                                Logout
-                            </Button>
-                        </>
-                    )}
-
-                    {status === "unauthenticated" && (
-                        <Link href="/login">
-                            <Button color="success" size="sm" className="w-full">
-                                Login
-                            </Button>
-                        </Link>
-                    )}
-                </div>
+                                Create New Log
+                            </Navbar.Link>
+                        )}
+                        {isAdmin && (
+                            <Navbar.Link
+                                as={Link}
+                                href="/dashboard/users"
+                                className="hover:text-blue-600 dark:hover:text-blue-400"
+                            >
+                                Users
+                            </Navbar.Link>
+                        )}
+                    </>
+                )}
             </Navbar.Collapse>
+            {/* Right-Side Icons */}
+            <div className="flex items-center gap-4 ml-auto">
+                {/* Dark Mode Toggle */}
+                <DarkThemeToggle />
+
+                {/* Avatar Menu */}
+                {status === "authenticated" && (
+                    <AvatarMenu
+                        userEmail={session.user?.email || "user@example.com"}
+                        userRole={session.user?.role || "USER"}
+                    />
+                )}
+
+                {/* Toggle para pantallas pequeñas */}
+                <Navbar.Toggle className="ml-auto" />
+            </div>
         </Navbar>
     );
 }

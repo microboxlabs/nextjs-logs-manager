@@ -4,6 +4,7 @@ import { ThemeModeScript } from "flowbite-react";
 import "../styles/globals.css";
 import SessionWrapper from "@/src/components/SessionWrapper";
 import CustomNavbar from "@/src/components/CustomNavbar";
+import { AlertProvider } from "@/src/contexts/AlertContext";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -29,7 +30,7 @@ export const metadata: Metadata = {
   },
 };
 
-export default async function RootLayout({
+export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
@@ -40,14 +41,16 @@ export default async function RootLayout({
         <ThemeModeScript />
       </head>
       <body className={`${inter.className} h-screen bg-gray-50 dark:bg-gray-900`}>
-        <SessionWrapper>
-          <div className="flex h-screen flex-col">
-            <header className="z-50">
-              <CustomNavbar />
-            </header>
-            <main className="grow overflow-y-auto">{children}</main>
-          </div>
-        </SessionWrapper>
+        <AlertProvider>
+          <SessionWrapper>
+            <div className="flex h-screen flex-col">
+              <header className="z-50">
+                <CustomNavbar />
+              </header>
+              <main className="grow overflow-y-auto">{children}</main>
+            </div>
+          </SessionWrapper>
+        </AlertProvider>
       </body>
     </html>
   );

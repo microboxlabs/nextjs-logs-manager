@@ -15,7 +15,7 @@ export const logService = {
             return response.data;
         } catch (error) {
             console.error("Error fetching logs:", error);
-            throw error; // Re-throw the error for error handling
+            throw error;
         }
     },
 };

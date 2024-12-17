@@ -1,15 +1,17 @@
 import prisma from "@/src/lib/db";
+import { LogEntry } from "@/src/types/db.types";
 import { NextResponse } from "next/server";
 
+// getAllLogs
 export async function GET() {
     try {
         const logs = await prisma.logEntry.findMany({
             include: {
-                level: true, // Incluir la relación de nivel
-                service: true, // Incluir la relación de servicio
+                level: true,
+                service: true,
             },
             orderBy: {
-                timestamp: "desc", // Ordenar por logs más recientes
+                timestamp: "desc",
             },
         });
 
@@ -25,5 +27,55 @@ export async function GET() {
     } catch (error) {
         console.error("Error fetching logs:", error);
         return NextResponse.json({ error: "Failed to fetch logs." }, { status: 500 });
+    }
+}
+
+// CreateOneLog
+export async function POST(request: Request) {
+    try {
+        const body: Partial<LogEntry> = await request.json();
+        let { levelId, serviceId, message } = body;
+
+        if (!levelId || !serviceId || !message) {
+            return NextResponse.json(
+                { error: "levelId, serviceId y message son requeridos." },
+                { status: 400 }
+            );
+        }
+
+        // Convert ids to number if they are strings
+        if (typeof levelId === "string") {
+            levelId = parseInt(levelId, 10);
+        }
+        if (typeof serviceId === "string") {
+            serviceId = parseInt(serviceId, 10);
+        }
+
+        const newLog = await prisma.logEntry.create({
+            data: {
+                timestamp: new Date(), // Para poder generar un timestamp de la fecha actual ya que es creado manualmente
+                levelId,
+                serviceId,
+                message,
+            },
+            include: {
+                level: true,
+                service: true,
+            },
+        });
+
+        // Respuesta formateada
+        const formattedLog = {
+            id: newLog.id,
+            timestamp: newLog.timestamp,
+            level: newLog.level.name,
+            serviceName: newLog.service.name,
+            message: newLog.message,
+        };
+
+        return NextResponse.json(formattedLog, { status: 201 });
+    } catch (error) {
+        console.error("Error creating log:", error);
+        return NextResponse.json({ error: "Failed to create log." }, { status: 500 });
     }
 }

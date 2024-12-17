@@ -9,6 +9,7 @@ import {
     Accordion,
     Dropdown,
     Label,
+    Datepicker,
 } from "flowbite-react";
 import { ClearButton } from "../ClearButton";
 
@@ -50,6 +51,7 @@ const DataTable: React.FC<DataTableProps> = ({
             ...prev,
             [key]: value,
         }));
+        setCurrentPage(1);
     };
 
     const toggleFilterVisibility = (key: string) => {
@@ -60,8 +62,10 @@ const DataTable: React.FC<DataTableProps> = ({
                     const { [key]: _, ...rest } = current;
                     return rest;
                 });
+                setCurrentPage(1);
                 return newVisibleFilters;
             } else {
+                setCurrentPage(1);
                 return [...prev, key];
             }
         });
@@ -82,6 +86,12 @@ const DataTable: React.FC<DataTableProps> = ({
         setSelectedFilters({});
         setStartDate(null);
         setEndDate(null);
+        setCurrentPage(1);
+    };
+
+    const handleSearchChange = (value: string) => {
+        setSearchQuery(value);
+        setCurrentPage(1);
     };
 
     const filteredData = (data || [])
@@ -131,22 +141,24 @@ const DataTable: React.FC<DataTableProps> = ({
 
     return (
         <div className="w-full p-4">
+
+            {/* Search */}
             <div className="mb-4 flex w-full items-center gap-2">
                 <TextInput
                     placeholder="Search all data..."
                     value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
+                    onChange={(e) => handleSearchChange(e.target.value)}
                     className="w-full"
                 />
                 <ClearButton onClick={() => setSearchQuery("")} icon={<AiOutlineClear size={16} />}
                 />
             </div>
 
+            {/* Filters */}
             <Accordion alwaysOpen={false}>
                 <Accordion.Panel>
                     <Accordion.Title>Filters</Accordion.Title>
                     <Accordion.Content>
-                        {/* Botones toggle */}
                         <div className="mb-4 flex flex-wrap gap-2">
                             {columns?.map((column) => (
                                 <button
@@ -163,7 +175,6 @@ const DataTable: React.FC<DataTableProps> = ({
                             <ClearButton onClick={clearVisibleFilters} icon={<AiOutlineClear size={16} />} size="xs" />
                         </div>
 
-                        {/* Filtros visibles */}
                         <div className="flex flex-wrap gap-4">
                             {columns?.map((column) =>
                                 visibleFilters.includes(column.key) ? (
@@ -176,25 +187,32 @@ const DataTable: React.FC<DataTableProps> = ({
                                                 >
                                                     {column.label} Start Date
                                                 </Label>
-                                                <TextInput
+
+                                                <Datepicker
                                                     id={`${column.key}-start`}
-                                                    type="date"
-                                                    value={startDate || ""}
-                                                    onChange={(e) => setStartDate(e.target.value)}
                                                     className="mt-2 w-full"
+                                                    language="en"
+                                                    weekStart={1}
+                                                    onSelectedDateChanged={(date) => {
+                                                        setStartDate(date.toISOString().split("T")[0]);
+                                                    }}
                                                 />
+
                                                 <Label
                                                     htmlFor={`${column.key}-end`}
                                                     className="mt-4 block text-sm font-semibold"
                                                 >
                                                     {column.label} End Date
                                                 </Label>
-                                                <TextInput
+
+                                                <Datepicker
                                                     id={`${column.key}-end`}
-                                                    type="date"
-                                                    value={endDate || ""}
-                                                    onChange={(e) => setEndDate(e.target.value)}
                                                     className="mt-2 w-full"
+                                                    language="en"
+                                                    weekStart={1}
+                                                    onSelectedDateChanged={(date) => {
+                                                        setEndDate(date.toISOString().split("T")[0]);
+                                                    }}
                                                 />
                                             </>
                                         ) : column.isDropdown ? (
@@ -247,6 +265,7 @@ const DataTable: React.FC<DataTableProps> = ({
                 </Accordion.Panel>
             </Accordion>
 
+            {/* Table */}
             <div className="relative mt-4 hidden overflow-x-auto sm:rounded-lg md:block">
                 <Table className="w-full table-auto text-sm">
                     <Table.Head>
@@ -289,6 +308,7 @@ const DataTable: React.FC<DataTableProps> = ({
                 </Table>
             </div>
 
+            {/* Mobile Table */}
             <div className="mt-4 block space-y-4 md:hidden">
                 {paginatedData.length > 0 ? (
                     paginatedData.map((row, index) => (
@@ -317,22 +337,41 @@ const DataTable: React.FC<DataTableProps> = ({
                 )}
             </div>
 
-            <div className="mt-4 flex flex-col gap-2 text-sm text-gray-200 sm:flex-row sm:items-center sm:justify-between">
-                <span className="text-center text-gray-400 sm:text-left">
-                    Showing {startRange} to {endRange} of {filteredData.length} entries
-                </span>
-                <div className="self-center sm:self-auto">
-                    {filteredData.length > pageSize && (
+            {/* Pagination */}
+            <div className="mt-6 flex flex-col-reverse items-center gap-4 text-sm sm:flex-row sm:items-center sm:justify-between">
+                {/* Información de Rangos */}
+                <div className="w-full text-center text-gray-500 sm:w-auto sm:text-left">
+                    {isSmallScreen ? (
+                        <>
+                            <span className="font-medium text-gray-700 dark:text-gray-300">{startRange}</span> -{" "}
+                            <span className="font-medium text-gray-700 dark:text-gray-300">{endRange}</span> of{" "}
+                            <span className="font-medium text-gray-700 dark:text-gray-300">{filteredData.length}</span>
+                        </>
+                    ) : (
+                        <>
+                            Showing{" "}
+                            <span className="font-medium text-gray-700 dark:text-gray-300">{startRange}</span> to{" "}
+                            <span className="font-medium text-gray-700 dark:text-gray-300">{endRange}</span> of{" "}
+                            <span className="font-medium text-gray-700 dark:text-gray-300">{filteredData.length}</span> entries
+                        </>
+                    )}
+                </div>
+
+                {/* Componente de Paginación */}
+                {filteredData.length > pageSize && (
+                    <div className="flex w-full justify-center sm:w-auto sm:justify-end">
                         <Pagination
                             currentPage={currentPage}
                             totalPages={totalPages}
                             onPageChange={handlePageChange}
                             layout={isSmallScreen ? "navigation" : "pagination"}
                             showIcons
+                            className="text-gray-500 dark:text-gray-400"
                         />
-                    )}
-                </div>
+                    </div>
+                )}
             </div>
+
 
         </div>
     );
