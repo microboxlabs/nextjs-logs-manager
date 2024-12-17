@@ -26,7 +26,7 @@ export default function CustomNavbar() {
             </Navbar.Brand>
 
             {/* Collapse: Menú de navegación principal */}
-            <Navbar.Collapse>
+            <Navbar.Collapse className="ml-auto">
                 {status === "authenticated" && (
                     <>
                         <Navbar.Link
@@ -39,7 +39,7 @@ export default function CustomNavbar() {
                         {isAdmin && (
                             <Navbar.Link
                                 as={Link}
-                                href="/dashboard/logs-view/new-log"
+                                href="/dashboard/logs-view/admin-create"
                                 className="hover:text-blue-600 dark:hover:text-blue-400"
                             >
                                 Create New Log
@@ -48,7 +48,7 @@ export default function CustomNavbar() {
                         {isAdmin && (
                             <Navbar.Link
                                 as={Link}
-                                href="/dashboard/users"
+                                href="/dashboard/admin-view-users"
                                 className="hover:text-blue-600 dark:hover:text-blue-400"
                             >
                                 Users
@@ -57,8 +57,9 @@ export default function CustomNavbar() {
                     </>
                 )}
             </Navbar.Collapse>
+
             {/* Right-Side Icons */}
-            <div className="flex items-center gap-4 ml-auto">
+            <div className="flex items-end gap-4 pl-10 ml-auto">
                 {/* Dark Mode Toggle */}
                 <DarkThemeToggle />
 
@@ -70,8 +71,8 @@ export default function CustomNavbar() {
                     />
                 )}
 
-                {/* Toggle para pantallas pequeñas */}
-                <Navbar.Toggle className="ml-auto" />
+                {/* Toggle for small screens */}
+                <Navbar.Toggle className="ml-auto lg:hidden" />
             </div>
         </Navbar>
     );

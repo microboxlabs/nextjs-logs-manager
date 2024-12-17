@@ -5,6 +5,7 @@ import { Readable } from "stream";
 import { processLogs } from "@/src/services/logs.processLogs.service";
 import os from "os";
 import fs from "fs";
+import { broadcastLog } from "../events/route";
 
 export const runtime = 'nodejs';
 
@@ -25,7 +26,10 @@ export async function POST(req: NextRequest) {
         const fileContent = await fileToString(file.filepath);
         const logs = parseLogs(fileContent);
 
-        await processLogs(logs);
+        for (const log of logs) {
+            await processLogs([log]);
+            broadcastLog(log);
+        }
 
         return NextResponse.json({
             message: "Logs processed successfully",
