@@ -5,11 +5,11 @@ export async function GET() {
     try {
         const logs = await prisma.logEntry.findMany({
             include: {
-                level: true, // Incluir la relación de nivel
-                service: true, // Incluir la relación de servicio
+                level: true,
+                service: true,
             },
             orderBy: {
-                timestamp: "desc", // Ordenar por logs más recientes
+                timestamp: "desc",
             },
         });
 

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { SetStateAction, useEffect, useState } from "react";
 import { AiOutlineClear } from "react-icons/ai";
 import {
     Table,
@@ -9,6 +9,7 @@ import {
     Accordion,
     Dropdown,
     Label,
+    Datepicker,
 } from "flowbite-react";
 import { ClearButton } from "../ClearButton";
 
@@ -131,6 +132,8 @@ const DataTable: React.FC<DataTableProps> = ({
 
     return (
         <div className="w-full p-4">
+
+            {/* Search */}
             <div className="mb-4 flex w-full items-center gap-2">
                 <TextInput
                     placeholder="Search all data..."
@@ -142,11 +145,11 @@ const DataTable: React.FC<DataTableProps> = ({
                 />
             </div>
 
+            {/* Filters */}
             <Accordion alwaysOpen={false}>
                 <Accordion.Panel>
                     <Accordion.Title>Filters</Accordion.Title>
                     <Accordion.Content>
-                        {/* Botones toggle */}
                         <div className="mb-4 flex flex-wrap gap-2">
                             {columns?.map((column) => (
                                 <button
@@ -163,7 +166,6 @@ const DataTable: React.FC<DataTableProps> = ({
                             <ClearButton onClick={clearVisibleFilters} icon={<AiOutlineClear size={16} />} size="xs" />
                         </div>
 
-                        {/* Filtros visibles */}
                         <div className="flex flex-wrap gap-4">
                             {columns?.map((column) =>
                                 visibleFilters.includes(column.key) ? (
@@ -176,25 +178,32 @@ const DataTable: React.FC<DataTableProps> = ({
                                                 >
                                                     {column.label} Start Date
                                                 </Label>
-                                                <TextInput
+
+                                                <Datepicker
                                                     id={`${column.key}-start`}
-                                                    type="date"
-                                                    value={startDate || ""}
-                                                    onChange={(e) => setStartDate(e.target.value)}
                                                     className="mt-2 w-full"
+                                                    language="en"
+                                                    weekStart={1}
+                                                    onSelectedDateChanged={(date) => {
+                                                        setStartDate(date.toISOString().split("T")[0]);
+                                                    }}
                                                 />
+
                                                 <Label
                                                     htmlFor={`${column.key}-end`}
                                                     className="mt-4 block text-sm font-semibold"
                                                 >
                                                     {column.label} End Date
                                                 </Label>
-                                                <TextInput
+
+                                                <Datepicker
                                                     id={`${column.key}-end`}
-                                                    type="date"
-                                                    value={endDate || ""}
-                                                    onChange={(e) => setEndDate(e.target.value)}
                                                     className="mt-2 w-full"
+                                                    language="en"
+                                                    weekStart={1}
+                                                    onSelectedDateChanged={(date) => {
+                                                        setEndDate(date.toISOString().split("T")[0]);
+                                                    }}
                                                 />
                                             </>
                                         ) : column.isDropdown ? (
@@ -247,6 +256,7 @@ const DataTable: React.FC<DataTableProps> = ({
                 </Accordion.Panel>
             </Accordion>
 
+            {/* Table */}
             <div className="relative mt-4 hidden overflow-x-auto sm:rounded-lg md:block">
                 <Table className="w-full table-auto text-sm">
                     <Table.Head>
@@ -289,6 +299,7 @@ const DataTable: React.FC<DataTableProps> = ({
                 </Table>
             </div>
 
+            {/* Mobile Table */}
             <div className="mt-4 block space-y-4 md:hidden">
                 {paginatedData.length > 0 ? (
                     paginatedData.map((row, index) => (
@@ -317,6 +328,7 @@ const DataTable: React.FC<DataTableProps> = ({
                 )}
             </div>
 
+            {/* Pagination */}
             <div className="mt-4 flex flex-col gap-2 text-sm text-gray-200 sm:flex-row sm:items-center sm:justify-between">
                 <span className="text-center text-gray-400 sm:text-left">
                     Showing {startRange} to {endRange} of {filteredData.length} entries
