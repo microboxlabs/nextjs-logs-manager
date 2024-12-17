@@ -37,7 +37,7 @@ const ViewLogsPage: React.FC = () => {
                     </div>
                 ) : (
                     <div className="pt-10">
-                        <DataTable data={logs} columns={columns_logs} pageSize={5} />
+                        <DataTable data={logs} columns={columns_logs} pageSize={10} />
                     </div>
                 )}
             </div>

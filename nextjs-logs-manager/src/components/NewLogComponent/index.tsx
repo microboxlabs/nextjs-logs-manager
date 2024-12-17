@@ -1,6 +1,6 @@
 import { useState } from "react";
+import Link from "next/link";
 import { Dropzone } from "../Dropzone";
-import router from "next/router";
 
 interface NewLogComponentProps {
     onFileSelect: (file: File | null) => void;
@@ -26,7 +26,6 @@ export const NewLogComponent: React.FC<NewLogComponentProps> = ({ onFileSelect }
                 <Dropzone onFileSelect={handleFileUpload} maxSize={5} accept=".txt" iconSize="lg" />
             </div>
 
-            {/* Divider */}
             <div className="relative my-6 flex items-center">
                 <div className="grow border-t border-dotted border-gray-300"></div>
                 <span className="mx-4 shrink text-sm text-gray-500">or</span>
@@ -34,12 +33,12 @@ export const NewLogComponent: React.FC<NewLogComponentProps> = ({ onFileSelect }
             </div>
 
             <div className="text-center">
-                <button
-                    onClick={() => router.push("/dashboard/logs-view/new-log")}
+                <Link
+                    href="/dashboard/logs-view/admin-create"
                     className="text-sm font-medium text-blue-600 hover:underline dark:text-blue-400"
                 >
                     Click here if you want to create the log manually
-                </button>
+                </Link>
             </div>
         </div>
     );

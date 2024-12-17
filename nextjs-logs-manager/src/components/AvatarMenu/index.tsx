@@ -39,7 +39,7 @@ export default function AvatarMenu({
                 <span className="block text-sm font-semibold">{userName}</span>
                 <span className="block truncate text-sm text-gray-500">{userEmail}</span>
             </Dropdown.Header>
-            <Dropdown.Item as={Link} href="/dashboard/profile">
+            <Dropdown.Item as={Link} href="/dashboard/user-profile">
                 Profile
             </Dropdown.Item>
             <Dropdown.Divider />

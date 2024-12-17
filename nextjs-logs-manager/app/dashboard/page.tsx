@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { Card } from "flowbite-react";
@@ -10,11 +10,12 @@ import Loader from "@/src/components/Loader";
 import { NewLogComponent } from "@/src/components/NewLogComponent";
 import CustomModal from "@/src/components/CustomModal";
 import { uploadLogFile } from "@/src/services/logs.uploadLogFile.service";
+import { useAlert } from "@/src/contexts/AlertContext";
 
 interface CardItem {
     title: string;
     icon: React.ElementType;
-    path: string;
+    path?: string;
     roles?: string[];
     modalContent?: React.ReactNode;
 }
@@ -22,62 +23,59 @@ interface CardItem {
 const DashboardPage: React.FC = () => {
     const { data: session, status } = useSession();
     const router = useRouter();
+    const { showAlert } = useAlert();
+
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [modalTitle, setModalTitle] = useState<string>("");
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
     const [isUploading, setIsUploading] = useState(false);
 
+    // Lógica de manejo del archivo
     const handleFileSubmit = async () => {
         if (!selectedFile) return;
 
         setIsUploading(true);
         try {
             await uploadLogFile(selectedFile);
-            alert("File uploaded successfully!");
-            setIsModalOpen(false);
-            router.push("/dashboard/logs-view");
+            console.log("Previo a showAlert");
+            showAlert("success", "File uploaded successfully!");
+            console.log("Posterior a showAlert");
+            setTimeout(() => {
+                router.push("/dashboard/logs-view");
+            }, 500);
         } catch (error) {
-            alert("An error occurred while uploading the file.");
-        } finally {
+            console.error(error);
+            showAlert("error", "An error occurred while uploading the file.");
+        }
+        finally {
             setIsUploading(false);
             setSelectedFile(null);
         }
     };
 
-    const cards: CardItem[] = [
-        { title: "View Logs", icon: FaFileAlt, path: "/dashboard/logs-view" },
-        {
-            title: "Create New Log",
-            icon: FaPlus,
-            roles: ["ADMIN"],
-            modalContent: (
-                <NewLogComponent
-                    onFileSelect={(file) => {
-                        setSelectedFile(file);
-                    }}
-                />
-            ),
-            path: "/dashboard/logs-view/new-log",
-        },
-        { title: "View Users", icon: FaUsers, path: "/dashboard/users", roles: ["ADMIN"] },
-        { title: "User Profile", icon: FaUsers, path: "/dashboard/profile" },
-    ];
+    // Configuración de las tarjetas
+    const cards: CardItem[] = useMemo(
+        () => [
+            { title: "View Logs", icon: FaFileAlt, path: "/dashboard/logs-view" },
+            {
+                title: "Create New Log",
+                icon: FaPlus,
+                roles: ["ADMIN"],
+                modalContent: (
+                    <NewLogComponent
+                        onFileSelect={(file) => {
+                            setSelectedFile(file);
+                        }}
+                    />
+                ),
+            },
+            { title: "View Users", icon: FaUsers, path: "/dashboard/admin-view-users", roles: ["ADMIN"] },
+            { title: "User Profile", icon: FaUsers, path: "/dashboard/user-profile" },
+        ],
+        []
+    );
 
-    if (status === "loading") {
-        return (
-            <div className="flex min-h-screen items-center justify-center">
-                <Loader overlay={true} />
-            </div>
-        );
-    }
-
-    if (!session) {
-        router.push("/login");
-        return null;
-    }
-
-    const userRole = session?.user?.role || "";
-
+    // Manejar clic en las tarjetas
     const handleCardClick = (card: CardItem) => {
         if (card.modalContent) {
             setModalTitle(card.title);
@@ -87,16 +85,37 @@ const DashboardPage: React.FC = () => {
         }
     };
 
+    // Manejar cierre del modal
     const handleCloseModal = () => {
         setIsModalOpen(false);
-        setSelectedFile(null); // Limpia el archivo seleccionado al cerrar
+        setSelectedFile(null);
     };
+
+    // Si está cargando la sesión
+    if (status === "loading") {
+        return (
+            <div className="flex min-h-screen items-center justify-center">
+                <Loader overlay={true} />
+            </div>
+        );
+    }
+
+    // Redirigir si no hay sesión
+    if (!session) {
+        router.push("/login");
+        return null;
+    }
+
+    const userRole = session?.user?.role || "";
 
     return (
         <div className="flex min-h-screen flex-col bg-gray-100 px-4 py-6 dark:bg-gray-900">
+            {/* Breadcrumb */}
             <div className="mx-auto w-full max-w-7xl px-4">
                 <Breadcrumb />
             </div>
+
+            {/* Contenido Principal */}
             <div className="mx-auto w-full max-w-7xl rounded-lg bg-white p-6 shadow-md dark:bg-gray-800 sm:p-8">
                 <h2 className="mb-4 text-center text-2xl font-bold text-gray-900 dark:text-white">
                     Welcome Back, {session?.user?.email || "User"}
@@ -126,6 +145,7 @@ const DashboardPage: React.FC = () => {
                 </div>
             </div>
 
+            {/* Modal */}
             <CustomModal
                 isOpen={isModalOpen}
                 title={modalTitle}
@@ -141,9 +161,8 @@ const DashboardPage: React.FC = () => {
                     </button>
                 }
             >
-                {cards.find(card => card.title === modalTitle)?.modalContent}
+                {cards.find((card) => card.title === modalTitle)?.modalContent}
             </CustomModal>
-
         </div>
     );
 };

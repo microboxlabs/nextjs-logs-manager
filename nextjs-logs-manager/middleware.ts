@@ -4,25 +4,33 @@ import { getToken } from "next-auth/jwt";
 export async function middleware(req: NextRequest) {
     const { pathname } = req.nextUrl;
 
+    // Allow public routes like authentication and login
     if (pathname.startsWith("/api/auth") || pathname === "/login") {
         return NextResponse.next();
     }
 
+    // Get the authentication token
     const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
 
+    // If there is no token, redirect to /login
     if (!token) {
         return NextResponse.redirect(new URL("/login", req.url));
     }
 
-    if (pathname === "/api/log/upload") {
-        const userRole = (token.role as string)?.toLowerCase();
+    const userRole = (token.role as string)?.toLowerCase();
+
+    // Block specific routes for admins only
+    const adminOnlyRoutes = ["/api/levels", "/api/services", "/api/log/upload", "/api/users"];
+
+    if (adminOnlyRoutes.some((route) => pathname.startsWith(route))) {
         if (userRole !== "admin") {
             return NextResponse.redirect(new URL("/dashboard", req.url));
         }
     }
 
-    const isAdminRoute = (pathname as string).toLowerCase().includes("admin");
-    if (isAdminRoute && (token.role as string).toLowerCase() !== "admin") {
+    // Protect any route that contains "admin"
+    const isAdminRoute = pathname.toLowerCase().includes("admin");
+    if (isAdminRoute && userRole !== "admin") {
         return NextResponse.redirect(new URL("/dashboard", req.url));
     }
 
@@ -30,8 +38,5 @@ export async function middleware(req: NextRequest) {
 }
 
 export const config = {
-    matcher: [
-        "/dashboard/:path*",
-        "/api/:path*",
-    ],
+    matcher: ["/dashboard/:path*", "/api/:path*"],
 };
