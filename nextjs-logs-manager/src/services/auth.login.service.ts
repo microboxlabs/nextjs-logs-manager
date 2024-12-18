@@ -1,25 +1,19 @@
-import axios from "axios";
-
-export interface LoginResponse {
-    token: string;
-    user: {
-        id: number;
-        email: string;
-        role: string;
-    };
-}
-
-export interface LoginValues {
-    email: string;
-    password: string;
-}
+import axios, { AxiosError } from "axios";
+import { LoginResponse, LoginValues } from "../types/auth.types";
 
 /**
- * Realiza el login con las credenciales del usuario.
- * @param values Credenciales del usuario (email y password).
- * @returns Objeto con el token y datos del usuario.
+ * Logs in a user with the provided credentials.
+ *
+ * @param values - The login credentials.
+ * @returns A promise that resolves to the login response.
+ * @throws An error if the login request fails.
  */
 export const login = async (values: LoginValues): Promise<LoginResponse> => {
-    const response = await axios.post<LoginResponse>("/api/auth/login", values);
-    return response.data;
+    try {
+        const response = await axios.post<LoginResponse>("/api/auth/login", values);
+        return response.data;
+    } catch (error) {
+        const axiosError = error as AxiosError<{ message: string }>;
+        throw new Error(axiosError.response?.data?.message || "Error during login.");
+    }
 };

@@ -8,12 +8,12 @@ const AUTHENTICATED_ROUTES = ["/api/logs/events", "/dashboard/user-profile"];
 export async function middleware(req: NextRequest) {
     const { pathname } = req.nextUrl;
 
-    // Permitir rutas públicas
+    // Allow public routes
     if (PUBLIC_ROUTES.some(route => pathname.startsWith(route))) {
         return NextResponse.next();
     }
 
-    // Obtener el token
+    // Get the token
     const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
 
     if (!token) {
@@ -22,12 +22,12 @@ export async function middleware(req: NextRequest) {
 
     const userRole = (token.role as string)?.toLowerCase();
 
-    // Permitir acceso a rutas autenticadas
+    // Allow access to authenticated routes
     if (AUTHENTICATED_ROUTES.includes(pathname)) {
         return NextResponse.next();
     }
 
-    // Rutas solo para admin
+    // Admin only routes
     if (ADMIN_ONLY_ROUTES.some(route => pathname.startsWith(route)) && userRole !== "admin") {
         return NextResponse.redirect(new URL("/dashboard", req.url));
     }

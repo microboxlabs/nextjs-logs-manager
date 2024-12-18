@@ -1,12 +1,13 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Breadcrumb from "@/src/components/Breadcrumb";
-import Loader from "@/src/components/Loader";
-import { fetchUserProfile, UserProfile } from "@/src/services/users.getById.service";
-import { useAlert } from "@/src/contexts/AlertContext";
 import { Card, Badge, Tabs, Table, Avatar } from "flowbite-react";
-import { HiUserCircle, HiOutlineViewGrid, HiOutlineTable } from "react-icons/hi";
+import { HiOutlineViewGrid, HiOutlineTable } from "react-icons/hi";
+import Loader from "../../../src/components/Loader";
+import { useAlert } from "../../../src/contexts/AlertContext";
+import { userService } from "../../../src/services/users.getById.service";
+import Breadcrumb from "../../../src/components/Breadcrumb";
+import { UserProfile } from "../../../src/types/users.types";
 
 const UserProfilePage: React.FC = () => {
     const [user, setUser] = useState<UserProfile | null>(null);
@@ -16,10 +17,10 @@ const UserProfilePage: React.FC = () => {
     useEffect(() => {
         const fetchProfile = async () => {
             try {
-                const userData = await fetchUserProfile();
+                const userData = await userService.fetchUserProfile();
                 setUser(userData);
             } catch (error) {
-                console.error("Error fetching user profile:", error);
+                // console.error("Error fetching user profile:", error);
                 showAlert("error", "Failed to load user profile.");
             } finally {
                 setLoading(false);
@@ -41,7 +42,7 @@ const UserProfilePage: React.FC = () => {
                     </div>
                 ) : user ? (
                     <Card className="dark:bg-gray-800">
-                        {/* Encabezado del perfil */}
+                        {/* profile header */}
                         <div className="flex items-center gap-4 pb-4">
                             <Avatar
                                 alt="User profile"
@@ -64,7 +65,7 @@ const UserProfilePage: React.FC = () => {
 
                         </div>
 
-                        {/* Información básica del usuario */}
+                        {/* basic user info */}
                         <div className="mt-6 grid grid-cols-1 gap-6 sm:grid-cols-2">
                             <div>
                                 <p className="text-sm font-medium text-gray-500 dark:text-gray-400">Email:</p>
@@ -72,11 +73,11 @@ const UserProfilePage: React.FC = () => {
                             </div>
                             <div>
                                 <p className="text-sm font-medium text-gray-500 dark:text-gray-400">Role:</p>
-                                <p className="text-lg font-medium text-gray-800 dark:text-gray-200 capitalize">{user.role}</p>
+                                <p className="text-lg font-medium capitalize text-gray-800 dark:text-gray-200">{user.role}</p>
                             </div>
                         </div>
 
-                        {/* Sección de permisos */}
+                        {/* Permissions section */}
                         <div className="mt-10">
                             <h3 className="mb-3 text-lg font-semibold text-gray-700 dark:text-gray-300">
                                 Permissions
@@ -87,7 +88,7 @@ const UserProfilePage: React.FC = () => {
                             {user.permissions.length > 0 ? (
                                 <Tabs style="underline">
                                     <Tabs.Item title="Grid View" icon={HiOutlineViewGrid}>
-                                        {/* Vista en cuadrícula (grid) usando badges */}
+                                        {/* Grid view using badges */}
                                         <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
                                             {user.permissions.map((permission, index) => (
                                                 <Badge
@@ -101,7 +102,7 @@ const UserProfilePage: React.FC = () => {
                                         </div>
                                     </Tabs.Item>
                                     <Tabs.Item title="Table View" icon={HiOutlineTable}>
-                                        {/* Vista en tabla */}
+                                        {/* Table view */}
                                         <Table className="min-w-full overflow-hidden text-left text-sm dark:text-gray-200">
                                             <Table.Head>
                                                 <Table.HeadCell>Permission</Table.HeadCell>

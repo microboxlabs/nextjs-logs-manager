@@ -5,13 +5,12 @@ import { useRouter } from "next/navigation";
 import { Formik, Form, FormikHelpers } from "formik";
 import * as Yup from "yup";
 import { Button, Textarea, Label, Select, ToggleSwitch } from "flowbite-react";
-import { useAlert } from "@/src/contexts/AlertContext";
-import { LogLevel, Service as ServiceType } from "@/src/types/db.types";
 import { createLog } from "../services/logs.createLog.service";
-import { fetchLevels, fetchServices } from "../services/logs.getLevelsAndService.service";
+import { logLevelAndServiceService } from "../services/logs.getLevelsAndService.service";
 import Loader from "../components/Loader";
+import { useAlert } from "../contexts/AlertContext";
+import { LogLevel, Service as ServiceType } from "../types/db.types";
 
-// Esquema de validación con Yup
 const LogSchema = Yup.object().shape({
     levelId: Yup.number()
         .typeError("Level is required.")
@@ -38,7 +37,10 @@ const CreateLogsForm: React.FC = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const [levelsData, servicesData] = await Promise.all([fetchLevels(), fetchServices()]);
+                const [levelsData, servicesData] = await Promise.all([
+                    logLevelAndServiceService.fetchLevels(),
+                    logLevelAndServiceService.fetchServices()
+                ]);
                 setLevels(levelsData);
                 setServices(servicesData);
             } catch (error) {
@@ -59,13 +61,10 @@ const CreateLogsForm: React.FC = () => {
             showAlert("success", "Log created successfully!");
 
             if (!createMultiple) {
-                // Guardar la alerta pendiente en sessionStorage
                 sessionStorage.setItem(
                     "pendingAlert",
                     JSON.stringify({ type: "success", message: "Log created successfully!" })
                 );
-
-                // Esperar un tiempo antes de redirigir para que el usuario vea la alerta actual
                 setTimeout(() => {
                     router.push("/dashboard/logs-view");
                 }, 2000);
@@ -96,7 +95,7 @@ const CreateLogsForm: React.FC = () => {
             >
                 {({ values, handleChange, handleBlur, errors, touched, isSubmitting }) => (
                     <Form className="space-y-6">
-                        {/* Nivel */}
+                        {/* Level */}
                         <div>
                             <Label htmlFor="levelId" value="Select Level" />
                             <Select
@@ -120,7 +119,7 @@ const CreateLogsForm: React.FC = () => {
                             )}
                         </div>
 
-                        {/* Servicio */}
+                        {/* Service */}
                         <div>
                             <Label htmlFor="serviceId" value="Select Service" />
                             <Select
@@ -144,7 +143,7 @@ const CreateLogsForm: React.FC = () => {
                             )}
                         </div>
 
-                        {/* Mensaje */}
+                        {/* Message */}
                         <div>
                             <Label htmlFor="message" value="Message" />
                             <Textarea
@@ -165,7 +164,7 @@ const CreateLogsForm: React.FC = () => {
                             )}
                         </div>
 
-                        {/* Toggle para crear múltiples logs */}
+                        {/* Toggle to create multiple logs */}
                         <div className="flex items-center justify-between pt-4">
                             <Label htmlFor="createMultiple" value="Create multiple logs?" />
                             <ToggleSwitch
@@ -176,7 +175,7 @@ const CreateLogsForm: React.FC = () => {
                             />
                         </div>
 
-                        {/* Botón Submit */}
+                        {/* Submit Button */}
                         <div className="pt-4 text-center">
                             <Button
                                 type="submit"

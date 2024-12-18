@@ -5,6 +5,19 @@ import {
 import { HiHome } from "react-icons/hi";
 import { usePathname } from "next/navigation";
 
+/**
+ * Breadcrumb component that generates a breadcrumb navigation based on the current pathname.
+ * 
+ * This component uses the `usePathname` hook to get the current pathname and splits it into segments
+ * to create breadcrumb items. The first breadcrumb item is always "Home" with a link to the dashboard.
+ * Subsequent breadcrumb items are generated from the pathname segments, with each segment capitalized
+ * and hyphens replaced by spaces.
+ * 
+ * If there are multiple breadcrumb items, the last item's `href` is set to `undefined` to indicate
+ * that it is the current page.
+ * 
+ * @returns {JSX.Element} The rendered breadcrumb navigation.
+ */
 const Breadcrumb: React.FC = () => {
     const pathname = usePathname();
 

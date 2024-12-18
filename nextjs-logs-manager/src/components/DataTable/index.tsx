@@ -28,6 +28,37 @@ interface DataTableProps {
     pageSize?: number;
 }
 
+/**
+ * DataTable component for displaying and filtering tabular data.
+ *
+ * @component
+ * @param {DataTableProps} props - The properties for the DataTable component.
+ * @param {Array<Object>} props.data - The data to be displayed in the table.
+ * @param {Array<Object>} props.columns - The columns configuration for the table.
+ * @param {number} [props.pageSize=5] - The number of rows to display per page.
+ *
+ * @returns {JSX.Element} The rendered DataTable component.
+ *
+ * @example
+ * <DataTable
+ *   data={data}
+ *   columns={columns}
+ *   pageSize={10}
+ * />
+ *
+ * @typedef {Object} DataTableProps
+ * @property {Array<Object>} data - The data to be displayed in the table.
+ * @property {Array<Object>} columns - The columns configuration for the table.
+ * @property {number} [pageSize=5] - The number of rows to display per page.
+ *
+ * @typedef {Object} Column
+ * @property {string} key - The unique key for the column.
+ * @property {string} label - The display label for the column.
+ * @property {boolean} [isDate] - Whether the column contains date values.
+ * @property {boolean} [isDropdown] - Whether the column contains dropdown values.
+ * @property {Array<string>} [dropdownOptions] - The options for the dropdown column.
+ * @property {function} [render] - Custom render function for the column.
+ */
 const DataTable: React.FC<DataTableProps> = ({
     data,
     columns,
@@ -339,7 +370,7 @@ const DataTable: React.FC<DataTableProps> = ({
 
             {/* Pagination */}
             <div className="mt-6 flex flex-col-reverse items-center gap-4 text-sm sm:flex-row sm:items-center sm:justify-between">
-                {/* Información de Rangos */}
+                {/* Range Information */}
                 <div className="w-full text-center text-gray-500 sm:w-auto sm:text-left">
                     {isSmallScreen ? (
                         <>
@@ -357,7 +388,7 @@ const DataTable: React.FC<DataTableProps> = ({
                     )}
                 </div>
 
-                {/* Componente de Paginación */}
+                {/* Pagination Component */}
                 {filteredData.length > pageSize && (
                     <div className="flex w-full justify-center sm:w-auto sm:justify-end">
                         <Pagination

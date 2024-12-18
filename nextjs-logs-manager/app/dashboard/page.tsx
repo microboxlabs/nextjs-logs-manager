@@ -5,12 +5,13 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { Card } from "flowbite-react";
 import { FaFileAlt, FaPlus, FaUsers } from "react-icons/fa";
-import Breadcrumb from "@/src/components/Breadcrumb";
-import Loader from "@/src/components/Loader";
-import { NewLogComponent } from "@/src/components/NewLogComponent";
-import CustomModal from "@/src/components/CustomModal";
-import { uploadLogFile } from "@/src/services/logs.uploadLogFile.service";
-import { useAlert } from "@/src/contexts/AlertContext";
+import CustomModal from "../../src/components/CustomModal";
+import Loader from "../../src/components/Loader";
+import { NewLogComponent } from "../../src/components/NewLogComponent";
+import { useAlert } from "../../src/contexts/AlertContext";
+import { uploadLogFile } from "../../src/services/logs.uploadLogFile.service";
+import Breadcrumb from "../../src/components/Breadcrumb";
+
 
 interface CardItem {
     title: string;
@@ -30,30 +31,25 @@ const DashboardPage: React.FC = () => {
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
     const [isUploading, setIsUploading] = useState(false);
 
-    // Lógica de manejo del archivo
     const handleFileSubmit = async () => {
         if (!selectedFile) return;
 
         setIsUploading(true);
         try {
             await uploadLogFile(selectedFile);
-            console.log("Previo a showAlert");
             showAlert("success", "File uploaded successfully!");
-            console.log("Posterior a showAlert");
             setTimeout(() => {
                 router.push("/dashboard/logs-view");
             }, 500);
         } catch (error) {
-            console.error(error);
+            // console.error(error);
             showAlert("error", "An error occurred while uploading the file.");
-        }
-        finally {
+        } finally {
             setIsUploading(false);
             setSelectedFile(null);
         }
     };
 
-    // Configuración de las tarjetas
     const cards: CardItem[] = useMemo(
         () => [
             { title: "View Logs", icon: FaFileAlt, path: "/dashboard/logs-view" },
@@ -75,7 +71,6 @@ const DashboardPage: React.FC = () => {
         []
     );
 
-    // Manejar clic en las tarjetas
     const handleCardClick = (card: CardItem) => {
         if (card.modalContent) {
             setModalTitle(card.title);
@@ -85,13 +80,11 @@ const DashboardPage: React.FC = () => {
         }
     };
 
-    // Manejar cierre del modal
     const handleCloseModal = () => {
         setIsModalOpen(false);
         setSelectedFile(null);
     };
 
-    // Si está cargando la sesión
     if (status === "loading") {
         return (
             <div className="flex min-h-screen items-center justify-center">
@@ -100,7 +93,6 @@ const DashboardPage: React.FC = () => {
         );
     }
 
-    // Redirigir si no hay sesión
     if (!session) {
         router.push("/login");
         return null;
@@ -115,7 +107,7 @@ const DashboardPage: React.FC = () => {
                 <Breadcrumb />
             </div>
 
-            {/* Contenido Principal */}
+            {/* Main content */}
             <div className="mx-auto w-full max-w-7xl rounded-lg bg-white p-6 shadow-md dark:bg-gray-800 sm:p-8">
                 <h2 className="mb-4 text-center text-2xl font-bold text-gray-900 dark:text-white">
                     Welcome Back, {session?.user?.email || "User"}

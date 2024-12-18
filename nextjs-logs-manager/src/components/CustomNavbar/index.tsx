@@ -5,6 +5,17 @@ import Link from "next/link";
 import { Navbar, DarkThemeToggle } from "flowbite-react";
 import AvatarMenu from "../AvatarMenu";
 
+/**
+ * CustomNavbar component renders a navigation bar with different links and options
+ * based on the user's authentication status and role.
+ *
+ * @returns {JSX.Element} The rendered CustomNavbar component.
+ *
+ * @remarks
+ * This component uses the `useSession` hook to determine the user's session status
+ * and role. It conditionally renders navigation links and options based on whether
+ * the user is authenticated and if they have an admin role.
+ */
 export default function CustomNavbar() {
     const { data: session, status } = useSession();
     const isAdmin = session?.user?.role === "ADMIN";
@@ -25,7 +36,7 @@ export default function CustomNavbar() {
                 </span>
             </Navbar.Brand>
 
-            {/* Collapse: Menú de navegación principal */}
+            {/* Collapse: Principal menu */}
             <Navbar.Collapse className="ml-auto">
                 {status === "authenticated" && (
                     <>
@@ -59,7 +70,7 @@ export default function CustomNavbar() {
             </Navbar.Collapse>
 
             {/* Right-Side Icons */}
-            <div className="flex items-end gap-4 pl-10 ml-auto">
+            <div className="ml-auto flex items-end gap-4 pl-10">
                 {/* Dark Mode Toggle */}
                 <DarkThemeToggle />
 

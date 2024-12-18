@@ -19,6 +19,20 @@ const iconSizeClasses = {
     xl: "h-36 w-36",
 };
 
+/**
+ * Dropzone component for file upload with drag-and-drop support.
+ *
+ * @param {Object} props - The properties object.
+ * @param {(file: File | null) => void} props.onFileSelect - Callback function to handle file selection.
+ * @param {string} [props.accept=".txt"] - Accepted file types for upload.
+ * @param {number} [props.maxSize=2] - Maximum file size in MB.
+ * @param {string} [props.iconSize="xl"] - Size of the upload icon.
+ * @param {string} [props.message="Click to upload"] - Message displayed on the dropzone.
+ * @param {string} [props.subMessage=`TXT files only (max ${maxSize}MB)`] - Sub-message displayed on the dropzone.
+ * @param {string} [props.className=""] - Additional CSS classes for the dropzone container.
+ *
+ * @returns {JSX.Element} The rendered Dropzone component.
+ */
 export function Dropzone({
     onFileSelect,
     accept = ".txt",

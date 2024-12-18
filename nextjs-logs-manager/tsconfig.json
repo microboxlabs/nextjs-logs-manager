@@ -17,11 +17,6 @@
         "name": "next"
       }
     ],
-    "paths": {
-      "@/*": [
-        "./*"
-      ]
-    },
     "target": "ES2017"
   },
   "include": [
@@ -32,7 +27,5 @@
     "prisma/**/*.ts",
     "lib/**/*.ts"
   ],
-  "exclude": [
-    "node_modules"
-  ]
+  "exclude": ["node_modules"]
 }

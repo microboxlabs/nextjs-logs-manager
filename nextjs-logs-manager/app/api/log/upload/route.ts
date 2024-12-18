@@ -2,10 +2,10 @@ import { NextRequest, NextResponse } from "next/server";
 import { getToken } from "next-auth/jwt";
 import formidable from "formidable";
 import { Readable } from "stream";
-import { processLogs } from "@/src/services/logs.processLogs.service";
 import os from "os";
 import fs from "fs";
-import { broadcastLog } from "../events/route";
+import { broadcastLog } from "../../../../src/lib/broadcast";
+import { processLogs } from "../../../../src/services/logs.processLogs.service";
 
 export const runtime = 'nodejs';
 

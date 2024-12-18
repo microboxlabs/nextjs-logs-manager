@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { getToken } from "next-auth/jwt";
-import prisma from "@/src/lib/db";
 import { NextRequest } from "next/server";
+import prisma from "../../../../src/lib/db";
 
 export async function GET(request: NextRequest) {
     try {
@@ -42,7 +42,7 @@ export async function GET(request: NextRequest) {
 
         return NextResponse.json(formattedUser, { status: 200 });
     } catch (error) {
-        console.error("Error fetching user profile:", error);
+        // console.error("Error fetching user profile:", error);
         return NextResponse.json(
             { error: "Failed to fetch user profile." },
             { status: 500 }

@@ -1,4 +1,5 @@
-let clients: any[] = []; // Lista global de conexiones SSE
+export const dynamic = "force-dynamic"; // Esto fuerza SSR y evita prerendering
+import { addClient, removeClient } from "../../../../src/lib/broadcast";
 
 export async function GET(req: Request): Promise<Response> {
     const headers = new Headers({
@@ -7,28 +8,18 @@ export async function GET(req: Request): Promise<Response> {
         Connection: "keep-alive",
     });
 
-    // Crear una nueva conexión SSE
     const stream = new ReadableStream({
         start(controller) {
-            clients.push(controller); // Agregar la conexión actual a la lista
+            addClient(controller);
 
-            // Enviar mensaje de bienvenida
-            controller.enqueue("data: Conexión establecida para logs en tiempo real\n\n");
+            controller.enqueue(`data: Connection established\n\n`);
 
-            // Eliminar conexión al desconectar el cliente
             req.signal.addEventListener("abort", () => {
-                clients = clients.filter((c) => c !== controller);
+                removeClient(controller);
                 controller.close();
             });
         },
     });
 
     return new Response(stream, { headers });
-}
-
-// Función para emitir logs a todas las conexiones activas
-export function broadcastLog(log: any) {
-    clients.forEach((controller) => {
-        controller.enqueue(`data: ${JSON.stringify(log)}\n\n`);
-    });
 }

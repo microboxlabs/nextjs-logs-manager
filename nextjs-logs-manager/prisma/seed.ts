@@ -1,5 +1,6 @@
-import prisma from "@/src/lib/db";
-import generateHash from "@/src/lib/generateHash";
+import prisma from "../src/lib/db";
+import generateHash from "../src/lib/generateHash";
+
 
 async function main() {
     // Seed Roles
@@ -162,13 +163,13 @@ async function main() {
         });
     }
 
-    console.log('Seed completed successfully!');
-    console.log('seed data:', { roles, logLevels, services, permissions, logs });
+    // console.log('Seed completed successfully!');
+    // console.log('seed data:', { roles, logLevels, services, permissions, logs });
 }
 
 main()
     .catch((e) => {
-        console.error(e);
+        // console.error(e);
         process.exit(1);
     })
     .finally(async () => {

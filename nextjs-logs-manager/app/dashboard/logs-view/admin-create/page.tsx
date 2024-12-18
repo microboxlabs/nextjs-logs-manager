@@ -1,7 +1,8 @@
 "use client";
 
-import Breadcrumb from "@/src/components/Breadcrumb";
-import CreateLogsForm from "@/src/forms/createLogsForm";
+import Breadcrumb from "../../../../src/components/Breadcrumb";
+import CreateLogsForm from "../../../../src/forms/createLogsForm";
+
 
 const AdminCreatePage = () => {
     return (
