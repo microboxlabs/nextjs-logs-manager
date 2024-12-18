@@ -2,33 +2,37 @@
 
 // import { signOut } from "@/auth";
 
-// export async function logOut() {
+// export async function Logout() {
 //   await signOut();
 // }
-
 // import { signIn } from "@/auth";
 
-// export async function login(credentials: { email: string; password: string }) {
+
+// export async function login(credentials: { username: string; password: string }) {
 //   try {
-//     const result = await fetch(`${process.env.NEXT_PUBLIC_API_HOST}/users/login`, {
-//       method: "POST",
-//       headers: {
-//         "Content-Type": "application/json",
-//       },
+//     const response = await fetch(`${process.env.NEXT_PUBLIC_API_BACK}/users`, {
+//       method: "GET",
+//       headers: { "Content-Type": "application/json" },
 //       body: JSON.stringify(credentials),
 //     });
+
+//     if (!response.ok) {
+//       const error = await response.json();
+//       throw new Error(error.message || "Authentication failed");
+//     }
 //     console.log("body", JSON.stringify(credentials));
-//     const data = await result.json();
+//     const data = await response.json();
 //     console.log("data", data);
-//     return data;
+//     return data
 //   } catch (error) {
-//     console.error(error);
+//     console.error("Login error:", error);
+//     throw error;
 //   }
 // }
 
-// export async function getUserByMail(email: string) {
+// export async function getUser(username: string) {
 //   try {
-//     const result = await fetch(`${process.env.NEXT_PUBLIC_API_HOST}/users?email=${email}`, {
+//     const result = await fetch(`${process.env.NEXT_PUBLIC_API_HOST}/users?username=${username}`, {
 //       method: "GET",
 //       headers: {
 //         "Content-Type": "application/json",
@@ -36,10 +40,9 @@
 //     });
 //     const data = await result.json();
 //     return {
-//       userId: data._id,
+//       userId: data.id,
 //       role: data.role,
 //       username: data.username,
-//       email: data.email,
 //     };
 //   } catch (error) {
 //     console.error(error);
@@ -47,21 +50,21 @@
 // }
 
 // export async function formLogin(formData: FormData) {
-//   const email = formData.get("email") as string;
-//   const parsedEmail = email.toLowerCase();
+//   const username = formData.get("username") as string;
+//   //const parsedUser = username.toLowerCase();
 //   const password = formData.get("password");
 
-//   console.log("parsedEmail estoy en authActions.ts", parsedEmail);
+//   console.log("parsedausername estoy en authActions.ts", username);
 
 //   try {
 //     const result = await signIn("credentials", {
-//       email: parsedEmail,
+//       username: username,
 //       password: password as string,
 //       redirect: false,
 //     });
 
 //     console.log("result estoy en authActions.ts", result);
-//     console.log("email estoy en authActions.ts", email);
+//     console.log("email estoy en authActions.ts", username);
 //     console.log("password estoy en authActions", password);
 //     console.log("redirect estoy en authActions", false);
 
@@ -69,5 +72,13 @@
 //   } catch (error) {
 //     console.log("actions error", error);
 //     throw new Error((error as Error).message);
+//   }
+// }
+// export async function logOut() {
+//   try {
+//     // Lógica para cerrar sesión
+//     localStorage.removeItem("token");
+//   } catch (error) {
+//     console.error("Logout error:", error);
 //   }
 // }

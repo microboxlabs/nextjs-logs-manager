@@ -21,28 +21,40 @@ function isValidLogLevel(level: string) {
 }
 
 export async function createLogs(
-  timestamp: string, 
-  level: string, 
-  service: string, 
-  message: string 
+  timestamp: string,
+  level: string,
+  service: string,
+  message: string
 ) {
   if (!isValidLogLevel(level)) {
     throw new Error(`Invalid log level: ${level}`);
   }
 
   const db = await getDb();
-  //const timestamp = new Date().toISOString(); //--> function para generar auto las fechas (borrar el time de params)
   await initLogsTable();
 
   const result = await db.run(
-    'INSERT INTO logs (timestamp, level, service, message) VALUES (?, ?, ?, ?)', 
-    [timestamp, level.toUpperCase(), service, message]
+    "INSERT INTO logs (timestamp, level, service, message) VALUES (?, ?, ?, ?)",
+    [timestamp, level, service, message]
   );
+
   return { id: result.lastID, timestamp, level, service, message };
 }
 
-export async function getLogs() {
+export async function getLogs(limit: number, offset: number) {
   const db = await getDb();
-  await initLogsTable()
-  return await db.all('SELECT id, timestamp, level, service, message FROM logs')
+  await initLogsTable();
+  return await db.all("SELECT id, timestamp, level, service, message FROM logs LIMIT ? OFFSET ?", [limit, offset]);
+}
+
+export async function countLogs() {
+  const db = await getDb();
+  const result = await db.get("SELECT COUNT(*) as count FROM logs");
+  return result.count;
+}
+
+export async function deleteAllLogs() {
+  const db = await getDb();
+  await initLogsTable();
+  return await db.run("DELETE FROM logs");
 }
