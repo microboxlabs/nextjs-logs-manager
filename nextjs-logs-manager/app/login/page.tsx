@@ -3,8 +3,9 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { signIn } from "next-auth/react";
-import Loader from "@/src/components/Loader";
-import LoginForm from "@/src/forms/loginForm";
+import Loader from "../../src/components/Loader";
+import LoginForm from "../../src/forms/loginForm";
+
 
 const LoginPage: React.FC = () => {
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -28,7 +29,7 @@ const LoginPage: React.FC = () => {
                 router.push("/dashboard");
             }
         } catch (error) {
-            console.error("Login error:", error);
+            // console.error("Login error:", error);
             setErrorMessage("An unexpected error occurred");
         } finally {
             setLoading(false);

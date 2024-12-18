@@ -1,14 +1,12 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Breadcrumb from "@/src/components/Breadcrumb";
-import DataTable from "@/src/components/DataTable";
-import Loader from "@/src/components/Loader";
-import { fetchUsers } from "@/src/services/users.getAll.service";
-import { columns_users } from "@/src/constants/columns.users-view";
-import { useAlert } from "@/src/contexts/AlertContext";
-
-// Definición de la interfaz de Usuario
+import DataTable from "../../../src/components/DataTable";
+import Loader from "../../../src/components/Loader";
+import { columns_users } from "../../../src/constants/columns.users-view";
+import { useAlert } from "../../../src/contexts/AlertContext";
+import { fetchUsers } from "../../../src/services/users.getAll.service";
+import Breadcrumb from "../../../src/components/Breadcrumb";
 interface User {
     id: number;
     email: string;
@@ -21,14 +19,13 @@ const ViewUsersPage: React.FC = () => {
     const [loading, setLoading] = useState(true);
     const { showAlert } = useAlert();
 
-    // Fetch de usuarios
     useEffect(() => {
         const fetchData = async () => {
             try {
                 const usersData = await fetchUsers();
                 setUsers(usersData);
             } catch (error) {
-                console.error("Error fetching users:", error);
+                // console.error("Error fetching users:", error);
                 showAlert("error", "Failed to load users.");
             } finally {
                 setLoading(false);
@@ -38,7 +35,6 @@ const ViewUsersPage: React.FC = () => {
         fetchData();
     }, [showAlert]);
 
-    // Verificación de alertas pendientes en sessionStorage
     useEffect(() => {
         const pendingAlert = sessionStorage.getItem("pendingAlert");
         if (pendingAlert) {
@@ -57,7 +53,6 @@ const ViewUsersPage: React.FC = () => {
                 {/* Breadcrumb */}
                 <Breadcrumb />
 
-                {/* Cargando o mostrando datos */}
                 {loading ? (
                     <div className="flex items-center justify-center py-20">
                         <Loader overlay={false} />

@@ -2,16 +2,16 @@ import { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { ThemeModeScript } from "flowbite-react";
 import "../styles/globals.css";
-import SessionWrapper from "@/src/components/SessionWrapper";
-import CustomNavbar from "@/src/components/CustomNavbar";
-import { AlertProvider } from "@/src/contexts/AlertContext";
+import CustomNavbar from "../src/components/CustomNavbar";
+import SessionWrapper from "../src/components/SessionWrapper";
+import { AlertProvider } from "../src/contexts/AlertContext";
+
 
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Log Manager App - Simplify Your Logs",
   description: "Efficiently manage, organize, and analyze logs with our Next.js app. Built with performance and usability in mind.",
-  viewport: "width=device-width, initial-scale=1",
   robots: {
     index: true,
     follow: true,
@@ -29,6 +29,8 @@ export const metadata: Metadata = {
     description: "Efficiently manage, organize, and analyze logs with our Next.js app.",
   },
 };
+
+export const viewport = "width=device-width, initial-scale=1";
 
 export default function RootLayout({
   children,

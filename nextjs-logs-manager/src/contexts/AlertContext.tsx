@@ -32,8 +32,7 @@ export const AlertProvider = ({ children }: { children: ReactNode }) => {
     return (
         <AlertContext.Provider value={{ showAlert }}>
             {children}
-            {/* Contenedor en la esquina superior derecha */}
-            <div className="fixed top-6 right-6 z-50 flex flex-col gap-2 w-96">
+            <div className="fixed right-6 top-6 z-50 flex w-96 flex-col gap-2">
                 {alerts.map((alert) => (
                     <div key={alert.id}>
                         <AlertMessage type={alert.type} message={alert.message} />

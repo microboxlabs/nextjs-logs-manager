@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import prisma from "@/src/lib/db";
+import prisma from "../../../src/lib/db";
 
 // Get all users
 export async function GET() {
@@ -28,7 +28,7 @@ export async function GET() {
 
         return NextResponse.json(formattedUsers, { status: 200 });
     } catch (error) {
-        console.error("Error fetching users:", error);
+        // console.error("Error fetching users:", error);
         return NextResponse.json(
             { error: "Failed to fetch users." },
             { status: 500 }

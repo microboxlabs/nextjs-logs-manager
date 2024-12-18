@@ -25,7 +25,7 @@ export default function CustomNavbar() {
                 </span>
             </Navbar.Brand>
 
-            {/* Collapse: Menú de navegación principal */}
+            {/* Collapse: Principal menu */}
             <Navbar.Collapse className="ml-auto">
                 {status === "authenticated" && (
                     <>
@@ -59,7 +59,7 @@ export default function CustomNavbar() {
             </Navbar.Collapse>
 
             {/* Right-Side Icons */}
-            <div className="flex items-end gap-4 pl-10 ml-auto">
+            <div className="ml-auto flex items-end gap-4 pl-10">
                 {/* Dark Mode Toggle */}
                 <DarkThemeToggle />
 

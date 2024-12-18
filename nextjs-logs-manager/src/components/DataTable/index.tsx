@@ -339,7 +339,7 @@ const DataTable: React.FC<DataTableProps> = ({
 
             {/* Pagination */}
             <div className="mt-6 flex flex-col-reverse items-center gap-4 text-sm sm:flex-row sm:items-center sm:justify-between">
-                {/* Información de Rangos */}
+                {/* Range Information */}
                 <div className="w-full text-center text-gray-500 sm:w-auto sm:text-left">
                     {isSmallScreen ? (
                         <>
@@ -357,7 +357,7 @@ const DataTable: React.FC<DataTableProps> = ({
                     )}
                 </div>
 
-                {/* Componente de Paginación */}
+                {/* Pagination Component */}
                 {filteredData.length > pageSize && (
                     <div className="flex w-full justify-center sm:w-auto sm:justify-end">
                         <Pagination

@@ -1,7 +1,8 @@
-import prisma from "@/src/lib/db";
-import { LogEntry } from "@/src/types/db.types";
+
 import { NextResponse } from "next/server";
-import { broadcastLog } from "./events/route";
+import prisma from "../../../src/lib/db";
+import { LogEntry } from "@prisma/client";
+import { broadcastLog } from "../../../src/lib/broadcast";
 
 // getAllLogs
 export async function GET() {
@@ -26,7 +27,7 @@ export async function GET() {
 
         return NextResponse.json(formattedLogs);
     } catch (error) {
-        console.error("Error fetching logs:", error);
+        // console.error("Error fetching logs:", error);
         return NextResponse.json({ error: "Failed to fetch logs." }, { status: 500 });
     }
 }
@@ -76,7 +77,7 @@ export async function POST(request: Request) {
 
         return NextResponse.json(formattedLog, { status: 201 });
     } catch (error) {
-        console.error("Error creating log:", error);
+        // console.error("Error creating log:", error);
         return NextResponse.json({ error: "Failed to create log." }, { status: 500 });
     }
 }

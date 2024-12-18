@@ -1,3 +1,5 @@
+import axios from "axios";
+
 export interface UserProfile {
     id: number;
     email: string;
@@ -5,18 +7,39 @@ export interface UserProfile {
     permissions: string[];
 }
 
-export const fetchOneUser = async (id: number): Promise<UserProfile> => {
-    const response = await fetch(`/api/users/${id}`);
-    if (!response.ok) throw new Error("Failed to fetch user.");
-    return response.json();
-};
+export const userService = {
+    /**
+     * Fetch a user by their ID.
+     * @param id The ID of the user.
+     * @returns Promise<UserProfile> The user profile details.
+     * @throws Error if the request fails.
+     */
+    async fetchOneUser(id: number): Promise<UserProfile> {
+        try {
+            const response = await axios.get<UserProfile>(`/api/users/${id}`);
+            return response.data;
+        } catch (error: any) {
+            console.error(`Error fetching user with ID ${id}:`, error.message || error);
+            throw new Error(
+                error.response?.data?.error || "Failed to fetch user. Please try again later."
+            );
+        }
+    },
 
-export const fetchUserProfile = async (): Promise<UserProfile> => {
-    const response = await fetch("/api/users/profile");
-
-    if (!response.ok) {
-        throw new Error("Failed to fetch user profile.");
-    }
-
-    return response.json();
+    /**
+     * Fetch the profile of the currently authenticated user.
+     * @returns Promise<UserProfile> The profile of the authenticated user.
+     * @throws Error if the request fails.
+     */
+    async fetchUserProfile(): Promise<UserProfile> {
+        try {
+            const response = await axios.get<UserProfile>("/api/users/profile");
+            return response.data;
+        } catch (error: any) {
+            console.error("Error fetching user profile:", error.message || error);
+            throw new Error(
+                error.response?.data?.error || "Failed to fetch user profile. Please try again later."
+            );
+        }
+    },
 };

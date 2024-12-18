@@ -14,7 +14,7 @@ export const NewLogComponent: React.FC<NewLogComponentProps> = ({ onFileSelect }
         onFileSelect(file);
     };
 
-    console.info("selectedFile", selectedFile);
+    // console.info("selectedFile", selectedFile);
 
     return (
         <div className="space-y-6">
