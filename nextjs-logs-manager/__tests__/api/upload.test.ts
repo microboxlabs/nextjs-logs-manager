@@ -4,7 +4,13 @@ import formidable from "formidable";
 import { processLogs } from "../../src/services/logs.processLogs.service";
 import fs from "fs";
 import { broadcastLog } from "../../src/lib/broadcast";
+import { ReadableStream as NodeReadableStream } from "stream/web";
+import * as http from "http";
 
+// Configuración para ReadableStream en Node.js
+global.ReadableStream = global.ReadableStream || NodeReadableStream;
+
+// Mocks
 jest.mock("next-auth/jwt", () => ({
     getToken: jest.fn(),
 }));
@@ -15,7 +21,7 @@ jest.mock("formidable", () => {
     return { IncomingForm };
 });
 
-jest.mock("../../src/lib/logUtils", () => ({
+jest.mock("../../src/lib/broadcast", () => ({
     broadcastLog: jest.fn(),
 }));
 
@@ -55,39 +61,6 @@ describe("POST /api/log/upload", () => {
         jest.clearAllMocks();
     });
 
-    // TODO: Fix test
-    // it("should process logs successfully", async () => {
-    //     (getToken as jest.Mock).mockResolvedValue({ role: "admin" });
-
-    //     const mockForm = new (formidable.IncomingForm as any)();
-    //     mockForm.parse.mockImplementation((_req: any, callback: (err: any, fields: any, files: any) => void) => {
-    //         callback(null, {}, { file: { filepath: mockFilePath } });
-    //     });
-
-    //     (fs.promises.access as jest.Mock).mockResolvedValue(undefined);
-    //     (fs.promises.readFile as jest.Mock).mockResolvedValue(mockLogsContent);
-    //     (processLogs as jest.Mock).mockResolvedValue(undefined);
-
-    //     const req = {
-    //         method: "POST",
-    //         headers: new Map([["content-type", "multipart/form-data"]]),
-    //         body: {},
-    //     };
-
-    //     const response = await POST(req as any);
-    //     const json = await response.json();
-
-    //     expect(response.status).toBe(200);
-    //     expect(json.message).toBe("Logs processed successfully");
-    //     expect(json.logs).toEqual(mockParsedLogs);
-
-    //     // Ensure logs were processed and broadcast
-    //     expect(processLogs).toHaveBeenCalledWith([mockParsedLogs[0]]);
-    //     expect(processLogs).toHaveBeenCalledWith([mockParsedLogs[1]]);
-    //     expect(broadcastLog).toHaveBeenCalledWith(mockParsedLogs[0]);
-    //     expect(broadcastLog).toHaveBeenCalledWith(mockParsedLogs[1]);
-    // });
-
     it("should return 403 for non-admin users", async () => {
         (getToken as jest.Mock).mockResolvedValue({ role: "user" });
 
@@ -111,8 +84,8 @@ describe("POST /api/log/upload", () => {
         (getToken as jest.Mock).mockResolvedValue({ role: "admin" });
 
         const mockForm = new (formidable.IncomingForm as any)();
-        mockForm.parse.mockImplementation((_req: any, callback: (err: any, fields: any, files: any) => void) => {
-            callback(null, {}, {});
+        mockForm.parse.mockImplementation((_req: any, callback: (err: any, fields: formidable.Fields, files: formidable.Files) => void) => {
+            callback(null, {}, {}); // Sin archivo en `files`
         });
 
         const req = {
@@ -135,8 +108,20 @@ describe("POST /api/log/upload", () => {
         (getToken as jest.Mock).mockResolvedValue({ role: "admin" });
 
         const mockForm = new (formidable.IncomingForm as any)();
-        mockForm.parse.mockImplementation((_req: any, callback: (err: any, fields: any, files: any) => void) => {
-            callback(null, {}, { file: { filepath: mockFilePath } });
+        mockForm.parse.mockImplementation((_req: http.IncomingMessage, callback: (err: any, fields: formidable.Fields, files: formidable.Files) => void) => {
+            callback(null, {}, {
+                file: [{
+                    filepath: mockFilePath,
+                    size: 0,
+                    originalFilename: null,
+                    newFilename: "",
+                    mimetype: null,
+                    hashAlgorithm: false,
+                    toJSON: function (): formidable.FileJSON {
+                        throw new Error("Function not implemented.");
+                    }
+                }]
+            });
         });
 
         (fs.promises.access as jest.Mock).mockRejectedValue(new Error("File not accessible"));
@@ -156,4 +141,36 @@ describe("POST /api/log/upload", () => {
         expect(processLogs).not.toHaveBeenCalled();
         expect(broadcastLog).not.toHaveBeenCalled();
     });
+
+    // Test deshabilitado por ahora
+    // it("should process logs successfully", async () => {
+    //     (getToken as jest.Mock).mockResolvedValue({ role: "admin" });
+
+    //     const mockForm = new (formidable.IncomingForm as any)();
+    //     mockForm.parse.mockImplementation((_req, callback) => {
+    //         callback(null, {}, { file: { filepath: mockFilePath } });
+    //     });
+
+    //     (fs.promises.access as jest.Mock).mockResolvedValue(undefined);
+    //     (fs.promises.readFile as jest.Mock).mockResolvedValue(mockLogsContent);
+    //     (processLogs as jest.Mock).mockResolvedValue(undefined);
+
+    //     const req = {
+    //         method: "POST",
+    //         headers: new Map([["content-type", "multipart/form-data"]]),
+    //         body: {},
+    //     };
+
+    //     const response = await POST(req as any);
+    //     const json = await response.json();
+
+    //     expect(response.status).toBe(200);
+    //     expect(json.message).toBe("Logs processed successfully");
+    //     expect(json.logs).toEqual(mockParsedLogs);
+
+    //     expect(processLogs).toHaveBeenCalledWith([mockParsedLogs[0]]);
+    //     expect(processLogs).toHaveBeenCalledWith([mockParsedLogs[1]]);
+    //     expect(broadcastLog).toHaveBeenCalledWith(mockParsedLogs[0]);
+    //     expect(broadcastLog).toHaveBeenCalledWith(mockParsedLogs[1]);
+    // });
 });

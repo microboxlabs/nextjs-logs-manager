@@ -5,8 +5,9 @@ import { Card, Badge, Tabs, Table, Avatar } from "flowbite-react";
 import { HiOutlineViewGrid, HiOutlineTable } from "react-icons/hi";
 import Loader from "../../../src/components/Loader";
 import { useAlert } from "../../../src/contexts/AlertContext";
-import { UserProfile, userService } from "../../../src/services/users.getById.service";
+import { userService } from "../../../src/services/users.getById.service";
 import Breadcrumb from "../../../src/components/Breadcrumb";
+import { UserProfile } from "../../../src/types/users.types";
 
 const UserProfilePage: React.FC = () => {
     const [user, setUser] = useState<UserProfile | null>(null);

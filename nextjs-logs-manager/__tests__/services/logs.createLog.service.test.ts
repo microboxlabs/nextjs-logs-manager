@@ -1,5 +1,6 @@
 import axios from "axios";
-import { createLog, CreateLogData, CreateLogResponse } from "../../src/services/logs.createLog.service";
+import { createLog } from "../../src/services/logs.createLog.service";
+import { CreateLogData, CreateLogResponse } from "../../src/types/logs.types";
 
 jest.mock("axios");
 
@@ -25,6 +26,7 @@ describe("createLog service", () => {
             level: "Info",
             serviceName: "Service A",
             message: "Test log message",
+            service: ""
         };
 
         mockedAxios.post.mockResolvedValueOnce({ data: mockResponse });

@@ -1,15 +1,5 @@
 import axios, { AxiosResponse } from "axios";
-
-/**
- * Interface representing a single log entry.
- */
-export interface Log {
-    id: number;
-    timestamp: string;
-    level: string;
-    serviceName: string;
-    message: string;
-}
+import { Log } from "../types/logs.types";
 
 /**
  * Service for handling API requests related to logs.

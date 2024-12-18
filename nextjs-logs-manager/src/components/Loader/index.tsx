@@ -7,6 +7,16 @@ interface LoaderProps {
     overlay?: boolean;
 }
 
+/**
+ * Loader component that displays a spinner with customizable size, color, and optional overlay.
+ *
+ * @component
+ * @param {Object} props - Component props
+ * @param {'small' | 'medium' | 'large'} [props.size='medium'] - Size of the spinner
+ * @param {'primary' | 'secondary' | 'tertiary'} [props.colorStyle='primary'] - Color style of the spinner
+ * @param {boolean} [props.overlay=false] - Whether to display the spinner with an overlay
+ * @returns {JSX.Element} The rendered Loader component
+ */
 const Loader: React.FC<LoaderProps> = ({
     size = "medium",
     colorStyle = "primary",

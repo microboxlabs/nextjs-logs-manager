@@ -7,7 +7,7 @@ import Breadcrumb from "../../../src/components/Breadcrumb";
 import DataTable from "../../../src/components/DataTable";
 import Loader from "../../../src/components/Loader";
 import { columns_logs } from "../../../src/constants/columns.logs-view";
-import { Log, logService } from "../../../src/services/logs.getAll.service";
+import { logService } from "../../../src/services/logs.getAll.service";
 import { logsSSEService } from "../../../src/services/logs.sse.service";
 import CustomModal from "../../../src/components/CustomModal";
 import { NewLogComponent } from "../../../src/components/NewLogComponent";
@@ -15,6 +15,7 @@ import { useAlert } from "../../../src/contexts/AlertContext";
 import { uploadLogFile } from "../../../src/services/logs.uploadLogFile.service";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { Log } from "../../../src/types/logs.types";
 
 const ViewLogsPage: React.FC = () => {
     // Hooks

@@ -1,19 +1,19 @@
 import { Alert } from "flowbite-react";
 import { HiCheckCircle, HiExclamationCircle, HiInformationCircle } from "react-icons/hi";
 
-interface AlertMessageProps {
-    /**
-     * The type of alert to display.
-     * Can be "success", "error", or "info".
-     */
+export interface AlertMessageProps {
     type: "success" | "error" | "info";
-
-    /**
-     * The message to display within the alert.
-     */
     message: string;
 }
 
+/**
+ * AlertMessage component displays an alert message with a specific type.
+ *
+ * @param {AlertMessageProps} props - The properties for the AlertMessage component.
+ * @param {string} props.type - The type of alert (success, error, info).
+ * @param {string} props.message - The message to display in the alert.
+ * @returns {JSX.Element} The rendered AlertMessage component.
+ */
 export default function AlertMessage({ type, message }: AlertMessageProps): JSX.Element {
     const alertConfig = {
         success: {

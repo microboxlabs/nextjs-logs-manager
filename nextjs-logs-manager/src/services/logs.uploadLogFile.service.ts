@@ -1,7 +1,17 @@
 import axios from "axios";
 
 /**
- * Service to upload a log file.
+ * Uploads a log file to the server.
+ *
+ * @param {File} file - The log file to be uploaded.
+ * @returns {Promise<void>} A promise that resolves when the file is successfully uploaded.
+ * @throws {Error} Throws an error if the file upload fails.
+ *
+ * @example
+ * ```typescript
+ * const file = new File(["log content"], "log.txt", { type: "text/plain" });
+ * await uploadLogFile(file);
+ * ```
  */
 export const uploadLogFile = async (file: File): Promise<void> => {
     const formData = new FormData();

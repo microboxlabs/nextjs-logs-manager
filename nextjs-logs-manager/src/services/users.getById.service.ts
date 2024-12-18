@@ -1,11 +1,5 @@
 import axios from "axios";
-
-export interface UserProfile {
-    id: number;
-    email: string;
-    role: string;
-    permissions: string[];
-}
+import { UserProfile } from "../types/users.types";
 
 export const userService = {
     /**

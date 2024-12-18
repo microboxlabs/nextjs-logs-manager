@@ -1,24 +1,12 @@
 import axios from "axios";
-
-export interface CreateLogData {
-    levelId: number;
-    serviceId: number;
-    message: string;
-}
-
-export interface CreateLogResponse {
-    id: number;
-    timestamp: string;
-    level: string;
-    serviceName: string;
-    message: string;
-}
+import { CreateLogData, CreateLogResponse } from "../types/logs.types";
 
 /**
- * Crea un nuevo log en la base de datos.
- * @param data Datos del log: levelId, serviceId y message.
- * @returns Respuesta del servidor con los datos del log creado.
- * @throws Error si la creación falla.
+ * Creates a new log entry by sending a POST request to the "/api/log" endpoint.
+ *
+ * @param data - The data for the log entry to be created.
+ * @returns A promise that resolves to the response data of the created log entry.
+ * @throws An error if the log creation fails, with a message indicating the failure reason.
  */
 export const createLog = async (
     data: CreateLogData

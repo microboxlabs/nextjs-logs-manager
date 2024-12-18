@@ -1,5 +1,6 @@
 import axios from "axios";
-import { Log, logService } from "../../src/services/logs.getAll.service";
+import { logService } from "../../src/services/logs.getAll.service";
+import { Log } from "../../src/types/logs.types";
 
 jest.mock("axios");
 
@@ -13,6 +14,7 @@ describe("logService.fetchLogs", () => {
             level: "INFO",
             serviceName: "ServiceA",
             message: "Test log 1",
+            service: ""
         },
         {
             id: 2,
@@ -20,6 +22,7 @@ describe("logService.fetchLogs", () => {
             level: "ERROR",
             serviceName: "ServiceB",
             message: "Test log 2",
+            service: ""
         },
     ];
 

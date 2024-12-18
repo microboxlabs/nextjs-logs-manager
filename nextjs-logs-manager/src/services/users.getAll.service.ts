@@ -2,9 +2,10 @@ import axios from "axios";
 import { UserView } from "../types/db.types";
 
 /**
- * Service to fetch all users.
- * @returns Promise<UserView[]> A list of users with their roles and permissions.
- * @throws Error if the request fails.
+ * Fetches a list of users from the API.
+ *
+ * @returns {Promise<UserView[]>} A promise that resolves to an array of UserView objects.
+ * @throws {Error} Throws an error if the request fails, with a message indicating the failure reason.
  */
 export const fetchUsers = async (): Promise<UserView[]> => {
     try {

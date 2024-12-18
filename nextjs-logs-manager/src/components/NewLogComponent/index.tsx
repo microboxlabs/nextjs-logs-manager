@@ -6,6 +6,19 @@ interface NewLogComponentProps {
     onFileSelect: (file: File | null) => void;
 }
 
+/**
+ * NewLogComponent is a React functional component that allows users to upload a log file
+ * or navigate to a page where they can create a log manually.
+ *
+ * @component
+ * @param {NewLogComponentProps} props - The props for the component.
+ * @param {function} props.onFileSelect - Callback function to handle file selection.
+ *
+ * @example
+ * <NewLogComponent onFileSelect={handleFileSelect} />
+ *
+ * @returns {JSX.Element} The rendered component.
+ */
 export const NewLogComponent: React.FC<NewLogComponentProps> = ({ onFileSelect }) => {
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
 

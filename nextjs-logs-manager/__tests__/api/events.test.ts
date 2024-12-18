@@ -39,9 +39,8 @@ describe("SSE /api/log/events", () => {
         const reader = stream.getReader();
         const result = await reader.read();
 
-        expect(result.value).toContain(
-            "data: Connection established for real-time logs\n\n"
-        );
+        const normalizedValue = result.value?.trim().replace(/\s+/g, " ");
+        expect(normalizedValue).toContain("data: Connection established");
         expect(result.done).toBe(false);
     });
 

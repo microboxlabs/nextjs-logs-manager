@@ -1,5 +1,6 @@
 import axios from "axios";
-import { LoginValues, LoginResponse, login } from "../../src/services/auth.login.service";
+import { login } from "../../src/services/auth.login.service";
+import { LoginValues, LoginResponse } from "../../src/types/auth.types";
 
 jest.mock("axios");
 

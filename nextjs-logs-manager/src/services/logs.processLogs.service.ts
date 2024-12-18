@@ -1,12 +1,14 @@
 import prisma from "../lib/db";
+import { LogData } from "../types/logs.types";
 
-export interface LogData {
-    timestamp: string;
-    level: string;
-    service: string;
-    message: string;
-}
-
+/**
+ * Processes an array of log data by upserting log levels and services,
+ * and creating log entries in the database.
+ *
+ * @param {LogData[]} logs - An array of log data to be processed.
+ * @returns {Promise<void>} - A promise that resolves when the logs have been processed.
+ * @throws {Error} - Throws an error if no logs are provided or if processing fails.
+ */
 export const processLogs = async (logs: LogData[]): Promise<void> => {
     if (!logs || logs.length === 0) {
         throw new Error("No logs to process");

@@ -1,5 +1,6 @@
 import axios from "axios";
-import { userService, UserProfile } from "../../src/services/users.getById.service";
+import { userService } from "../../src/services/users.getById.service";
+import { UserProfile } from "../../src/types/users.types";
 
 jest.mock("axios");
 const mockedAxios = axios as jest.Mocked<typeof axios>;
