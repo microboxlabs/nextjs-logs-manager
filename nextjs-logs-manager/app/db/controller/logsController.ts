@@ -34,7 +34,8 @@ class LogsController {
                    FROM logs WHERE 1=1`;
       const params: any[] = [];
   
-      // Aplicar filtros específicos
+      // filtros especificos
+
       if (filters.level) {
         query += " AND LOWER(level) = LOWER(?)";
         params.push(filters.level);
@@ -48,14 +49,14 @@ class LogsController {
         params.push(`%${filters.search}%`);
       }
   
-      // Ordenar por timestamp
+      // ordena por timestamp
       query += " ORDER BY timestamp DESC LIMIT ? OFFSET ?";
       params.push(pageSize, offset);
   
       const db = await getDb();
       const logs = await db.all(query, params);
   
-      // Contar registros totales que coinciden con los filtros
+      // contar registros totales que coinciden con los filtros
       const countQuery = `SELECT COUNT(*) as count FROM logs WHERE 1=1` +
         (filters.level ? " AND LOWER(level) = LOWER(?)" : "") +
         (filters.service ? " AND LOWER(service) LIKE LOWER(?)" : "") +

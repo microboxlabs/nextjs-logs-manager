@@ -8,7 +8,7 @@ export default async function LoginLayout({
 }) {
   const session = await auth();
   if (session?.user) {
-    // Redirige al dashboard si el usuario ya está autenticado
+    // redirige al dashboard al usuario 
     redirect("/dashboard");
   }
 

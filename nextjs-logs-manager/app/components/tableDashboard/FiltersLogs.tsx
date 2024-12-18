@@ -6,16 +6,16 @@ interface FilterField {
     name: string;
     label: string;
     type: "select" | "text";
-    options?: string[]; // Opciones solo si es `select`
+    options?: string[]; // opciones solo si es `select`
   }
 
 interface FiltersLogsProps {
-  fields: FilterField[]; // Configuración de los filtros
+  fields: FilterField[]; // Config de los filtros
   onFilterChange: (criteria: Record<string, string>) => void;
 }
 
 export default function FiltersLogs({ fields, onFilterChange }: FiltersLogsProps) {
-  // Inicializa los filtros con valores vacíos para cada campo
+  // Inicializa los filtros con valores vacios para cada campo
   const initialFilters = fields.reduce((acc, field) => {
     acc[field.name!] = "";
     return acc;
@@ -23,23 +23,23 @@ export default function FiltersLogs({ fields, onFilterChange }: FiltersLogsProps
 
   const [filters, setFilters] = useState<Record<string, string>>(initialFilters);
 
-  // Manejar cambios en los inputs
+  // manejar cambios en los inputs
   const handleChange = (name: string, value: string) => {
     // Actualiza el estado del filtro localmente
-    setFilters((prev) => ({ ...prev, [name]: value })); // Elimina el .trim().toLowerCase()
+    setFilters((prev) => ({ ...prev, [name]: value })); 
   };
 
-  // Envía los filtros al componente padre
+  // Envia los filtros al componente pather
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Enviar todos los filtros al componente padre, incluso los vacíos
+    // Envia los filtros al componente pather, incluso los vacíos
     onFilterChange(filters);
   };
 
   return (
     <form
       onSubmit={handleSubmit}
-      className="flex flex-col justify-center gap-6 p-4 w-full md:flex-row md:items-center md:gap-4"
+      className="flex flex-col justify-center gap-6 p-4 w-full md:flex-row md:gap-4"
     >
       {fields.map((field) => (
         <div key={field.name} className="flex flex-col w-full md:w-auto">
@@ -74,7 +74,7 @@ export default function FiltersLogs({ fields, onFilterChange }: FiltersLogsProps
           )}
         </div>
       ))}
-      <div className="flex justify-end items-end md:justify-start w-full md:w-auto">
+      <div className="flex justify-end items-end md:justify-end md:items-end w-full md:w-auto">
         <Button type="submit" className="bg-blue-500 hover:bg-blue-600 text-white">
           Filtrar
         </Button>

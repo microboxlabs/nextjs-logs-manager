@@ -5,6 +5,8 @@ import { RiEyeLine, RiLoginBoxLine } from "react-icons/ri";
 import { AiOutlineUser } from "react-icons/ai";
 import { useRouter } from "next/navigation";
 import { signIn } from "next-auth/react";
+import { Spinner, Footer } from "flowbite-react";
+
 
 export default function Login() {
   const [viewPassword, setViewPassword] = useState(false);
@@ -45,7 +47,6 @@ export default function Login() {
         setError("User role not recognized.");
       }
     } catch (err) {
-      console.error("Login error:", err);
       setError("An error occurred during login.");
     } finally {
       setLoading(false);
@@ -67,7 +68,7 @@ export default function Login() {
               className="focus:outline-none bg-gray-100 text-xs placeholder:text-xs"
             />
           </div>
-          <div className="border border-gray-300 p-2 rounded-md bg-gray-100 flex gap-2 items-center justify-between mt-6">
+          <div className="border border-gray-300 p-2 rounded-md bg-gray-100 flex gap-2 items-center mt-6">
             <RiEyeLine
               className="w-4 h-4 cursor-pointer text-gray-600"
               onClick={() => setViewPassword(!viewPassword)}
@@ -84,7 +85,7 @@ export default function Login() {
             className="bg-neutral-700 text-white font-semibold p-2 rounded-md mt-6 hover:bg-neutral-500 flex items-center justify-center h-10"
           >
             {loading ? (
-              <RiLoginBoxLine className="h-5 w-5 animate-spin" />
+              <Spinner className="h-5 w-5"/>
             ) : (
               "Login"
             )}
@@ -92,6 +93,34 @@ export default function Login() {
           {error && <p className="text-red-500 text-xs mt-2 w-full text-center">{error}</p>}
         </div>
       </form>
+      <div>
+      <Footer container className="mt-8 w-full border-t pt-4">
+        <Footer.LinkGroup>
+          <p className="text-sm font-semibold">Test Credentials:</p>
+          <table className="mt-2 table-auto w-full border border-gray-300 text-xs text-gray-700">
+            <thead>
+              <tr>
+                <th className="px-4 py-2 border-b">Username</th>
+                <th className="px-4 py-2 border-b">Password</th>
+                <th className="px-4 py-2 border-b">Role</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td className="px-4 py-2 border-b">marco</td>
+                <td className="px-4 py-2 border-b">polo123</td>
+                <td className="px-4 py-2 border-b">admin</td>
+              </tr>
+              <tr>
+                <td className="px-4 py-2 border-b">cristobal</td>
+                <td className="px-4 py-2 border-b">colon123</td>
+                <td className="px-4 py-2 border-b">regular</td>
+              </tr>
+            </tbody>
+          </table>
+        </Footer.LinkGroup>
+      </Footer>
+      </div>
     </div>
   );
 }

@@ -7,7 +7,7 @@ export async function login(credentials: { username: string; password: string })
     const result = await signIn("credentials", {
       username: credentials.username,
       password: credentials.password,
-      redirect: false, // Evita redirección automática
+      redirect: false, // Evita redireccion
     });
 
     if (!result?.ok) {
@@ -23,7 +23,7 @@ export async function login(credentials: { username: string; password: string })
 
 export async function logOut() {
   try {
-    await signOut({ redirect: false }); // Cierra sesión sin redirección
+    await signOut({ redirect: false }); 
   } catch (error) {
     console.error("Logout error:", error);
   }
