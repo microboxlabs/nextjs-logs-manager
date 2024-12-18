@@ -229,4 +229,18 @@ If you have any questions, contact **<devtest@microboxlabs.com>**.
 
 ---
 
+## **Bonus**
+
+### Real-Time Log Updates with SSE
+
+To enhance user experience, the application leverages Server-Sent Events (SSE) to stream newly ingested logs to connected clients in real time.
+
+#### How it Works
+
+- **SSE Endpoint**: A server endpoint (`/api/log/events`) establishes a persistent connection with clients.
+- **Broadcasting**: When logs are ingested (uploaded), they are parsed and broadcasted to all connected clients.
+- **UI Update**: Clients receive new log entries in real time without needing a manual page refresh.
+
+This implementation provides a seamless and dynamic log monitoring experience for users.
+
 ## **Thank you for reviewing the project! 🚀**
