@@ -34,12 +34,12 @@ const DataTable = forwardRef<DataTableRef, DataTableProps>(({ filterCriteria }, 
         page: page.toString(),
         pageSize: pageSize.toString(),
         sortOrder,
-        ...criteria,
+        ...criteria, // Aquí se incluyen filtros vacíos como parte de la consulta
       }).toString();
-
+  
       const response = await fetch(`/api/logs?${query}`);
       if (!response.ok) throw new Error("Failed to fetch logs");
-
+  
       const data = await response.json();
       setLogs(data.logs);
       setTotalPages(Math.ceil(data.total / pageSize));

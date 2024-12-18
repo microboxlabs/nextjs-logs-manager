@@ -1,17 +1,15 @@
-'use client'
-import Link from "next/link"
+"use client";
+
 import { useState } from "react";
-import { RiEyeCloseLine, RiEyeLine, RiLoginBoxLine } from "react-icons/ri";
-import { AiOutlineUser,  } from "react-icons/ai";
+import { RiEyeLine, RiLoginBoxLine } from "react-icons/ri";
+import { AiOutlineUser } from "react-icons/ai";
 import { useRouter } from "next/navigation";
-//import { formLogin } from "@/app/actions/authActions";
-import {signIn} from 'next-auth/react'
+import { signIn } from "next-auth/react";
 
-
-export default function Login(){
+export default function Login() {
   const [viewPassword, setViewPassword] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
+  const [error, setError] = useState<string | null>(null);
   const router = useRouter();
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
@@ -22,31 +20,42 @@ export default function Login(){
 
     try {
       setLoading(true);
+      setError(null);
+
       const result = await signIn("credentials", {
         username,
         password,
-        redirect: false,
+        redirect: false, // Evita redirección automática
       });
 
-      if (result?.error) throw new Error(result.error);
+      if (!result?.ok) {
+        setError("Authentication failed. Check your credentials.");
+        return;
+      }
 
-      // Guarda datos en localStorage
-      localStorage.setItem("session", JSON.stringify({ username }));
-      router.push("/admin");
+      // Verificar el rol del usuario después del login
+      const sessionResponse = await fetch("/api/auth/session");
+      const session = await sessionResponse.json();
+
+      if (session?.user.role === "ADMIN") {
+        router.push("/dashboard/admin");
+      } else if (session?.user.role === "REGULAR") {
+        router.push("/dashboard/regular");
+      } else {
+        setError("User role not recognized.");
+      }
     } catch (err) {
-      setError("Login failed. Check your credentials.");
+      console.error("Login error:", err);
+      setError("An error occurred during login.");
     } finally {
       setLoading(false);
     }
   }
 
 
-
-    return(
-        <div >
-        <div className="w-[400px] bg-gray-50 rounded-md shadow-md px-12 py-8 flex flex-col items-center border border-gray-300">
-      <h3 className="text-xl font font-semibold">Login</h3>
-      <h4 className="text-sm font-light mt-2">Access to your account</h4>
+  return (
+    <div className="w-[400px] bg-gray-50 rounded-md shadow-md px-12 py-8 flex flex-col items-center border border-gray-300">
+      <h3 className="text-xl font-semibold">Login</h3>
       <form onSubmit={handleSubmit} className="mt-4 w-full">
         <div className="flex flex-col mt-2">
           <div className="border border-gray-300 p-2 rounded-md bg-gray-100 flex gap-2 items-center">
@@ -54,27 +63,22 @@ export default function Login(){
             <input
               type="text"
               name="username"
-              placeholder="Enter your User"
-              className=" focus:outline-none bg-gray-100 text-xs placeholder:text-xs"
+              placeholder="Enter your username"
+              className="focus:outline-none bg-gray-100 text-xs placeholder:text-xs"
             />
           </div>
           <div className="border border-gray-300 p-2 rounded-md bg-gray-100 flex gap-2 items-center justify-between mt-6">
-            <div className="flex items-center gap-2">
-              {/* <RiEyeCloseLine className="w-5 h-5 text-gray-600" />  */}
-              <RiEyeLine
+            <RiEyeLine
               className="w-4 h-4 cursor-pointer text-gray-600"
               onClick={() => setViewPassword(!viewPassword)}
             />
-              <input
-                type={viewPassword ? "text" : "password"}
-                name="password"
-                placeholder="Enter your password"
-                className="focus:outline-none bg-gray-100 text-xs placeholder:text-xs"
-              />
-            </div>
-
+            <input
+              type={viewPassword ? "text" : "password"}
+              name="password"
+              placeholder="Enter your password"
+              className="focus:outline-none bg-gray-100 text-xs placeholder:text-xs"
+            />
           </div>
-
           <button
             type="submit"
             className="bg-neutral-700 text-white font-semibold p-2 rounded-md mt-6 hover:bg-neutral-500 flex items-center justify-center h-10"
@@ -88,32 +92,6 @@ export default function Login(){
           {error && <p className="text-red-500 text-xs mt-2 w-full text-center">{error}</p>}
         </div>
       </form>
-        </div>
-        </div>
-    )
+    </div>
+  );
 }
-
-
-// const handleSubmit = async (e: React.FormEvent) => {
-//   e.preventDefault();
-//   setIsLoading(true);
-//   setError("");
-
-//   try {
-//     const result = await signIn("credentials", {
-//       username: username,
-//       redirect: false,
-//       redirectTo: "/dashboard",
-//     });
-
-//     if (result?.error) {
-//       setError("Invalid username. Please try again.");
-//     } else if (result?.ok) {
-//       router.push("/dashboard");
-//     }
-//   } catch (error) {
-//     setError("An unexpected error occurred. Please try again.");
-//   } finally {
-//     setIsLoading(false);
-//   }
-// };

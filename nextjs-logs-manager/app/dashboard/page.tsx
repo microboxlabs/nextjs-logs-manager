@@ -1,12 +1,21 @@
-'use client'
+"use client";
 
-import AdminDashboard from "./admin/adminLog";
+import { useSession } from "next-auth/react";
 
+export default function DashboardPage() {
+  const { data: session, status } = useSession();
 
-export default function Home() {
-    return (
-      <div className="dashboard">
-        <AdminDashboard />
-      </div>
-    );
+  if (status === "loading") {
+    return <div>Cargando...</div>;
   }
+
+  if (session?.user.role === "ADMIN") {
+    return <div>Bienvenido al Dashboard de Admin</div>;
+  }
+
+  if (session?.user.role === "REGULAR") {
+    return <div>Bienvenido al Dashboard de Regular</div>;
+  }
+
+  return <div>Error: Usuario no autorizado</div>;
+}
