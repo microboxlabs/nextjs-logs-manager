@@ -1,0 +1,1 @@
+AUTH_SECRET="TgQqTpzJERNUoU3bTwaTRN5US65iryx71RP1hYHzE5o=" # Added by `npx auth`. Read more: https://cli.authjs.dev
