@@ -96,7 +96,7 @@ The project uses the following technologies and libraries:
 1. **Clone the repository**:
 
    ```bash
-   git clone https://github.com/yourusername/NEXTJS-LOGS-MANAGER.git
+   git clone https://github.com/Meitchouk/nextjs-logs-manager.git
    cd NEXTJS-LOGS-MANAGER
    ```
 
